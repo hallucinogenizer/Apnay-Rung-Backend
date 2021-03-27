@@ -1,0 +1,24 @@
+GET http://localhost:3000/admin/all/customers
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
+
+###
+
+POST http://localhost:3000/customer/new
+content-type: application/json
+
+{
+    "name":"Momina Amer",
+    "email":"momina@gmail.com",
+    "password":"12345678",
+    "address":"Pluto"
+}
+
+###
+
+POST http://localhost:3000/customer/verify
+Content-Type: application/json
+
+{
+    "email":"rohan@yahoo.com",
+    "password":"12345678"
+}
