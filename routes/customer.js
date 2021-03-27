@@ -1,7 +1,30 @@
 var express = require('express')
 var router = express.Router()
+const { Client } = require('pg')
+const authenticateJWT = require("../utilities/authenticateJWT")
+const jwt = require('jsonwebtoken')
+    //for bcrypt
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 
-router.put('/customer/new', async(req, res) => {
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'test',
+    password: 'mynameisroh',
+    port: 5432
+})
+
+client
+    .connect()
+    .then((res) => {
+        console.log("Connected successfully")
+    })
+    .catch(err => {
+        console.log(err)
+    })
+
+router.put('/new', async(req, res) => {
     console.log(req.body)
 
     //generating hashed password
@@ -23,7 +46,7 @@ router.put('/customer/new', async(req, res) => {
     }
 })
 
-router.post('/customer/verify', async(req, res) => {
+router.post('/verify', async(req, res) => {
     const query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}';`
     try {
         const result = await client.query(query)
@@ -55,3 +78,5 @@ router.post('/customer/verify', async(req, res) => {
         console.log(err)
     }
 })
+
+module.exports = router

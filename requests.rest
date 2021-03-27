@@ -1,6 +1,7 @@
 GET http://localhost:3000/admin/all/customers
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
 
+
 ###
 
 PUT http://localhost:3000/customer/new
@@ -22,3 +23,27 @@ Content-Type: application/json
     "email":"rohan@yahoo.com",
     "password":"12345678"
 }
+
+###
+
+PUT http://localhost:3000/admin/new
+content-type: application/json
+
+{
+    "name":"Muhammad Rohan Hussain",
+    "email":"rohan@yahoo.com",
+    "password":"12345678"
+}
+
+###
+
+POST http://localhost:3000/admin/verify
+Content-Type: application/json
+
+{
+    "email":"rohan@yahoo.com",
+    "password":"12345678"
+}
+//admin token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+//customer token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
