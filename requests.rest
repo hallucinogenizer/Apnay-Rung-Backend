@@ -3,7 +3,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiO
 
 ###
 
-POST http://localhost:3000/customer/new
+PUT http://localhost:3000/customer/new
 content-type: application/json
 
 {
