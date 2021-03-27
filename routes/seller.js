@@ -1,13 +1,11 @@
-const express = require('express')
-const router = express.Router()
+var express = require('express')
+var router = express.Router()
+const { Client } = require('pg')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const jwt = require('jsonwebtoken')
-const { Client } = require('pg')
     //for bcrypt
 const bcrypt = require('bcrypt')
 const saltRounds = 10
-
-//postgres
 
 const client = new Client({
     user: 'postgres',
@@ -26,49 +24,13 @@ client
         console.log(err)
     })
 
-router.get('/all/customers', authenticateJWT, (req, res) => {
-    if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT * FROM public.customers`
-
-        client
-            .query(query)
-            .then(result => {
-                res.status(200).json(result.rows)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    } else {
-        res.sendStatus(403)
-    }
-})
-
-router.get('/all/sellers', authenticateJWT, (req, res) => {
-    if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT * FROM public.sellers`
-
-        client
-            .query(query)
-            .then(result => {
-                res.status(200).json(result.rows)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    } else {
-        res.sendStatus(403)
-    }
-})
-
 router.put('/new', async(req, res) => {
-    console.log(req.body)
-
     //generating hashed password
     try {
         let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
 
-        const query = `INSERT INTO admins (name,email,password) VALUES ('${req.body.name}', '${req.body.email}', '${hashed_pwd}')`
-
+        const query = `INSERT INTO sellers (name,email,password,location,cnic,cnic_image,sec_questions) VALUES ('${req.body.name}', '${req.body.email}', '${hashed_pwd}','${req.body.location}' ,'${req.body.cnic}', '${req.body.cnic_image}', '${JSON.stringify(req.body.sec_questions)}')`
+        console.log(query)
         client.query(query)
             .then(resolve => {
                 console.log("Insertion Successful")
@@ -83,18 +45,18 @@ router.put('/new', async(req, res) => {
 })
 
 router.post('/verify', async(req, res) => {
-    const query = `SELECT admin_id,name,password FROM admins WHERE email='${req.body.email}';`
+    const query = `SELECT seller_id,name,password FROM sellers WHERE email='${req.body.email}';`
     try {
         const result = await client.query(query)
         let userObject = {
             id: -1,
             name: '',
-            typeOfUser: 'admin'
+            typeOfUser: 'seller'
         }
         let promises = []
         for (let row of result.rows) {
             promises.push(bcrypt.compare(req.body.password, row.password))
-            userObject.id = row.admin_id
+            userObject.id = row.seller_id
             userObject.name = row.name
         }
         Promise.all(promises)
