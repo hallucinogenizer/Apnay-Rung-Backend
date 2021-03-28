@@ -73,4 +73,25 @@ router.get('/all', authenticateJWT, (req, res) => {
     }
 })
 
+router.get('/search', authenticateJWT, (req, res) => {
+    /*
+    {
+        query:'Taimoor'
+    }
+    */
+    if (req.userObject.typeOfUser == "admin") {
+        const query = "SELECT orders.order_id, orders.timestamp, orders.customer_id, orders.delivery_status, orders.review, orders.totalamount, orders.cancelled, orders.name, orders.email, orders.phone, orders.b_address, orders.s_address, orders.items, orders.seller_ids FROM orders INNER JOIN customers ON customers.customer_id=orders.customer_id WHERE customers.name LIKE $1"
+        const values = ['%' + req.body.query + '%']
+        client.query(query, values)
+            .then(result => {
+                res.status(200).json(result.rows)
+            })
+            .catch(err => {
+                res.sendStatus(500)
+            })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
 module.exports = router
