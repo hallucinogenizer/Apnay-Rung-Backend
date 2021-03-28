@@ -150,4 +150,51 @@ router.get('/review/all', authenticateJWT, async(req, res) => {
     }
 })
 
+//all reviews of a given item
+router.get('/review/item/:item_id', (req, res) => {
+    //first find the seller_id of this item
+    //so that I can narrow down my search to only those orders in the orders table that belong to that seller_id
+    //because this item will only be found in an order that belongs to that seller
+    const pre_query = "SELECT seller_id FROM inventory WHERE item_id=$1"
+    const pre_values = [req.params.item_id]
+    let seller_id;
+    client.query(pre_query, pre_values)
+        .then(result => {
+            if (result.rowCount < 1) {
+                res.sendStatus(500)
+            } else {
+                seller_id = result.rows[0].seller_id
+
+                const query = `SELECT * FROM orders WHERE ${seller_id}=ANY(seller_ids)`
+                client.query(query)
+                    .then(result => {
+                        if (result.rows < 1) {
+                            res.sendStatus(204)
+                        } else {
+                            let final_rows = []
+                            for (let i = 0; i < result.rowCount; i++) {
+                                let list_of_items = []
+                                items_array = result.rows[i].items
+                                for (let j = 0; j < items_array.length; j++) {
+                                    list_of_items.push(items_array[j][0])
+                                    if (items_array[j][0] == req.params.item_id) {
+                                        final_rows.push(result.rows[i])
+                                        break
+                                    }
+                                }
+                            }
+                            res.status(200).json(final_rows).end()
+                        }
+                    })
+                    .catch(err => {
+                        res.sendStatus(500)
+                        console.log(err)
+                    })
+            }
+        })
+        .catch(err => {
+            res.sendStatus(500)
+        })
+})
+
 module.exports = router

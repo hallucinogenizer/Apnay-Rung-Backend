@@ -269,13 +269,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6I
 
 
 
-
-
-
-
-
-
-
+###
+//get reviews of an item
+GET http://localhost:3000/order/review/item/1
 
 
 ###
