@@ -94,4 +94,43 @@ router.get('/search', authenticateJWT, (req, res) => {
     }
 })
 
+router.patch('/review/new', authenticateJWT, async(req, res) => {
+    /*
+    {
+        "order_id":__,
+        "review":___
+    }
+    */
+    if (req.userObject.typeOfUser == "customer") {
+        //checking if the order was this customer's or not
+        const pre_query = `SELECT customer_id FROM orders WHERE order_id=$1`
+        const pre_values = [req.body.order_id]
+        try {
+            let result = await client.query(pre_query, pre_values)
+            if (result.rows < 1) {
+                res.sendStatus(400)
+            } else {
+                if (result.rows[0].customer_id != req.userObject.id) {
+                    res.status(401).send("This is someone else\'s order. You don\'t have the right to post a review for it.")
+                    console.log(req.userObject.id)
+                } else {
+                    try {
+                        const query = "UPDATE orders SET review=$1 WHERE order_id=$2;"
+                        const values = [req.body.review, req.body.order_id]
+                        result = await client.query(query, values)
+                        res.sendStatus(202)
+                    } catch (err) {
+                        res.sendStatus(500)
+                        console.log(err)
+                    }
+                }
+            }
+        } catch (err) {
+            res.sendStatus(500)
+        }
+    } else {
+        res.sendStatus(401)
+    }
+})
+
 module.exports = router
