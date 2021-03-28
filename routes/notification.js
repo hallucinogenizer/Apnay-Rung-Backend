@@ -53,7 +53,7 @@ router.get('/all', authenticateJWT, async(req, res) => {
     }
 })
 
-router.delete('/:id', authenticateJWT, (req, res) => {
+router.delete('/id/:id', authenticateJWT, (req, res) => {
     const query = `DELETE FROM notifications WHERE notification_id=$1 AND ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
     const values = [req.params.id]
 
@@ -62,7 +62,23 @@ router.delete('/:id', authenticateJWT, (req, res) => {
             if (response.rowCount > 0)
                 res.sendStatus(200)
             else
-                res.status(400).send("Either you are trying to delete a notification that belongs to a different user, or you gave an invalid notification_id, or the notification does not exist.")
+                res.status(204).send("Either you are trying to delete a notification that belongs to a different user, or you gave an invalid notification_id, or the notification does not exist.")
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
+})
+
+router.delete('/all', authenticateJWT, (req, res) => {
+    const query = `DELETE FROM notifications WHERE ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
+
+    client.query(query)
+        .then(response => {
+            if (response.rowCount > 0)
+                res.sendStatus(200)
+            else
+                res.status(204).send("No notifications available to delete")
         })
         .catch(err => {
             res.sendStatus(500)
