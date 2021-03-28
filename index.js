@@ -12,6 +12,7 @@ const images = require('./routes/images')
 const order = require('./routes/order')
 const message = require('./routes/message')
 const tutorial = require('./routes/tutorial')
+const notification = require('./routes/notification')
 
 //utilities
 const authenticateJWT = require('./utilities/authenticateJWT')
@@ -31,6 +32,7 @@ app.use('/seller', seller)
 app.use('/message', message)
 app.use('/order', order)
 app.use('/tutorial', tutorial)
+app.use('/notification', notification)
 app.use('/image', images)
 
 app.listen(port, () => {
