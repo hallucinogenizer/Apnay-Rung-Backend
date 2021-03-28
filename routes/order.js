@@ -133,4 +133,21 @@ router.patch('/review/new', authenticateJWT, async(req, res) => {
     }
 })
 
+router.get('/review/all', authenticateJWT, async(req, res) => {
+    if (req.userObject.typeOfUser == "seller") {
+        const query = `SELECT * FROM orders WHERE $1=ANY(seller_ids)`;
+        const values = [req.userObject.id]
+        try {
+            const result = await client.query(query, values)
+            res.status(200).json(result.rows)
+        } catch (err) {
+            res.sendStatus(500)
+            console.log(err)
+        }
+    } else {
+        res.sendStatus(401)
+        console.log(err)
+    }
+})
+
 module.exports = router
