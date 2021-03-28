@@ -2,100 +2,12 @@ const express = require('express')
 const router = express.Router()
 const authenticateJWT = require("../utilities/authenticateJWT")
 const jwt = require('jsonwebtoken')
-const { Client } = require('pg')
+const client = require('../utilities/clientConnect')
     //for bcrypt
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
-//postgres
-
-const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'test',
-    password: 'mynameisroh',
-    port: 5432
-})
-
-client
-    .connect()
-    .then((res) => {
-        console.log("Connected successfully")
-    })
-    .catch(err => {
-        console.log(err)
-    })
-
-router.get('/all/customers', authenticateJWT, (req, res) => {
-    if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT customer_id,name,email,address,phone,blocked,profile_picture FROM public.customers`
-
-        client
-            .query(query)
-            .then(result => {
-                res.status(200).json(result.rows)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    } else {
-        res.sendStatus(403)
-    }
-})
-
-router.get('/all/sellers', authenticateJWT, (req, res) => {
-    if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT seller_id,name,email,cnic,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers`
-
-        client
-            .query(query)
-            .then(result => {
-                res.status(200).json(result.rows)
-            })
-            .catch(err => {
-                console.log(err)
-                res.sendStatus()
-            })
-    } else {
-        res.sendStatus(403)
-    }
-})
-
-router.patch('/all/customers/block', authenticateJWT, (req, res) => {
-    /*JSON {
-        'id':0
-    }*/
-    // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
-    if (req.userObject.typeOfUser == "admin") {
-        const query = "UPDATE public.customers SET blocked = NOT blocked WHERE customer_id=" + req.body.id
-        client.query(query).then(result => {
-            res.sendStatus(200)
-        }).catch(err => {
-            console.log(err)
-            res.sendStatus(500)
-        })
-    }
-})
-
-router.patch('/all/sellers/block', authenticateJWT, (req, res) => {
-    /*JSON {
-        'id':0
-    }*/
-    // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
-    if (req.userObject.typeOfUser == "admin") {
-        const query = "UPDATE public.sellers SET blocked = NOT blocked WHERE seller_id=" + req.body.id
-        client.query(query).then(result => {
-            res.sendStatus(200)
-        }).catch(err => {
-            console.log(err)
-            res.sendStatus(500)
-        })
-    }
-})
-
 router.post('/new', async(req, res) => {
-    console.log(req.body)
-
     //generating hashed password
     try {
         let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
@@ -114,6 +26,63 @@ router.post('/new', async(req, res) => {
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
+    }
+})
+
+router.patch('/update', authenticateJWT, (req, res) => {
+    /*
+    {
+        name:'',
+        email:'',
+        password:'',
+        passwordChanged:true,
+        profile_picture:''
+    }
+    */
+    if (req.userObject.typeOfUser == "admin") {
+        try {
+            let success = false
+            const query = `UPDATE admins SET name = '${req.body.name}',email='${req.body.email}',profile_picture = '${req.body.profile_picture}' WHERE admin_id=${req.userObject.id}`
+
+            client.query(query)
+                .then(resolve => {
+                    success = true
+
+                    if (req.body.passwordChanged == true) {
+                        const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
+                        pwd_promise.then(hashed_pwd => {
+                            const query = `UPDATE admins SET password='${hashed_pwd}' WHERE admin_id=${req.userObject.id}`
+                            client.query(query)
+                                .then(resolve => {
+                                    if (success == true) {
+                                        res.sendStatus(202)
+                                    } else {
+                                        res.sendStatus(500)
+                                    }
+                                }).catch(err => {
+                                    res.sendStatus(500)
+                                })
+                        }).catch(err => {
+                            res.sendStatus(500)
+                        })
+                    } else {
+                        if (success == true) {
+                            res.sendStatus(202)
+                        } else {
+                            res.sendStatus(500)
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.sendStatus(500)
+                })
+        } catch (err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+    } else {
+        res.sendStatus(401)
     }
 })
 

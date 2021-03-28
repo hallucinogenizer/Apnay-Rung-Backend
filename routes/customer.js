@@ -1,28 +1,11 @@
 var express = require('express')
 var router = express.Router()
-const { Client } = require('pg')
+const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const jwt = require('jsonwebtoken')
     //for bcrypt
 const bcrypt = require('bcrypt')
 const saltRounds = 10
-
-const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'test',
-    password: 'mynameisroh',
-    port: 5432
-})
-
-client
-    .connect()
-    .then((res) => {
-        console.log("Connected successfully")
-    })
-    .catch(err => {
-        console.log(err)
-    })
 
 router.post('/new', async(req, res) => {
     console.log(req.body)
@@ -46,21 +29,140 @@ router.post('/new', async(req, res) => {
     }
 })
 
-router.get('/id/:id', async(req, res) => {
-    const query = "SELECT customer_id,name,email,address,phone,blocked,profile_picture FROM public.customers WHERE customer_id=$1"
-    const values = [req.params.id]
-    try {
-        const result = await client.query(query, values)
-        if (result.rowCount == 1) {
-            res.status(200).json(result.rows[0])
-        } else if (result.rowCount < 1) {
-            res.sendStatus(404)
-                //404 = resource not found
-        } else {
+router.patch('/update', authenticateJWT, (req, res) => {
+    /*
+    {
+        name:'',
+        email:'',
+        password:'',
+        passwordChanged:true,
+        phone:'',
+        address:''
+    }
+    */
+
+    //add update user route in seller
+    if (req.userObject.typeOfUser == "customer") {
+        try {
+            let success = false
+            const query = `UPDATE customers SET name = '${req.body.name}',email='${req.body.email}',phone = '${req.body.phone}',address='${req.body.address}' WHERE customer_id=${req.userObject.id}`
+
+            client.query(query)
+                .then(resolve => {
+                    success = true
+
+                    if (req.body.passwordChanged == true) {
+                        const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
+                        pwd_promise.then(hashed_pwd => {
+                            const query = `UPDATE customers SET password='${hashed_pwd}' WHERE customer_id=${req.userObject.id}`
+                            client.query(query)
+                                .then(resolve => {
+                                    if (success == true) {
+                                        res.sendStatus(202)
+                                    } else {
+                                        res.sendStatus(500)
+                                    }
+                                }).catch(err => {
+                                    res.sendStatus(500)
+                                })
+                        }).catch(err => {
+                            res.sendStatus(500)
+                        })
+                    } else {
+                        if (success == true) {
+                            res.sendStatus(202)
+                        } else {
+                            res.sendStatus(500)
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.sendStatus(500)
+                })
+        } catch (err) {
+            console.log(err)
             res.sendStatus(500)
         }
-    } catch (err) {
-        res.sendStatus(500)
+    } else {
+        res.sendStatus(401)
+    }
+})
+
+
+router.patch('/block/:id', authenticateJWT, (req, res) => {
+
+    // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
+    if (req.userObject.typeOfUser == "admin") {
+        const query = "UPDATE public.customers SET blocked = NOT blocked WHERE customer_id=" + req.params.id
+        client.query(query).then(result => {
+            res.sendStatus(200)
+        }).catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
+    }
+})
+
+router.get('/id/:id', authenticateJWT, async(req, res) => {
+    if (req.userObject.typeOfUser == "admin") {
+        const query = "SELECT customer_id,name,email,address,phone,blocked FROM public.customers WHERE customer_id=$1"
+        const values = [req.params.id]
+        try {
+            const result = await client.query(query, values)
+            if (result.rowCount == 1) {
+                res.status(200).json(result.rows[0])
+            } else if (result.rowCount < 1) {
+                res.sendStatus(404)
+                    //404 = resource not found
+            } else {
+                res.sendStatus(500)
+            }
+        } catch (err) {
+            res.sendStatus(500)
+        }
+    } else {
+        res.sendStatus(401)
+    }
+})
+
+router.get('/search', authenticateJWT, async(req, res) => {
+    /*
+    JSON {
+        'query':'Taimoo'
+    }
+    */
+    if (req.userObject.typeOfUser == "admin") {
+        try {
+            const result = await client.query(`SELECT customer_id,name,email,address,phone,blocked FROM public.customers WHERE name LIKE '%${req.body.query}%'`)
+            if (result.rowCount < 1) {
+                res.sendStatus(404)
+            } else {
+                res.status(200).json(result.rows)
+            }
+
+        } catch (err) {
+            res.sendStatus(500)
+        }
+    } else {
+        res.sendStatus(401)
+    }
+})
+
+router.get('/all', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == "admin") {
+        const query = `SELECT customer_id,name,email,address,phone,blocked FROM public.customers`
+
+        client
+            .query(query)
+            .then(result => {
+                res.status(200).json(result.rows)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    } else {
+        res.sendStatus(401)
     }
 })
 
