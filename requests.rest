@@ -90,8 +90,8 @@ Content-Type: application/json
 {
     "name": "Shafay Shumail",
     "email": "shafay@gmail.com",
-    "password":"",
-    "passwordChanged":false,
+    "password":"12345678",
+    "passwordChanged":true,
     "location": "Lahore",
     "bio": "Wot?"
 }
@@ -178,6 +178,25 @@ Content-Type: application/json
 {
     "subject":"Say Hi",
     "content":"Hi Admin! I'm a customer"
+}
+
+
+
+//ORDERS API
+###
+POST http://localhost:3000/order/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Content-Type: application/json
+
+{
+    "items":[[1,2,500],[2,3,1000]],
+    "totalamount":0,
+    "delivery_status":"processing",
+    "name":"Rohan",
+    "email":"rohan@yahoo.com",
+    "phone":"+923025474222",
+    "billing_address":"Street House Area City Province",
+    "shipping_address":"Street House Area City Province"
 }
 
 ###
