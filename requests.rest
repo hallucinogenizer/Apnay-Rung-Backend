@@ -27,13 +27,13 @@ POST http://localhost:3000/seller/new
 content-type: application/json
 
 {
-    "name":"Vafa Batool",
-    "email":"vafa@gmail.com",
+    "name":"Maham Ghazanfar",
+    "email":"maham@gmail.com",
     "password":"12345678",
     "cnic":"3520212345678",
-    "cnic_image":"vafabatool.jpg",
-    "location":"Baluchistan",
-    "sec_questions":{"What is the name of your cat?":"Junaid","What is the name of your best friend?":"Junaid"}
+    "cnic_image":"maham_cnic.jpg",
+    "location":"Kashmir",
+    "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}
 }
 
 
@@ -46,6 +46,9 @@ Content-Type: application/json
     "email":"vafa@gmail.com",
     "password":"12345678"
 }
+
+###
+GET http://localhost:3000/seller/id/5
 
 ###
 

@@ -28,7 +28,7 @@ client
 
 router.get('/all/customers', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT * FROM public.customers`
+        const query = `SELECT customer_id,name,email,address,phone,blocked,profile_picture FROM public.customers`
 
         client
             .query(query)
@@ -45,7 +45,7 @@ router.get('/all/customers', authenticateJWT, (req, res) => {
 
 router.get('/all/sellers', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT * FROM public.sellers`
+        const query = `SELECT seller_id,name,email,cnic,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers`
 
         client
             .query(query)
@@ -68,6 +68,22 @@ router.patch('/all/customers/block', authenticateJWT, (req, res) => {
     // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
     if (req.userObject.typeOfUser == "admin") {
         const query = "UPDATE public.customers SET blocked = NOT blocked WHERE customer_id=" + req.body.id
+        client.query(query).then(result => {
+            res.sendStatus(200)
+        }).catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
+    }
+})
+
+router.patch('/all/sellers/block', authenticateJWT, (req, res) => {
+    /*JSON {
+        'id':0
+    }*/
+    // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
+    if (req.userObject.typeOfUser == "admin") {
+        const query = "UPDATE public.sellers SET blocked = NOT blocked WHERE seller_id=" + req.body.id
         client.query(query).then(result => {
             res.sendStatus(200)
         }).catch(err => {
