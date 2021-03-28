@@ -46,6 +46,24 @@ router.post('/new', async(req, res) => {
     }
 })
 
+router.get('/id/:id', async(req, res) => {
+    const query = "SELECT customer_id,name,email,address,phone,blocked,profile_picture FROM public.customers WHERE customer_id=$1"
+    const values = [req.params.id]
+    try {
+        const result = await client.query(query, values)
+        if (result.rowCount == 1) {
+            res.status(200).json(result.rows[0])
+        } else if (result.rowCount < 1) {
+            res.sendStatus(404)
+                //404 = resource not found
+        } else {
+            res.sendStatus(500)
+        }
+    } catch (err) {
+        res.sendStatus(500)
+    }
+})
+
 router.get('/verify', async(req, res) => {
     const query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}';`
     try {
