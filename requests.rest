@@ -1,5 +1,5 @@
-
-PUT http://localhost:3000/customer/new
+//CUSTOMER API
+POST http://localhost:3000/customer/new
 content-type: application/json
 
 {
@@ -11,7 +11,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3000/customer/verify
+GET http://localhost:3000/customer/verify
 Content-Type: application/json
 
 {
@@ -21,39 +21,9 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/admin/new
-content-type: application/json
 
-{
-    "name":"Muhammad Rohan Hussain",
-    "email":"rohan@yahoo.com",
-    "password":"12345678"
-}
-
-###
-
-POST http://localhost:3000/admin/verify
-Content-Type: application/json
-
-{
-    "email":"rohan@yahoo.com",
-    "password":"12345678"
-}
-
-###
-
-GET http://localhost:3000/admin/all/customers
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
-
-
-###
-GET http://localhost:3000/admin/all/sellers
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
-
-
-###
-
-PUT http://localhost:3000/seller/new
+//SELLER API
+POST http://localhost:3000/seller/new
 content-type: application/json
 
 {
@@ -69,7 +39,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3000/seller/verify
+GET http://localhost:3000/seller/verify
 Content-Type: application/json
 
 {
@@ -78,6 +48,48 @@ Content-Type: application/json
 }
 
 ###
+
+//ADMIN API
+POST http://localhost:3000/admin/new
+content-type: application/json
+
+{
+    "name":"Muhammad Rohan Hussain",
+    "email":"rohan@yahoo.com",
+    "password":"12345678"
+}
+
+###
+
+GET http://localhost:3000/admin/verify
+Content-Type: application/json
+
+{
+    "email":"rohan@yahoo.com",
+    "password":"12345678"
+}
+
+###
+
+GET http://localhost:3000/admin/all/customers
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+###
+GET http://localhost:3000/admin/all/sellers
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+###
+PATCH http://localhost:3000/admin/all/customers/block
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+content-type: application/json
+
+{
+    "id":18
+}
+###
+
+//GENERAL API
 GET http://localhost:3000/images/vafabatool.jpg
 
 //admin token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk

@@ -54,13 +54,30 @@ router.get('/all/sellers', authenticateJWT, (req, res) => {
             })
             .catch(err => {
                 console.log(err)
+                res.sendStatus()
             })
     } else {
         res.sendStatus(403)
     }
 })
 
-router.put('/new', async(req, res) => {
+router.patch('/all/customers/block', authenticateJWT, (req, res) => {
+    /*JSON {
+        'id':0
+    }*/
+    // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
+    if (req.userObject.typeOfUser == "admin") {
+        const query = "UPDATE public.customers SET blocked = NOT blocked WHERE customer_id=" + req.body.id
+        client.query(query).then(result => {
+            res.sendStatus(200)
+        }).catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
+    }
+})
+
+router.post('/new', async(req, res) => {
     console.log(req.body)
 
     //generating hashed password
@@ -76,13 +93,15 @@ router.put('/new', async(req, res) => {
             })
             .catch(err => {
                 console.log(err)
+                res.sendStatus(500)
             })
     } catch (err) {
         console.log(err)
+        res.sendStatus(500)
     }
 })
 
-router.post('/verify', async(req, res) => {
+router.get('/verify', async(req, res) => {
     const query = `SELECT admin_id,name,password FROM admins WHERE email='${req.body.email}';`
     try {
         const result = await client.query(query)

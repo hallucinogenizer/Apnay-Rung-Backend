@@ -24,7 +24,7 @@ client
         console.log(err)
     })
 
-router.put('/new', async(req, res) => {
+router.post('/new', async(req, res) => {
     //generating hashed password
     try {
         let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
@@ -44,7 +44,7 @@ router.put('/new', async(req, res) => {
     }
 })
 
-router.post('/verify', async(req, res) => {
+router.get('/verify', async(req, res) => {
     const query = `SELECT seller_id,name,password FROM sellers WHERE email='${req.body.email}';`
     try {
         const result = await client.query(query)

@@ -24,7 +24,7 @@ client
         console.log(err)
     })
 
-router.put('/new', async(req, res) => {
+router.post('/new', async(req, res) => {
     console.log(req.body)
 
     //generating hashed password
@@ -46,7 +46,7 @@ router.put('/new', async(req, res) => {
     }
 })
 
-router.post('/verify', async(req, res) => {
+router.get('/verify', async(req, res) => {
     const query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}';`
     try {
         const result = await client.query(query)
