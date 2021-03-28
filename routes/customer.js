@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
+const isBlocked = require('../utilities/isBlocked')
 const jwt = require('jsonwebtoken')
     //for bcrypt
 const bcrypt = require('bcrypt')
@@ -29,7 +30,7 @@ router.post('/new', async(req, res) => {
     }
 })
 
-router.patch('/update', authenticateJWT, (req, res) => {
+router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     /*
     {
         name:'',
@@ -167,7 +168,7 @@ router.get('/all', authenticateJWT, (req, res) => {
 })
 
 router.get('/verify', async(req, res) => {
-    const query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}';`
+    const query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}' AND blocked=false;`
     try {
         const result = await client.query(query)
         let userObject = {

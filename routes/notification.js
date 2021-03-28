@@ -2,8 +2,9 @@ var express = require('express')
 var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
+const isBlocked = require('../utilities/isBlocked')
 
-router.post('/new', (req, res) => {
+router.post('/new', authenticateJWT, isBlocked, (req, res) => {
     /*
     {
         title:___,
@@ -42,7 +43,7 @@ router.post('/new', (req, res) => {
         })
 })
 
-router.get('/all', authenticateJWT, async(req, res) => {
+router.get('/all', authenticateJWT, isBlocked, async(req, res) => {
     let query = `SELECT * FROM notifications WHERE ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
     try {
         const result = await client.query(query)
@@ -53,7 +54,7 @@ router.get('/all', authenticateJWT, async(req, res) => {
     }
 })
 
-router.delete('/id/:id', authenticateJWT, (req, res) => {
+router.delete('/id/:id', authenticateJWT, isBlocked, (req, res) => {
     const query = `DELETE FROM notifications WHERE notification_id=$1 AND ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
     const values = [req.params.id]
 
@@ -70,7 +71,7 @@ router.delete('/id/:id', authenticateJWT, (req, res) => {
         })
 })
 
-router.delete('/all', authenticateJWT, (req, res) => {
+router.delete('/all', authenticateJWT, isBlocked, (req, res) => {
     const query = `DELETE FROM notifications WHERE ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
 
     client.query(query)

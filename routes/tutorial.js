@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
-const jwt = require('jsonwebtoken')
+const isBlocked = require('../utilities/isBlocked')
 
 router.post('/new', authenticateJWT, (req, res) => {
     /*{
@@ -29,7 +29,7 @@ router.post('/new', authenticateJWT, (req, res) => {
     }
 })
 
-router.get('/all', authenticateJWT, (req, res) => {
+router.get('/all', authenticateJWT, isBlocked, (req, res) => {
     if (req.userObject.typeOfUser == "admin" || req.userObject.typeOfUser == "seller") {
         const query = "SELECT * FROM tutorials WHERE true"
         client.query(query)
@@ -45,7 +45,7 @@ router.get('/all', authenticateJWT, (req, res) => {
     }
 })
 
-router.get('/id/:id', authenticateJWT, (req, res) => {
+router.get('/id/:id', authenticateJWT, isBlocked, (req, res) => {
     if (req.userObject.typeOfUser == "admin" || req.userObject.typeOfUser == "seller") {
         const query = "SELECT * FROM tutorials WHERE tutorial_id=$1"
         const values = [req.params.id]

@@ -1,0 +1,4 @@
+logout
+image upload
+use parameterized queries everywhere
+every request must be authorized, no matter what it is

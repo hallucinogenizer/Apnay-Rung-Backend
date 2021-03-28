@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
+const isBlocked = require('../utilities/isBlocked')
 
 router.post('/new', authenticateJWT, (req, res) => {
     /* 
@@ -132,7 +133,7 @@ router.patch('/review/new', authenticateJWT, async(req, res) => {
     }
 })
 
-router.get('/review/all', authenticateJWT, async(req, res) => {
+router.get('/review/all', authenticateJWT, isBlocked, async(req, res) => {
     if (req.userObject.typeOfUser == "seller") {
         const query = `SELECT * FROM orders WHERE $1=ANY(seller_ids)`;
         const values = [req.userObject.id]
@@ -150,7 +151,7 @@ router.get('/review/all', authenticateJWT, async(req, res) => {
 })
 
 //all reviews of a given item
-router.get('/review/item/:item_id', (req, res) => {
+router.get('/review/item/:item_id', authenticateJWT, isBlocked, (req, res) => {
     //first find the seller_id of this item
     //so that I can narrow down my search to only those orders in the orders table that belong to that seller_id
     //because this item will only be found in an order that belongs to that seller
