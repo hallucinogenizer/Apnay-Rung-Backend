@@ -45,4 +45,21 @@ router.get('/all', authenticateJWT, (req, res) => {
     }
 })
 
+router.get('/id/:id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == "admin" || req.userObject.typeOfUser == "seller") {
+        const query = "SELECT * FROM tutorials WHERE tutorial_id=$1"
+        const values = [req.params.id]
+        client.query(query, values)
+            .then(result => {
+                res.status(200).json(result.rows)
+            })
+            .catch(err => {
+                res.sendStatus(500)
+                console.log(err)
+            })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
 module.exports = router
