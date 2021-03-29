@@ -1,5 +1,5 @@
 //CUSTOMER API
-POST https://apnay-rung-api.herokuapp.com
+POST http://apnay-rung-api.herokuapp.com
 content-type: application/json
 
 {

@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const { Client } = require('pg')
-const process = require('process');
 
 
 const client = new Client({
