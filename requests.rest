@@ -1,10 +1,10 @@
 //CUSTOMER API
-POST http://localhost:3000/customer/new
+POST https://apnay-rung-api.herokuapp.com/customer/new
 content-type: application/json
 
 {
-    "name":"Momina Amer",
-    "email":"momina@gmail.com",
+    "name":"Javed Akhtar",
+    "email":"javed@gmail.com",
     "password":"12345678",
     "address":"Pluto"
 }
@@ -12,7 +12,7 @@ content-type: application/json
 ###
 
 //https://apnay-rung-api.herokuapp.com
-GET https://apnay-rung-api.herokuapp.com/customer/verify
+GET http://localhost:3000/customer/verify
 Content-Type: application/json
 
 {
