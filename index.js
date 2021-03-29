@@ -36,5 +36,5 @@ app.use('/notification', notification)
 app.use('/image', images)
 
 app.listen(port, () => {
-    console.log("Server running on port", port)
+    console.log("Server running on port", process.env.PORT || port)
 })
