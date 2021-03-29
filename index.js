@@ -1,5 +1,5 @@
 const { query } = require('express')
-
+const path = require('path');
 require('dotenv').config()
 
 
@@ -36,7 +36,7 @@ app.use('/notification', notification)
 app.use('/image', images)
 
 app.get('/', (req, res) => {
-    res.render('views/index.html')
+    res.sendFile(path.join(__dirname + '/views/index.html'))
 })
 
 app.listen(process.env.PORT || port, () => {
