@@ -3,8 +3,8 @@ POST https://apnay-rung-api.herokuapp.com
 content-type: application/json
 
 {
-    "name":"Momina Amer",
-    "email":"momina@gmail.com",
+    "name":"Javed Sheikh",
+    "email":"javed@gmail.com",
     "password":"12345678",
     "address":"Pluto"
 }
