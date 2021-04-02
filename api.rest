@@ -10,3 +10,14 @@ Content-Type: application/json
     "email":"taimoor@gmail.com",
     "password":"12345678"
 }
+
+###
+//this is a request to search for a seller by name
+//you can change the text in the "query" field to search for something else
+GET https://apnay-rung-api.herokuapp.com/seller/search
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+Content-Type: application/json
+
+{
+    "query":"m"
+}

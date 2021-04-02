@@ -2,7 +2,6 @@ var express = require('express')
 var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
-const jwt = require('jsonwebtoken')
 
 
 router.get('/all', authenticateJWT, async(req, res) => {

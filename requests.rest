@@ -1,5 +1,5 @@
 //CUSTOMER API
-POST https://apnay-rung-api.herokuapp.com/customer/new
+POST https://localhost:3000/customer/new
 content-type: application/json
 
 {
@@ -278,6 +278,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6I
 
 
 
+
+
+
 //TUTORIAL API
 ###
 POST http://localhost:3000/tutorial/new
@@ -297,6 +300,39 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 ###
 GET http://localhost:3000/tutorial/id/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
+
+
+
+
+
+
+
+//inventory API
+###
+GET http://localhost:3000/inventory/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
+
+###
+POST https://apnay-rung-api.herokuapp.com/inventory/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Content-Type: application/json
+
+{
+    "title":"Kurta",
+    "description":"Wear this kurta to your Nikah.",
+    "image":["http://www.studiovirtues.com/wp-content/uploads/2015/08/kurta-set-47.jpg"],
+    "category":"clothing",
+    "price":900
+}
+
+
+
+
+
+
+
 
 
 //NOTIFICATION API
