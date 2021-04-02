@@ -30,12 +30,13 @@ router.post('/new', authenticateJWT, async(req, res) => {
             description:____,
             image:{______}, //array of URLs
             category:_______,
-            price:__________
+            price:__________,
+            stock:______
         }
     */
     if (req.userObject.typeOfUser == 'seller') {
-        const query = "INSERT INTO inventory (title, description, image, category, price, seller_id) VALUES ($1, $2, $3, $4, $5, $6)"
-        const values = [req.body.title, req.body.description, req.body.image, req.body.category, req.body.price, req.userObject.id]
+        const query = "INSERT INTO inventory (title, description, image, category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+        const values = [req.body.title, req.body.description, req.body.image, req.body.category, req.body.price, req.body.stock, req.userObject.id]
 
         client.query(query, values)
             .then(response => {
