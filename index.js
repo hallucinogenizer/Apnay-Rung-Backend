@@ -27,12 +27,7 @@ const port = 3000
 
 //middleware
 app.use(express.json())
-app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'https://codesandbox.io');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors());
 // app.use(cors({ origin: 'https://codesandbox.io', credentials: true }));
 app.use('/customer', customer)
 app.use('/admin', admin)
