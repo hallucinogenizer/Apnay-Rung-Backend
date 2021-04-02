@@ -27,7 +27,7 @@ const port = 3000
 
 //middleware
 app.use(express.json())
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 // app.use(cors({ origin: 'https://codesandbox.io', credentials: true }));
 app.use('/customer', customer)
 app.use('/admin', admin)
