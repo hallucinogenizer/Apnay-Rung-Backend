@@ -3,6 +3,39 @@ var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const isBlocked = require('../utilities/isBlocked')
+const { escapeLiteral } = require('../utilities/clientConnect')
+
+function replaceIdWithTitle(result, res) {
+    let promises = []
+    result.rows.forEach((row, index1) => {
+        const { items } = row
+        items.forEach((item, index2) => {
+            const item_id = item[0];
+            const title_query = "SELECT title FROM inventory WHERE item_id=$1"
+            const title_values = [item_id]
+            promises.push(new Promise(function(resolve, reject) {
+                client.query(title_query, title_values, (err, title_result) => {
+                    if (result.rowCount < 1) {
+                        res.sendStatus(500)
+                        reject()
+                    } else {
+                        resolve()
+                        result.rows[index1].items[index2][0] = title_result.rows[0].title
+                    }
+                })
+            }))
+        })
+    })
+
+    Promise.all(promises).then(() => {
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
+}
+
 
 router.post('/new', authenticateJWT, (req, res) => {
     /* 
@@ -38,8 +71,9 @@ router.get('/all', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
         const query = { text: "SELECT * FROM orders WHERE true", values: [] }
         client.query(query)
-            .then(result => {
-                res.status(200).json(result.rows)
+            .then(async(result) => {
+                await replaceIdWithTitle(result, res)
+                    // res.status(200).json(result.rows)
             })
             .catch(err => {
                 res.sendStatus(500)
@@ -52,8 +86,9 @@ router.get('/all', authenticateJWT, (req, res) => {
             values: [req.userObject.id]
         }
         client.query(query)
-            .then(result => {
-                res.status(200).json(result.rows).end()
+            .then(async(result) => {
+                //replacing item_ids with item_titles
+                await replaceIdWithTitle(result, res)
             })
             .catch(err => {
                 res.sendStatus(500)
@@ -64,12 +99,55 @@ router.get('/all', authenticateJWT, (req, res) => {
             values: []
         }
         client.query(query)
-            .then(result => {
-                res.status(200).json(result.rows).end()
+            .then(async(result) => {
+                //replacing item_ids with item_titles
+                await replaceIdWithTitle(result, res)
             })
             .catch(err => {
                 res.sendStatus(500)
             })
+    }
+})
+
+//get an order by its order_id
+router.get('/id/:order_id', authenticateJWT, async(req, res) => {
+    const query = "SELECT * FROM orders WHERE order_id=$1"
+    const values = [req.params.order_id]
+    try {
+        let promises = []
+        const result = await client.query(query, values)
+            //replacing item_ids with item titles
+        result.rows[0].items.forEach((item, index) => {
+            const title_query = "SELECT title FROM inventory WHERE item_id=$1"
+            const title_values = [item[0]]
+
+            promises.push(
+                new Promise(function(resolve, reject) {
+                    client.query(title_query, title_values, (err, result2) => {
+                        if (err) {
+                            res.sendStatus(500)
+                            console.log(err)
+                            reject()
+                        } else {
+                            result.rows[0].items[index][0] = result2.rows[0].title
+                            resolve()
+                        }
+                    })
+                })
+            )
+        })
+
+        Promise.all(promises)
+            .then(response => {
+                console.log(response)
+                res.status(200).json(result.rows)
+            })
+            .catch(err => {
+                res.sendStatus(500)
+            })
+    } catch (err) {
+        res.sendStatus(500)
+        console.log(err)
     }
 })
 
@@ -130,6 +208,29 @@ router.patch('/review/new', authenticateJWT, async(req, res) => {
         }
     } else {
         res.sendStatus(401)
+    }
+})
+
+//seller confirms an order
+router.patch('/confirm/:order_id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == "seller") {
+        const query = "UPDATE orders SET order_status=True WHERE order_id=$1"
+        const values = [req.params.order_id]
+        client.query(query, values)
+            .then(result => {
+                if (result.rowCount == 1) {
+                    res.sendStatus(200)
+                    console.log(result)
+                } else {
+                    res.sendStatus(400)
+                }
+            })
+            .catch(err => {
+                res.sendStatus(500)
+                console.log(err)
+            })
+    } else {
+        res.sendStatus(500)
     }
 })
 
@@ -196,5 +297,6 @@ router.get('/review/item/:item_id', authenticateJWT, isBlocked, (req, res) => {
             res.sendStatus(500)
         })
 })
+
 
 module.exports = router
