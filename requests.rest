@@ -310,7 +310,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 
 //inventory API
 ###
-GET http://localhost:3000/inventory/all
+GET https://apnay-rung-api.herokuapp.com/inventory/all
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
 
 
@@ -320,11 +320,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 Content-Type: application/json
 
 {
-    "title":"Kurta",
-    "description":"Wear this kurta to your Nikah.",
-    "image":["http://www.studiovirtues.com/wp-content/uploads/2015/08/kurta-set-47.jpg"],
+    "title":"Shawl",
+    "description":"This shawl is great. Pliss buy it.",
+    "image":["https://n2.sdlcdn.com/imgs/h/c/5/kashmiri-shawls-Black-Ari-Embroidery-SDL681743894-1-488fc.jpeg"],
     "category":"clothing",
-    "price":900
+    "price":1000
 }
 
 
