@@ -27,6 +27,7 @@ const port = 3000
 
 //middleware
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'views')));
 app.use(cors({ origin: true, credentials: true }));
 // app.use(cors({ origin: 'https://codesandbox.io', credentials: true }));
 app.use('/customer', customer)
@@ -40,7 +41,7 @@ app.use('/notification', notification)
 app.use('/image', images)
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/views/index.html'))
+    res.render(path.join(__dirname + '/views/index.html'))
 })
 
 app.listen(process.env.PORT || port, () => {

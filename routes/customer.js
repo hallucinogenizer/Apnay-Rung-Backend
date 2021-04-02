@@ -15,17 +15,19 @@ router.post('/new', async(req, res) => {
     try {
         let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
 
-        const query = `INSERT INTO customers (name,email,password,address) VALUES ('${req.body.name}', '${req.body.email}', '${hashed_pwd}', '${req.body.address}')`
-
-        client.query(query)
+        const query = `INSERT INTO customers (name,email,password,address,phone) VALUES ($1, $2, $3, $4, $5)`
+        const values = [req.body.name, req.body.email, hashed_pwd, req.body.address, req.body.phone]
+        client.query(query, values)
             .then(resolve => {
                 console.log("Insertion Successful")
                 res.status(201).end()
             })
             .catch(err => {
+                res.sendStatus(500)
                 console.log(err)
             })
     } catch (err) {
+        res.sendStatus(500)
         console.log(err)
     }
 })
@@ -192,6 +194,7 @@ router.get('/verify', async(req, res) => {
                 }
             })
             .catch(err => {
+                res.sendStatus(500)
                 console.log(err)
             })
 

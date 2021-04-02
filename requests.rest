@@ -1,12 +1,13 @@
 //CUSTOMER API
-POST https://localhost:3000/customer/new
+POST http://localhost:3000/customer/new
 content-type: application/json
 
 {
-    "name":"Javed Akhtar",
-    "email":"javed@gmail.com",
+    "name":"Hafeez",
+    "email":"hafeez@gmail.com",
     "password":"12345678",
-    "address":"Pluto"
+    "address":"Baghdad",
+    "phone":"03025474222"
 }
 
 ###
