@@ -1,7 +1,7 @@
 const { query } = require('express')
 const path = require('path');
 require('dotenv').config()
-
+const cors = require('cors')
 
 
 //routes
@@ -28,12 +28,13 @@ const port = 3000
 //middleware
 app.use(express.json())
 app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+app.use(cors({ origin: 'https://codesandbox.io', credentials: true }));
 app.use('/customer', customer)
 app.use('/admin', admin)
 app.use('/seller', seller)
