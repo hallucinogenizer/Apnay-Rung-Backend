@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
+const { hasAllFields, constraints } = require('../utilities/hasAllFields')
 const isBlocked = require('../utilities/isBlocked')
 const jwt = require('jsonwebtoken')
     //for bcrypt
@@ -9,26 +10,35 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 
 router.post('/new', async(req, res) => {
-    console.log(req.body)
+    const valid_input = hasAllFields({
+        "name": ["string", 100, "notempty"],
+        "email": ["string", 100, "notempty"],
+        "password": ["string", -1, "notempty"],
+        "address": ["string", 300, "notempty"],
+        "phone": ["string", 18, ""]
+    }, req.body)
+    if (valid_input !== true) {
+        res.status(400).send(valid_input)
+    } else {
+        //generating hashed password
+        try {
+            let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
 
-    //generating hashed password
-    try {
-        let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
-
-        const query = `INSERT INTO customers (name,email,password,address,phone) VALUES ($1, $2, $3, $4, $5)`
-        const values = [req.body.name, req.body.email, hashed_pwd, req.body.address, req.body.phone]
-        client.query(query, values)
-            .then(resolve => {
-                console.log("Insertion Successful")
-                res.status(201).end()
-            })
-            .catch(err => {
-                res.sendStatus(500)
-                console.log(err)
-            })
-    } catch (err) {
-        res.sendStatus(500)
-        console.log(err)
+            const query = `INSERT INTO customers (name,email,password,address,phone) VALUES ($1, $2, $3, $4, $5)`
+            const values = [req.body.name, req.body.email, hashed_pwd, req.body.address, req.body.phone]
+            client.query(query, values)
+                .then(resolve => {
+                    console.log("Insertion Successful")
+                    res.status(201).end()
+                })
+                .catch(err => {
+                    res.sendStatus(500)
+                    console.log(err)
+                })
+        } catch (err) {
+            res.sendStatus(500)
+            console.log(err)
+        }
     }
 })
 
@@ -46,46 +56,58 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
 
     //add update user route in seller
     if (req.userObject.typeOfUser == "customer") {
-        try {
-            let success = false
-            const query = `UPDATE customers SET name = '${req.body.name}',email='${req.body.email}',phone = '${req.body.phone}',address='${req.body.address}' WHERE customer_id=${req.userObject.id}`
+        const valid_input = hasAllFields({
+            "name": ["string", 100, "notempty"],
+            "email": ["string", 100, "notempty"],
+            "password": ["string", -1, "notempty"],
+            "passwordChanged": ["boolean", -1, ""],
+            "address": ["string", 300, "notempty"],
+            "phone": ["string", 18, ""]
+        }, req.body)
+        if (valid_input !== true) {
+            res.status(400).send(valid_input)
+        } else {
+            try {
+                let success = false
+                const query = `UPDATE customers SET name = '${req.body.name}',email='${req.body.email}',phone = '${req.body.phone}',address='${req.body.address}' WHERE customer_id=${req.userObject.id}`
 
-            client.query(query)
-                .then(resolve => {
-                    success = true
+                client.query(query)
+                    .then(resolve => {
+                        success = true
 
-                    if (req.body.passwordChanged == true) {
-                        const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
-                        pwd_promise.then(hashed_pwd => {
-                            const query = `UPDATE customers SET password='${hashed_pwd}' WHERE customer_id=${req.userObject.id}`
-                            client.query(query)
-                                .then(resolve => {
-                                    if (success == true) {
-                                        res.sendStatus(202)
-                                    } else {
+                        if (req.body.passwordChanged == true) {
+                            const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
+                            pwd_promise.then(hashed_pwd => {
+                                const query = `UPDATE customers SET password='${hashed_pwd}' WHERE customer_id=${req.userObject.id}`
+                                client.query(query)
+                                    .then(resolve => {
+                                        if (success == true) {
+                                            res.sendStatus(202)
+                                        } else {
+                                            res.sendStatus(500)
+                                        }
+                                    }).catch(err => {
                                         res.sendStatus(500)
-                                    }
-                                }).catch(err => {
-                                    res.sendStatus(500)
-                                })
-                        }).catch(err => {
-                            res.sendStatus(500)
-                        })
-                    } else {
-                        if (success == true) {
-                            res.sendStatus(202)
+                                    })
+                            }).catch(err => {
+                                res.sendStatus(500)
+                            })
                         } else {
-                            res.sendStatus(500)
+                            if (success == true) {
+                                res.sendStatus(202)
+                            } else {
+                                res.sendStatus(500)
+                            }
                         }
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                    res.sendStatus(500)
-                })
-        } catch (err) {
-            console.log(err)
-            res.sendStatus(500)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        res.sendStatus(500)
+                    })
+            } catch (err) {
+                console.log(err)
+                res.sendStatus(500)
+            }
         }
     } else {
         res.sendStatus(401)
@@ -202,5 +224,8 @@ router.get('/verify', async(req, res) => {
         console.log(err)
     }
 })
+
+//add a simple get('') request to http://apnayrung.com/customer/
+//it returns information about the user who is logged in
 
 module.exports = router

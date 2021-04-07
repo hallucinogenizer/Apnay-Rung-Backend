@@ -1,8 +1,21 @@
-GET https://apnay-rung-api.herokuapp.com/customer/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+//CUSTOMER API
+
+//request for signing up a new customer
+POST https://apnay-rung-api.herokuapp.com/customer/new
+content-type: application/json
+
+{
+    "name":"Junaid",
+    "email":"junaid@gmail.com",
+    "password":"12345678",
+    "address":"Lahore",
+    "phone":"03025474222"
+}
+
+
 
 ###
-
+//request for logging in a customer
 GET https://apnay-rung-api.herokuapp.com/customer/verify
 Content-Type: application/json
 
@@ -11,9 +24,113 @@ Content-Type: application/json
     "password":"12345678"
 }
 
+
 ###
-//this is a request to search for a seller by name
-//you can change the text in the "query" field to search for something else
+//request for toggling the block status of a customer
+PATCH https://apnay-rung-api.herokuapp.com/customer/block/15
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+content-type: application/json
+
+###
+//get a customer's information by using customer_id
+GET https://apnay-rung-api.herokuapp.com/customer/id/15
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+###
+//search for a customer by name
+GET https://apnay-rung-api.herokuapp.com/customer/search
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+Content-Type: application/json
+
+{
+    "query":"a"
+}
+
+
+###
+//retrieve a list of all customers as an array of JSON objects
+GET https://apnay-rung-api.herokuapp.com/customer/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+###
+//update account settings of a customer
+PATCH https://apnay-rung-api.herokuapp.com/customer/update
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
+Content-Type: application/json
+
+{
+    "name": "Taimoor Tariq",
+    "email": "taimoor@gmail.com",
+    "password":"",
+    "passwordChanged":false,
+    "address": "Jupiter",
+    "phone": "03021234567"
+}
+//all of these fields must be present in the request, even if only one of them is being updated.
+
+
+
+
+
+
+
+
+
+//SELLER API
+###
+//signup a seller
+POST https://apnay-rung-api.herokuapp.com/seller/new
+content-type: application/json
+
+{
+    "name":"Maham Ghazanfar",
+    "email":"maham@gmail.com",
+    "password":"12345678",
+    "cnic":"3520212345678",
+    "cnic_image":"maham_cnic.jpg",
+    "location":"Kashmir",
+    "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}
+}
+
+
+###
+//update a seller's account settings
+PATCH https://apnay-rung-api.herokuapp.com/seller/update
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Content-Type: application/json
+
+{
+    "name": "Shafay Shumail",
+    "email": "shafay@gmail.com",
+    "password":"12345678",
+    "passwordChanged":true,
+    "location": "Lahore",
+    "bio": "Wot?"
+}
+//all of these fields must be present in the request, even if only one of them is being updated.
+
+
+
+###
+//log in a selller and retrieve JWT accessToken
+GET https://apnay-rung-api.herokuapp.com/seller/verify
+Content-Type: application/json
+
+{
+    "email":"taimoor@gmail.com",
+    "password":"12345678"
+}
+
+
+###
+//get a seller's information by seller_id
+GET https://apnay-rung-api.herokuapp.com/seller/id/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
+
+
+###
+//search for a seller by name
 GET https://apnay-rung-api.herokuapp.com/seller/search
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
 Content-Type: application/json
@@ -21,3 +138,291 @@ Content-Type: application/json
 {
     "query":"m"
 }
+
+
+###
+//retrieve list of all sellers
+GET https://apnay-rung-api.herokuapp.com/seller/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+###
+//toggle the block status of a seller (set to blocked if not blocked, and set to not blocked if blocked)
+PATCH https://apnay-rung-api.herokuapp.com/seller/block/18
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+content-type: application/json
+
+###
+
+
+
+
+
+
+
+//ADMIN API
+
+//create a new admin account
+POST https://apnay-rung-api.herokuapp.com/admin/new
+content-type: application/json
+
+{
+    "name":"Muhammad Rohan Hussain",
+    "email":"rohan@yahoo.com",
+    "password":"12345678"
+}
+
+###
+//update admin account settings
+PATCH https://apnay-rung-api.herokuapp.com/admin/update
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+Content-Type: application/json
+
+{
+    "name":"Muhammad Rohan",
+    "email":"rohan@yahoo.com",
+    "password":"",
+    "passwordChanged":false,
+    "profile_picture":""
+}
+//all of these fields must be present in the request even if only one of them is being changed
+
+
+###
+//login an admin and retrieve JWT token
+GET https://apnay-rung-api.herokuapp.com/admin/verify
+Content-Type: application/json
+
+{
+    "email":"rohan@yahoo.com",
+    "password":"12345678"
+}
+
+###
+
+
+
+
+
+
+
+
+
+
+
+//QUERY FORMS API
+
+//get list of all query forms (only admin can do this)
+GET https://apnay-rung-api.herokuapp.com/message/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+###
+
+//fix this
+//create a new query form (only a customer can do this)
+POST https://apnay-rung-api.herokuapp.com/message/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
+Content-Type: application/json
+
+{
+    "subject":"Say Hi",
+    "content":"Hi Admin! I'm a customer"
+}
+
+
+
+//ORDERS API
+###
+//place a new order
+POST https://apnay-rung-api.herokuapp.com/order/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Content-Type: application/json
+
+{
+    "items":[[1,2,500],[2,3,1000]],
+    "totalamount":1500,
+    "delivery_status":"processing",
+    "name":"Rohan",
+    "email":"rohan@yahoo.com",
+    "phone":"+923025474222",
+    "billing_address":"Street House Area City Province",
+    "shipping_address":"Street House Area City Province"
+}
+
+
+###
+//get a list of all orders
+//if this request is made by an admin, all orders regardless of who placed them will be shown
+GET https://apnay-rung-api.herokuapp.com/order/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+###
+//if the same request is sent by a customer, only this customer's placed orders are shown
+GET https://apnay-rung-api.herokuapp.com/order/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTUwOTY3fQ.3EzhjAnpyXPcaAcSLWSDuS-XVOJmY-k2fzVthKnm4AA
+
+###
+//if the same request is made by a seller, only this seller's orders are shown
+GET https://apnay-rung-api.herokuapp.com/order/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlRhaW1vb3IgVGFyaXEiLCJ0eXBlT2ZVc2VyIjoic2VsbGVyIiwiaWF0IjoxNjE2OTUwMTgwfQ.5sLboKcaMf5D96MJUSxsv4lynZ9k-J0lQ5w_C40I_Bo
+
+###
+//order search by customer name
+GET https://apnay-rung-api.herokuapp.com/order/search
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+Content-Type: application/json
+
+{
+    "query":"Tai"
+}
+
+###
+//post a review for an order
+PATCH https://apnay-rung-api.herokuapp.com/order/review/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+Content-Type: application/json
+
+{
+    "order_id":1,
+    "review":"I did not like the product"
+}
+
+###
+//view all my reviews (only a seller can do this)
+GET https://apnay-rung-api.herokuapp.com/order/review/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlRhaW1vb3IgVGFyaXEiLCJ0eXBlT2ZVc2VyIjoic2VsbGVyIiwiaWF0IjoxNjE2OTUwMTgwfQ.5sLboKcaMf5D96MJUSxsv4lynZ9k-J0lQ5w_C40I_Bo
+
+
+
+###
+//get all reviews of an item (all users can do this)
+GET https://apnay-rung-api.herokuapp.com/order/review/item/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlRhaW1vb3IgVGFyaXEiLCJ0eXBlT2ZVc2VyIjoic2VsbGVyIiwiaWF0IjoxNjE2OTUwMTgwfQ.5sLboKcaMf5D96MJUSxsv4lynZ9k-J0lQ5w_C40I_Bo
+
+
+//get a particular order's information by order_id
+###
+GET https://apnay-rung-api.herokuapp.com/order/id/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlRhaW1vb3IgVGFyaXEiLCJ0eXBlT2ZVc2VyIjoic2VsbGVyIiwiaWF0IjoxNjE2OTUwMTgwfQ.5sLboKcaMf5D96MJUSxsv4lynZ9k-J0lQ5w_C40I_Bo
+
+
+
+
+###
+//confirm an order by seller
+PATCH https://apnay-rung-api.herokuapp.com/order/confirm/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
+
+
+
+//TUTORIAL API
+
+###
+//create a new tutorial
+POST https://apnay-rung-api.herokuapp.com/tutorial/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+Content-Type: application/json
+
+{
+    "title":"Test Tutorial 1",
+    "content":"<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/eBMiX79QegY\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+}
+
+
+###
+//view a list of all tutorials
+GET https://apnay-rung-api.herokuapp.com/tutorial/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
+
+###
+//view a tutorial by tutorial_id
+GET https://apnay-rung-api.herokuapp.com/tutorial/id/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
+
+
+
+
+
+
+
+//inventory API
+###
+//return a list of all products (admin and sellers only) (seller only sees his own products)
+GET https://apnay-rung-api.herokuapp.com/inventory/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
+###
+GET https://apnay-rung-api.herokuapp.com/inventory/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
+
+###
+//add a new product to inventory. Seller_id is set to the seller whose JWT token this is.
+POST https://apnay-rung-api.herokuapp.com/inventory/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Content-Type: application/json
+
+{
+    "title":"Ajrak",
+    "description":"Bro level",
+    "image":["http://sahapedia-drupal-s3-bucket.s3-ap-southeast-1.amazonaws.com/12_TREY%20HASHE%20VAALI%20AJRAK.JPG"],
+    "category":"clothing",
+    "price":750,
+    "stock":10
+}
+
+
+
+
+
+
+
+
+
+//NOTIFICATION API
+###
+//create a new notification
+POST https://apnay-rung-api.herokuapp.com/notification/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Content-Type: application/json
+
+{
+        "title":"Second Notification",
+        "type":"message",
+        "details":null,
+        "customer_id":17
+}
+//you can only send either a customer_id or a seller_id or an admin_id. One and only one of these. That user will receive the notification.
+
+
+###
+//view a list of all notifications (a user will only see their own notifications)
+GET https://apnay-rung-api.herokuapp.com/notification/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+
+
+###
+//delete a notification based on its notification_id
+DELETE https://apnay-rung-api.herokuapp.com/notification/id/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+
+###
+//delete all notifications of the user whose JWT token this is
+DELETE https://apnay-rung-api.herokuapp.com/notification/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+
+
+//IMAGE API
+###
+//get an image from this URL
+GET https://apnay-rung-api.herokuapp.com/images/vafabatool.jpg
+
+//admin token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+//customer token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+
+//seller token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
