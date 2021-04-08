@@ -375,7 +375,10 @@ Content-Type: application/json
     "stock":10
 }
 
-
+//DELETE an item from inventory
+###
+DELETE https://apnay-rung-api.herokuapp.com/inventory/id/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
 
 
 

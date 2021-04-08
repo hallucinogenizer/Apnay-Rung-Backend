@@ -9,6 +9,22 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 
 
+const fs = require('fs')
+const path = require('path')
+const multer = require('multer')
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './images/')
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)) //Appending .jpg
+    }
+})
+
+var upload = multer({ dest: './images/', storage: storage })
+
+
 router.patch('/block/:id', authenticateJWT, (req, res) => {
     // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
     if (req.userObject.typeOfUser == "admin") {
@@ -89,23 +105,47 @@ router.get('/all', authenticateJWT, (req, res) => {
 })
 
 //find a secure way of doing this like parameterized queries
-router.post('/new', async(req, res) => {
+router.post('/new', upload.single('cnic_image'), async(req, res) => {
     //generating hashed password
     try {
         let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
+        const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
 
-        const query = `INSERT INTO sellers (name,email,password,location,cnic,cnic_image,sec_questions) VALUES ('${req.body.name}', '${req.body.email}', '${hashed_pwd}','${req.body.location}' ,'${req.body.cnic}', '${req.body.cnic_image}', '${JSON.stringify(req.body.sec_questions)}')`
-        console.log(query)
-        client.query(query)
-            .then(resolve => {
-                console.log("Insertion Successful")
-                res.status(201).end()
+        fs.readFile(finalfile, 'hex', function(err, imgData) {
+            if (err) {
+                console.log(err)
+            } else {
+                imgData = '\\x' + imgData;
+                const query = `INSERT INTO sellers (name,email,password,location,cnic,cnic_image,sec_questions) VALUES ('${req.body.name}', '${req.body.email}', '${hashed_pwd}','${req.body.location}' ,'${req.body.cnic}', '${imgData}', '${JSON.stringify(req.body.sec_questions)}')`
+                client.query(query)
+                    .then(resolve => {
+                        console.log("Insertion Successful")
+                        res.status(201).end()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            }
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get('/cnic/:seller_id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == 'admin' || req.userObject.typeOfUser == 'seller') {
+        const query = "SELECT cnic_image AS data FROM sellers WHERE seller_id=$1"
+        const values = [req.params.seller_id]
+        client.query(query, values)
+            .then(result => {
+                res.contentType('jpeg')
+                res.status(200)
+                res.end(result.rows[0].data)
             })
             .catch(err => {
                 console.log(err)
+                res.sendStatus(500)
             })
-    } catch (err) {
-        console.log(err)
     }
 })
 
