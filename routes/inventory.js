@@ -16,6 +16,10 @@ router.get('/all', authenticateJWT, async(req, res) => {
         query = "SELECT * FROM inventory"
         values = []
         continueOrNot = true
+    } else if (req.userObject.typeOfUser == 'customer') {
+        query = "SELECT * FROM inventory"
+        values = []
+        continueOrNot = true
     } else {
         res.sendStatus(401)
     }
