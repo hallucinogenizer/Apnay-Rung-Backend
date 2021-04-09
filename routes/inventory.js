@@ -27,7 +27,21 @@ router.get('/all', authenticateJWT, async(req, res) => {
     if (continueOrNot) {
         try {
             const result = await client.query(query, values)
-            res.status(200).send(result.rows)
+            for (let rowF = 0; rowF < result.rowCount; rowF++) {
+                const q = "SELECT name FROM sellers WHERE seller_id=$1"
+                const v = [result.rows[rowF].seller_id]
+
+                client.query(q, v).then(r => {
+                    if (r.rowCount > 0) {
+                        result.rows[rowF].seller_name = r.rows[0].name
+                    }
+                    if (rowF == result.rowCount - 1) {
+                        res.status(200).json(result.rows)
+                    }
+                })
+            }
+
+
         } catch (err) {
             res.sendStatus(500)
             console.log(err)
