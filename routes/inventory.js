@@ -75,6 +75,22 @@ router.post('/new', authenticateJWT, async(req, res) => {
     }
 })
 
+router.get('/id/:item_id', async(req, res) => {
+    const query = "SELECT * FROM inventory WHERE item_id=$1"
+    const values = [req.params.item_id]
+
+    client.query(query, values)
+        .then(result => {
+            if (result.rowCount > 0) {
+                res.status(200).json(result.rows)
+            } else {
+                res.sendStatus(204)
+            }
+        }).catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
+})
 
 //check user type in this:
 router.delete('/id/:item_id', authenticateJWT, async(req, res) => {

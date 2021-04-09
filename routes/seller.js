@@ -116,7 +116,8 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
                 console.log(err)
             } else {
                 imgData = '\\x' + imgData;
-                const query = `INSERT INTO sellers (name,email,password,location,cnic,cnic_image,sec_questions) VALUES ('${req.body.name}', '${req.body.email}', '${hashed_pwd}','${req.body.location}' ,'${req.body.cnic}', '${imgData}', '${JSON.stringify(req.body.sec_questions)}')`
+                const sec_questions = { "q1": req.body.sec_question1, "q2": req.body.sec_question2 }
+                const query = `INSERT INTO sellers (name,email,password,location,cnic,cnic_image,sec_questions) VALUES ('${req.body.name}', '${req.body.email}', '${hashed_pwd}','${req.body.location}' ,'${req.body.cnic}', '${imgData}', '${JSON.stringify(sec_questions)}')`
                 client.query(query)
                     .then(resolve => {
                         console.log("Insertion Successful")
