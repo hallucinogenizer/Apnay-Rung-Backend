@@ -82,7 +82,8 @@ content-type: application/json
     "cnic":"3520212345678",
     "cnic_image":"maham_cnic.jpg",
     "location":"Kashmir",
-    "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}
+    "sec_question1":"Ihsan",
+    "sec_question2":"YOLO"
 }
 
 
@@ -355,6 +356,9 @@ DELETE http://localhost:3000/inventory/id/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
 
 
+###
+//GET an item by its ID
+GET http://localhost:3000/inventory/id/3
 
 
 
