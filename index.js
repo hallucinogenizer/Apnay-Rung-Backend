@@ -55,9 +55,9 @@ app.get('/fileupload', (req, res) => {
 })
 
 app.post('/verify', async(req, res) => {
-    const query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}' AND blocked=false;`
+    let query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}' AND blocked=false;`
     try {
-        const result = await client.query(query)
+        let result = await client.query(query)
         let userObject = {
             id: -1,
             name: '',

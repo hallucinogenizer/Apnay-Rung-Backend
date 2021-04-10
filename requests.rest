@@ -4,7 +4,7 @@ POST http://localhost:3000/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
+    "email":"shafay@gmail.com",
     "password":"12345678"
 }
 
@@ -34,7 +34,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiO
 ###
 
 //https://apnay-rung-api.herokuapp.com
-POST https://apnay-rung-api.herokuapp.com/customer/verify
+POST http://localhost:3000/customer/verify
 Content-Type: application/json
 
 {
@@ -43,7 +43,7 @@ Content-Type: application/json
 }
 
 ###
-GET https://apnay-rung-api.herokuapp.com/customer/info
+GET http://localhost:3000/customer/info
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
 
 
