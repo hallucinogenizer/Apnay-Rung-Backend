@@ -12,6 +12,13 @@ content-type: application/json
     "phone":"03025474222"
 }
 
+
+###
+GET http://localhost:3000/customer/info
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+
+
+
 ###
 
 //https://apnay-rung-api.herokuapp.com
@@ -22,6 +29,12 @@ Content-Type: application/json
     "email":"taimoor@gmail.com",
     "password":"12345678"
 }
+
+###
+GET https://apnay-rung-api.herokuapp.com/customer/info
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+
+
 
 ###
 PATCH http://localhost:3000/customer/block/15

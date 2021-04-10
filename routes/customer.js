@@ -229,7 +229,7 @@ router.post('/verify', async(req, res) => {
 router.get('/info', authenticateJWT, async(req, res) => {
     if (req.userObject.typeOfUser == 'customer') {
         const query = "SELECT * FROM customers WHERE customer_id=$1"
-        const values = req.userObject.id
+        const values = [req.userObject.id]
 
         client.query(query, values)
             .then(result => {
