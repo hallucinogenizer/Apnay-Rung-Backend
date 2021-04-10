@@ -24,8 +24,8 @@ router.post('/new', async(req, res) => {
         try {
             let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
 
-            const query = `INSERT INTO customers (name,email,password,address,phone) VALUES ($1, $2, $3, $4, $5)`
-            const values = [req.body.name, req.body.email, hashed_pwd, req.body.address, req.body.phone]
+            const query = `INSERT INTO customers (name,email,password,address,phone, sec_questions) VALUES ($1, $2, $3, $4, $5, $6)`
+            const values = [req.body.name, req.body.email, hashed_pwd, req.body.address, req.body.phone, JSON.stringify(req.body.sec_questions)]
             client.query(query, values)
                 .then(resolve => {
                     console.log("Insertion Successful")

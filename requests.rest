@@ -1,6 +1,6 @@
 //login API
 ###
-POST https://apnay-rung-api.herokuapp.com/verify
+POST http://localhost:3000/verify
 Content-Type: application/json
 
 {
@@ -8,7 +8,16 @@ Content-Type: application/json
     "password":"12345678"
 }
 
+//security questions verify
+###
+POST https://localhost:3000/securityquestions
+Content-Type: application/json
 
+{
+    "email":"taimoor@gmail.com",
+    "question_no":"12345678",
+    "answer":""
+}
 
 //CUSTOMER API
 ###
@@ -107,8 +116,7 @@ content-type: application/json
     "cnic":"3520212345678",
     "cnic_image":"maham_cnic.jpg",
     "location":"Kashmir",
-    "sec_question1":"Ihsan",
-    "sec_question2":"YOLO"
+    "sec_questions":{"What is the name of your cat?":"Ihsan","How dare you challenge me Mortal":"YOLO"}
 }
 
 

@@ -155,6 +155,24 @@ app.post('/verify', async(req, res) => {
     }
 })
 
+app.post('/securityquestions', async(req, res) => {
+    //{email: _____, question_no:___, answer:"useranswer"}
+
+    let query = "SELECT sec_questions FROM customers WHERE email=$1"
+    let values = [req.body.email]
+
+    let result = await client.query(query, values)
+    if (result.rowCount == 0) {
+        query = "SELECT sec_questions FROM sellers WHERE email=$1"
+        result = await client.query(query, values)
+            //continue here
+    } else {
+        for (q_no in result.rows[0].sec_questions) {
+            console.log(q_no)
+        }
+    }
+})
+
 app.listen(process.env.PORT || port, () => {
     console.log("Server running on port", process.env.PORT || port)
 })

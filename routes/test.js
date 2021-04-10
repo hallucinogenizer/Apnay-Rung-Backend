@@ -19,16 +19,8 @@ const client = require('../utilities/clientConnect')
 
 
 router.get('/read', (req, res) => {
-    const query = "SELECT image AS data FROM tutorials WHERE true"
-    client.query(query)
-        .then(result => {
-            res.contentType('jpeg')
-            res.end(result.rows[0].data)
-        })
-        .catch(err => {
-            console.log(err)
-            res.sendStatus(500)
-        })
+    console.log(JSON.stringify({ "What is the name of your cat?": "Ihsan", "How dare you challenge me Mortal": "YOLO" }))
+    res.end()
 })
 
 
