@@ -146,7 +146,7 @@ Content-Type: application/json
 GET http://localhost:3000/seller/limit/2
 
 ###
-GET http://localhost:3000/seller/id/5
+GET http://localhost:3000/seller/id/12
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
 
 ###
@@ -302,7 +302,7 @@ Content-Type: application/json
 
 {
     "order_id":6,
-    "review":"I did not like the product"
+    "review":"I did not like the product 2"
 }
 
 ###
@@ -314,8 +314,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiO
 
 ###
 //get reviews of an item
-GET http://localhost:3000/order/review/item/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlRhaW1vb3IgVGFyaXEiLCJ0eXBlT2ZVc2VyIjoic2VsbGVyIiwiaWF0IjoxNjE2OTUwMTgwfQ.5sLboKcaMf5D96MJUSxsv4lynZ9k-J0lQ5w_C40I_Bo
+GET http://localhost:3000/order/review/item/5
 
 
 //get a particular order's information by ID
