@@ -302,7 +302,7 @@ Content-Type: application/json
 
 {
     "order_id":6,
-    "review":"I did not like the product 2"
+    "review":[[5,2,"I hate this"]]
 }
 
 ###

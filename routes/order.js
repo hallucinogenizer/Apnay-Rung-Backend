@@ -185,7 +185,11 @@ router.patch('/review/new', authenticateJWT, async(req, res) => {
     /*
     {
         "order_id":__,
-        "review":___
+        "review":[
+            [item_id,4,"review text"],
+            [another_item_id,5,"review text 2"],
+            [yet_another_item_id,6,"review text 3"]
+        ]
     }
     */
     if (req.userObject.typeOfUser == "customer") {
@@ -203,9 +207,18 @@ router.patch('/review/new', authenticateJWT, async(req, res) => {
                 } else {
                     try {
                         const query = "UPDATE orders SET review=$1 WHERE order_id=$2;"
-                        const values = [req.body.review, req.body.order_id]
-                        result = await client.query(query, values)
-                        res.sendStatus(202)
+                        const values = [JSON.stringify(req.body.review), req.body.order_id]
+                        try {
+                            result = await client.query(query, values)
+                            if (result.rowCount > 0)
+                                res.sendStatus(201)
+                            else
+                                res.sendStatus(204)
+                        } catch (err) {
+                            res.sendStatus(500)
+                            console.log(err)
+                        }
+
                     } catch (err) {
                         res.sendStatus(500)
                         console.log(err)
@@ -291,16 +304,15 @@ router.get('/review/item/:item_id', async(req, res) => {
     //first find the seller_id of this item
     //so that I can narrow down my search to only those orders in the orders table that belong to that seller_id
     //because this item will only be found in an order that belongs to that seller
-    let query = `SELECT * FROM orders WHERE true`;
+    let query = `SELECT review FROM orders WHERE true`;
     try {
         let result = await client.query(query)
-
         let allorders = []
         for (order in result.rows) {
 
             let exists = false
-            for (item in result.rows[order].items) {
-                if (result.rows[order].items[item][0] == req.params.item_id && result.rows[order].review != "") {
+            for (item in result.rows[order].review) {
+                if (result.rows[order].review[item][0] == req.params.item_id && result.rows[order].review[item][2] != "") {
                     exists = true
                 }
             }
