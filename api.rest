@@ -120,6 +120,12 @@ content-type: application/json
     "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}
 }
 
+###
+//get cnic image by seller_id
+GET https://apnay-rung-api.herokuapp.com/seller/cnic/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
+
+
 //get a certain number of sellers
 ###
 GET https://apnay-rung-api.herokuapp.com/seller/limit/2
@@ -317,8 +323,14 @@ Content-Type: application/json
 
 {
     "order_id":1,
-    "review":"I did not like the product"
+    "review":[[1,2,"I hate this"]]
 }
+
+###
+//get reviews of an item
+GET https://apnay-rung-api.herokuapp.com/order/review/item/1
+
+
 
 ###
 //view all my reviews (only a seller can do this)

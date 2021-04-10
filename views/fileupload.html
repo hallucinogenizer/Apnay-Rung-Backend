@@ -17,18 +17,19 @@
             <input type="password" name="password" placeholder="password">
             <input type="text" name="location" placeholder="location"><br>
             <input type="text" name="cnic" placeholder="cnic">
-            <input type="file" name="cnic_image" id='fileinput'/><br>
+            
             <input type="text" name="sec_question1" placeholder="secret question1">
             <input type="text" name="sec_question2" placeholder="secret question2"><br>
             <input type="submit">
         </form>
+        <input type="file" name="cnic_image" id='fileinput'/><br>
 
         
         
         <script>
             //const input = document.getElementById('fileinput');
             const form = document.getElementById('form')
-            
+            const fileinput = document.getElementById('fileinput').files[0]
 
             // Add a listener on your input
             // It will be triggered when a file will be selected
@@ -38,6 +39,9 @@
 
                 var formData = new FormData(form)
 
+
+                formData.append('cnic_image',fileinput,'x.png')
+
                 fetch('http://localhost:3000/seller/new',
                 { // Your POST endpoint
                     method: 'POST',
@@ -46,13 +50,25 @@
                 .then(
                     response => {
                         if (response.status==201) {
-                            //redirect to login page
+                            console.log(response)
                         }
                     }
                 ).catch(
                     error => console.log(error) // Handle the error response object
                 )
             });
+
+
+
+
+
+
+
+
+
+
+
+
 
             function myFunction() {
 
@@ -70,6 +86,6 @@
 
         </script>
 
-        <button type="button" onClick="myFunction()">Login</button>
+        <!--<button type="button" onClick="myFunction()">Login</button>-->
     </body>
 </html>

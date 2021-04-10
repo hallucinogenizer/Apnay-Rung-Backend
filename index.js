@@ -3,6 +3,7 @@ const path = require('path');
 require('dotenv').config()
 const cors = require('cors')
 const bcrypt = require('bcrypt')
+const saltRounds = 10
 const jwt = require('jsonwebtoken')
 
 //routes
@@ -199,6 +200,27 @@ app.post('/securityquestions', async(req, res) => {
         questions.push(q)
     }
     res.status(200).json(questions)
+})
+
+app.post('/resetpassword', async(req, res) => {
+    let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
+    let query = "UPDATE customers SET password=$1 WHERE email=$2"
+    let values = [hashed_pwd, req.body.email]
+
+    client.query(query, values).then(response => {
+        if (response.rowCount == 0) {
+            query = "UPDATE sellers SET password=$1 WHERE email=$2"
+            client.query(query, values).then(response => {
+                if (response.rowCount == 0) {
+                    res.sendStatus(204)
+                } else {
+                    res.sendStatus(202)
+                }
+            })
+        } else {
+            res.sendStatus(202)
+        }
+    })
 })
 
 app.listen(process.env.PORT || port, () => {
