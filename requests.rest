@@ -143,6 +143,9 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:3000/seller/limit/2
+
+###
 GET http://localhost:3000/seller/id/5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
 

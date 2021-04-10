@@ -242,4 +242,16 @@ router.post('/verify', async(req, res) => {
     }
 })
 
+router.get('/limit/:limit', (req, res) => {
+    const query = "SELECT seller_id, name, email, location, bio, weeklyartisan, blocked, profile_picture FROM sellers WHERE true LIMIT $1"
+    const values = [req.params.limit]
+
+    client.query(query, values).then(result => {
+        res.status(200).json(result.rows)
+    }).catch(err => {
+        res.sendStatus(500)
+        console.log(err)
+    })
+})
+
 module.exports = router
