@@ -1,5 +1,17 @@
-//CUSTOMER API
+//login API
+###
+POST http://localhost:3000/verify
+Content-Type: application/json
 
+{
+    "email":"taimoor@gmail.com",
+    "password":"12345678"
+}
+
+
+
+//CUSTOMER API
+###
 //request for signing up a new customer
 POST http://localhost:3000/customer/new
 content-type: application/json
