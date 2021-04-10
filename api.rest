@@ -120,6 +120,10 @@ content-type: application/json
     "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}
 }
 
+//get a certain number of sellers
+###
+GET https://apnay-rung-api.herokuapp.com/seller/limit/2
+
 
 ###
 //update a seller's account settings
