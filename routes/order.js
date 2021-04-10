@@ -245,11 +245,37 @@ router.patch('/confirm/:order_id', authenticateJWT, (req, res) => {
 
 router.get('/review/all', authenticateJWT, isBlocked, async(req, res) => {
     if (req.userObject.typeOfUser == "seller") {
-        const query = `SELECT * FROM orders WHERE $1=ANY(seller_ids)`;
-        const values = [req.userObject.id]
+        let query = `SELECT * FROM orders WHERE true`;
         try {
-            const result = await client.query(query, values)
-            res.status(200).json(result.rows)
+            let result = await client.query(query)
+
+
+
+            let allorders = []
+            for (order in result.rows) {
+                query = "SELECT seller_id FROM inventory WHERE item_id IN ("
+                let item_ids = []
+                for (item in result.rows[order].items) {
+                    item_ids.push(result.rows[order].items[item][0])
+                    query += result.rows[order].items[item][0]
+                    if (item != result.rows[order].items.length - 1) {
+                        query += ","
+                    }
+                }
+                query += ")"
+
+                const r = await client.query(query)
+                if (r.rows[0].seller_id == req.userObject.id) {
+                    allorders.push(result.rows[order])
+                }
+
+            }
+            Promise.all(allorders).then(allorders => {
+                let finalresult = {}
+                finalresult.rows = allorders
+                res.status(200).json(finalresult.rows)
+            })
+
         } catch (err) {
             res.sendStatus(500)
             console.log(err)
