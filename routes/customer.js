@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 
 router.post('/new', async(req, res) => {
+
     const valid_input = hasAllFields({
         "name": constraints.name,
         "email": constraints.email,
@@ -18,7 +19,7 @@ router.post('/new', async(req, res) => {
         "phone": ["string", 18, ""]
     }, req.body)
     if (valid_input !== true) {
-        res.status(400).send(valid_input)
+        res.status(400).json(valid_input)
     } else {
         //generating hashed password
         try {

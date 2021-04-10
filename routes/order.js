@@ -77,16 +77,43 @@ router.get('/all', authenticateJWT, (req, res) => {
             })
     } else if (req.userObject.typeOfUser == "seller") {
         const query = {
-            text: `SELECT * FROM orders WHERE ${req.userObject.id}=ANY(orders.seller_ids)`,
+            text: `SELECT * FROM orders WHERE true`,
             values: []
         }
         client.query(query)
             .then(async(result) => {
                 //replacing item_ids with item_titles
-                await replaceIdWithTitle(result, res)
+                let allorders = []
+                for (order in result.rows) {
+                    let query = "SELECT seller_id FROM inventory WHERE item_id IN ("
+                    let item_ids = []
+                    for (item in result.rows[order].items) {
+                        item_ids.push(result.rows[order].items[item][0])
+                        query += result.rows[order].items[item][0]
+                        if (item != result.rows[order].items.length - 1) {
+                            query += ","
+                        }
+                    }
+                    query += ")"
+
+                    const r = await client.query(query)
+                    if (r.rows[0].seller_id == req.userObject.id) {
+                        allorders.push(result.rows[order])
+                    }
+
+                }
+                Promise.all(allorders).then(allorders => {
+                    let finalresult = {}
+                    finalresult.rows = allorders
+                    replaceIdWithTitle(finalresult, res)
+                })
+
+                // 
+
             })
             .catch(err => {
                 res.sendStatus(500)
+                console.log(err)
             })
     }
 })

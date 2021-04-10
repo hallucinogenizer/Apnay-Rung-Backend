@@ -42,7 +42,7 @@ router.patch('/block/:id', authenticateJWT, (req, res) => {
 
 router.get('/id/:id', authenticateJWT, async(req, res) => {
     if (req.userObject.typeOfUser == "admin" || req.userObject.typeOfUser == "customer") {
-        const query = "SELECT seller_id,name,email,cnic,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE seller_id=$1"
+        const query = "SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE seller_id=$1"
         const values = [req.params.id]
         try {
             const result = await client.query(query, values)
@@ -71,7 +71,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
     */
     if (req.userObject.typeOfUser == "admin") {
         try {
-            const result = await client.query(`SELECT seller_id,name,email,cnic,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE name LIKE '%${req.body.query}%'`)
+            const result = await client.query(`SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE name LIKE '%${req.body.query}%'`)
             if (result.rowCount < 1) {
                 res.sendStatus(404)
             } else {
@@ -88,7 +88,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
 
 router.get('/all', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT seller_id,name,email,cnic,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers`
+        const query = `SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers`
 
         client
             .query(query)
@@ -116,7 +116,7 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
                 console.log(err)
             } else {
                 imgData = '\\x' + imgData;
-                const query = `INSERT INTO sellers (name,email,password,location,cnic_image,sec_questions) VALUES ($1, $2, $3, $4 ,$6, $7)`
+                const query = `INSERT INTO sellers (name,email,password,location,cnic_image,sec_questions) VALUES ($1, $2, $3, $4 ,$5, $6)`
                 const values = [req.body.name, req.body.email, hashed_pwd, req.body.location, imgData, JSON.stringify(req.body.sec_questions)]
                 client.query(query, values)
                     .then(resolve => {

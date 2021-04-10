@@ -413,8 +413,14 @@ DELETE https://apnay-rung-api.herokuapp.com/inventory/id/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
 
 
+//get a certain number of items from inventory
+###
+GET http://localhost:3000/inventory/limit/2
 
 
+###
+//GET an item by its ID
+GET http://localhost:3000/inventory/id/3
 
 
 
