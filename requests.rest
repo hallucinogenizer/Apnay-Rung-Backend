@@ -385,6 +385,10 @@ Content-Type: application/json
 }
 
 
+//get a certain number of items from inventory
+###
+GET http://localhost:3000/inventory/limit/2
+
 //DELETE an item from inventory
 ###
 DELETE http://localhost:3000/inventory/id/3

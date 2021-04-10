@@ -114,4 +114,18 @@ router.delete('/id/:item_id', authenticateJWT, async(req, res) => {
     }
 })
 
+router.get('/limit/:limit', async(req, res) => {
+    const query = "SELECT * FROM inventory WHERE true LIMIT $1"
+    const values = [req.params.limit]
+
+    try {
+        const result = await client.query(query, values)
+        res.status(200).json(result.rows)
+    } catch (err) {
+        res.sendStatus(500)
+        console.log(err)
+    }
+
+})
+
 module.exports = router
