@@ -34,8 +34,13 @@ router.post('/new', async(req, res) => {
                     res.status(201).end()
                 })
                 .catch(err => {
-                    res.sendStatus(500)
-                    console.log(err)
+                    if (err.constraint == "unique_customer_email") {
+                        res.status(400).end("Email already taken")
+                    } else {
+                        res.sendStatus(500)
+                        console.log(err)
+                    }
+
                 })
         } catch (err) {
             res.sendStatus(500)
