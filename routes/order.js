@@ -300,7 +300,7 @@ router.get('/review/item/:item_id', async(req, res) => {
 
             let exists = false
             for (item in result.rows[order].items) {
-                if (result.rows[order].items[item][0] == req.params.item_id) {
+                if (result.rows[order].items[item][0] == req.params.item_id && result.rows[order].review != "") {
                     exists = true
                 }
             }
