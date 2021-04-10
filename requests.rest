@@ -10,13 +10,11 @@ Content-Type: application/json
 
 //security questions verify
 ###
-POST https://localhost:3000/securityquestions
+POST http://localhost:3000/securityquestions
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
-    "question_no":"12345678",
-    "answer":""
+    "email":"taimoor@gmail.com"
 }
 
 //CUSTOMER API
@@ -27,10 +25,11 @@ content-type: application/json
 
 {
     "name":"Hafeez",
-    "email":"hafeez@gmail.com",
+    "email":"hafeez2@gmail.com",
     "password":"12345678",
     "address":"Baghdad",
-    "phone":"03025474222"
+    "phone":"03025474222",
+    "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}
 }
 
 

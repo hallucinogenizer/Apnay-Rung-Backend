@@ -19,8 +19,19 @@ const client = require('../utilities/clientConnect')
 
 
 router.get('/read', (req, res) => {
-    console.log(JSON.stringify({ "What is the name of your cat?": "Ihsan", "How dare you challenge me Mortal": "YOLO" }))
-    res.end()
+
+
+    const sec_questions = JSON.stringify({ "What is the name of your cat?": "Ihsan", "How dare you challenge me Mortal": "YOLO" })
+    client.query("UPDATE customers SET sec_questions=$1", [sec_questions])
+        .then(response => {
+            console.log(response)
+            res.end()
+        })
+
+    for (q_no in sec_questions) {
+        console.log(q_no)
+    }
+
 })
 
 

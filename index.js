@@ -155,7 +155,7 @@ app.post('/verify', async(req, res) => {
     }
 })
 
-app.post('/securityquestions', async(req, res) => {
+app.post('/securityquestions/verify', async(req, res) => {
     //{email: _____, question_no:___, answer:"useranswer"}
 
     let query = "SELECT sec_questions FROM customers WHERE email=$1"
@@ -165,12 +165,40 @@ app.post('/securityquestions', async(req, res) => {
     if (result.rowCount == 0) {
         query = "SELECT sec_questions FROM sellers WHERE email=$1"
         result = await client.query(query, values)
-            //continue here
-    } else {
-        for (q_no in result.rows[0].sec_questions) {
-            console.log(q_no)
+    }
+    const sec_questions = result.rows[0].sec_questions
+    let i = 1;
+    for (q in sec_questions) {
+        if (i == req.body.question_no) {
+            if (sec_questions[q] == req.body.answer) {
+                res.status(200).json({ verified: true })
+            } else {
+                res.status(200).json({ verified: false })
+            }
+            break
+        } else {
+            i++
         }
     }
+})
+
+app.post('/securityquestions', async(req, res) => {
+    //{email: _____}
+
+    let query = "SELECT sec_questions FROM customers WHERE email=$1"
+    let values = [req.body.email]
+
+    let result = await client.query(query, values)
+    if (result.rowCount == 0) {
+        query = "SELECT sec_questions FROM sellers WHERE email=$1"
+        result = await client.query(query, values)
+    }
+    const sec_questions = result.rows[0].sec_questions
+    let questions = []
+    for (q in sec_questions) {
+        questions.push(q)
+    }
+    res.status(200).json(questions)
 })
 
 app.listen(process.env.PORT || port, () => {

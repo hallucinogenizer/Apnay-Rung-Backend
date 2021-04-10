@@ -6,10 +6,11 @@ content-type: application/json
 
 {
     "name":"Junaid",
-    "email":"junaid@gmail.com",
+    "email":"junaid2@gmail.com",
     "password":"12345678",
     "address":"Lahore",
-    "phone":"03025474222"
+    "phone":"03025474222",
+    "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}
 }
 
 
