@@ -21,6 +21,16 @@ Content-Type: application/json
 }
 
 
+###
+//reset password after security questions verified
+POST https://apnay-rung-api.herokuapp.com/resetpassword
+Content-Type: application/json
+
+{
+    "email":"taimoor@gmail.com",
+    "password":"12345678"
+}
+
 
 //CUSTOMER API
 ###
@@ -29,8 +39,8 @@ POST https://apnay-rung-api.herokuapp.com/customer/new
 content-type: application/json
 
 {
-    "name":"Junaid",
-    "email":"junaid2@gmail.com",
+    "name":"Haroon",
+    "email":"haroon2@gmail.com",
     "password":"12345678",
     "address":"Lahore",
     "phone":"03025474222",
