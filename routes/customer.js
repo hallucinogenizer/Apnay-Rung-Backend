@@ -11,9 +11,9 @@ const saltRounds = 10
 
 router.post('/new', async(req, res) => {
     const valid_input = hasAllFields({
-        "name": ["string", 100, "notempty"],
-        "email": ["string", 100, "notempty"],
-        "password": ["string", -1, "notempty"],
+        "name": constraints.name,
+        "email": constraints.email,
+        "password": constraints.password,
         "address": ["string", 300, "notempty"],
         "phone": ["string", 18, ""]
     }, req.body)

@@ -70,6 +70,9 @@ Content-Type: application/json
 //all of these fields must be present in the request, even if only one of them is being updated.
 
 
+###
+GET https://apnay-rung-api.herokuapp.com/customer/info
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
 
 
 
@@ -247,7 +250,8 @@ Content-Type: application/json
     "email":"rohan@yahoo.com",
     "phone":"+923025474222",
     "billing_address":"Street House Area City Province",
-    "shipping_address":"Street House Area City Province"
+    "shipping_address":"Street House Area City Province",
+    "payment_method":"cash"
 }
 
 

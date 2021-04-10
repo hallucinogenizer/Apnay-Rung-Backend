@@ -3,6 +3,7 @@ var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const isBlocked = require('../utilities/isBlocked')
+const { hasAllFields, constraints } = require('../utilities/hasAllFields')
 const replaceIdWithTitle = require('../utilities/replaceIdWithTitle')
 
 
@@ -10,7 +11,6 @@ router.post('/new', authenticateJWT, (req, res) => {
     /* 
     {
         items:{[item_id,quantity,price],[1,2,500],[]},
-        seller_ids:[],
         totalamount:0,
         delivery_status:'processing',
         name:'Rohan',
@@ -20,19 +20,32 @@ router.post('/new', authenticateJWT, (req, res) => {
         shipping_address:'Street House Area City Province'
     }
     */
-    if (req.userObject.typeOfUser == "seller") {
-        const query = "INSERT INTO orders (timestamp,customer_id,delivery_status,review,totalamount,cancelled,items,name,email,phone,b_address,s_address,seller_ids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)"
-        const values = ['NOW()', req.userObject.id, req.body.delivery_status, "", req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.seller_ids]
-
-        client.query(query, values)
-            .then(response => {
-                res.sendStatus(201)
-            }).catch(err => {
-                res.sendStatus(500)
-            })
+    const valid_input = hasAllFields({
+        "name": constraints.name,
+        "email": constraints.email,
+        "billing_address": ["string", 300, "notempty"],
+        "shipping_address": ["string", 300, "notempty"],
+        "phone": ["string", 18, ""],
+        "delivery_status": ["string", 50, "notempty"],
+        "totalamount": ["number", 100, "notempty"]
+    }, req.body)
+    if (valid_input !== true) {
+        res.status(400).send(valid_input)
     } else {
-        console.log(req.userObject.typeOfUser)
-        res.sendStatus(401)
+        if (req.userObject.typeOfUser == "customer") {
+            const query = "INSERT INTO orders (timestamp,customer_id,delivery_status,review,totalamount,cancelled,items,name,email,phone,b_address,s_address, payment_method) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,$13)"
+            const values = ['NOW()', req.userObject.id, req.body.delivery_status, "", req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.payment_method]
+
+            client.query(query, values)
+                .then(response => {
+                    res.sendStatus(201)
+                }).catch(err => {
+                    res.sendStatus(500)
+                })
+        } else {
+            console.log(req.userObject.typeOfUser)
+            res.sendStatus(401)
+        }
     }
 })
 
