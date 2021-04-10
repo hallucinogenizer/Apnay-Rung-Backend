@@ -15,7 +15,7 @@ content-type: application/json
 ###
 
 //https://apnay-rung-api.herokuapp.com
-GET https://apnay-rung-api.herokuapp.com/customer/verify
+POST https://apnay-rung-api.herokuapp.com/customer/verify
 Content-Type: application/json
 
 {
@@ -103,7 +103,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/seller/verify
+POST http://localhost:3000/seller/verify
 Content-Type: application/json
 
 {

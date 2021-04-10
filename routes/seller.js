@@ -209,7 +209,7 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     }
 })
 
-router.get('/verify', async(req, res) => {
+router.post('/verify', async(req, res) => {
     // const query = 
     try {
         const result = await client.query(`SELECT seller_id,name,password FROM sellers WHERE email='${req.body.email}' AND blocked=false`)

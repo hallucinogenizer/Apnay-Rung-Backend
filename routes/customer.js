@@ -191,7 +191,7 @@ router.get('/all', authenticateJWT, (req, res) => {
     }
 })
 
-router.get('/verify', async(req, res) => {
+router.post('/verify', async(req, res) => {
     const query = `SELECT customer_id,name,password FROM customers WHERE email='${req.body.email}' AND blocked=false;`
     try {
         const result = await client.query(query)
@@ -207,12 +207,13 @@ router.get('/verify', async(req, res) => {
             userObject.name = row.name
         }
         Promise.all(promises)
-            .then(resolve => {
+            .then(async(resolve) => {
                 if (resolve.includes(true)) {
                     const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
                     res.status(200).json({ verified: true, accessToken: accessToken }).end()
                 } else {
                     res.status(200).json({ verified: false }).end()
+
                 }
             })
             .catch(err => {
@@ -222,6 +223,24 @@ router.get('/verify', async(req, res) => {
 
     } catch (err) {
         console.log(err)
+    }
+})
+
+router.get('/info', authenticateJWT, async(req, res) => {
+    if (req.userObject.typeOfUser == 'customer') {
+        const query = "SELECT * FROM customers WHERE customer_id=$1"
+        const values = req.userObject.id
+
+        client.query(query, values)
+            .then(result => {
+                if (result.rowCount > 0) {
+                    res.status(200).json(result.rows[0])
+                } else {
+                    res.sendStatus(204)
+                }
+            })
+    } else {
+        res.sendStatus(401)
     }
 })
 

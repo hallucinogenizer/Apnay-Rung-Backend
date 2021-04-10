@@ -23,7 +23,7 @@
             <input type="submit">
         </form>
 
-        <button type="button" onClick="myFunction">
+        <button type="button" onClick="myFunction">Login</button>
         
         <script>
             //const input = document.getElementById('fileinput');
@@ -53,6 +53,26 @@
                     error => console.log(error) // Handle the error response object
                 )
             });
+
+            function myFunction() {
+                fetch('https://apnay-rung-api.herokuapp.com/customer/verify',{
+                    method:'POST',
+                    withCredentials:false,
+                    headers:{
+                        "Content-Type":'application/json'
+                    },
+                    body:JSON.stringify({
+                        email:'taimoor@gmail.com',
+                        password:'12345678'
+                    })
+                })
+                .then(response=>{
+                    console.log(response)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
+
         </script>
     </body>
 </html>
