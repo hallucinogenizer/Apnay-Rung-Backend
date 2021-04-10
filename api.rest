@@ -1,5 +1,29 @@
-//CUSTOMER API
+//VERIFY THAT A PERSON'S ANSWERS TO SECURITY QUESTIONS ARE CORRECT
+###
+POST https://apnay-rung-api.herokuapp.com/securityquestions/verify
+Content-Type: application/json
 
+{
+    "email":"taimoor@gmail.com",
+    "question_no":2,
+    "answer":"YOLO"
+}
+
+
+
+//GET SECURITY QUESTIONS OF AN EMAIL
+###
+POST https://apnay-rung-api.herokuapp.com/securityquestions
+Content-Type: application/json
+
+{
+    "email":"taimoor@gmail.com"
+}
+
+
+
+//CUSTOMER API
+###
 //request for signing up a new customer
 POST https://apnay-rung-api.herokuapp.com/customer/new
 content-type: application/json
@@ -91,7 +115,6 @@ content-type: application/json
     "name":"Maham Ghazanfar",
     "email":"maham@gmail.com",
     "password":"12345678",
-    "cnic":"3520212345678",
     "cnic_image":"maham_cnic.jpg",
     "location":"Kashmir",
     "sec_questions":{"What is the name of your cat?":"Ihsan","What is the name of your best friend?":"Ihsan"}

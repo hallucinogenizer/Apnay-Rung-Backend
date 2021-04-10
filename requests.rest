@@ -112,7 +112,6 @@ content-type: application/json
     "name":"Maham Ghazanfar",
     "email":"maham@gmail.com",
     "password":"12345678",
-    "cnic":"3520212345678",
     "cnic_image":"maham_cnic.jpg",
     "location":"Kashmir",
     "sec_questions":{"What is the name of your cat?":"Ihsan","How dare you challenge me Mortal":"YOLO"}
