@@ -79,6 +79,7 @@ app.post('/verify', async(req, res) => {
                         const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
                         res.status(200).json({ verified: true, typeOfUser: 'customer', accessToken: accessToken }).end()
                     } else {
+                        console.log(4)
                         res.status(200).json({ verified: false }).end()
                     }
                 })
