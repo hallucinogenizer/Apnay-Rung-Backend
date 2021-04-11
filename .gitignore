@@ -2,4 +2,8 @@
 /.vscode
 db_passwords.txt
 /.VSCodeCounter
+
+
+
+### dotenv ###
 .env
