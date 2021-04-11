@@ -68,11 +68,14 @@ app.post('/verify', async(req, res) => {
 
         if (result.rowCount > 0) {
             let promises = []
-            for (let row of result.rows) {
-                promises.push(bcrypt.compare("12345678", row.password))
-                userObject.id = row.customer_id
-                userObject.name = row.name
-            }
+
+            promises.push(new Promise((resolve, reject) => {
+                for (let row of result.rows) {
+                    resolve(bcrypt.compare(req.body.password, row.password))
+                    userObject.id = row.customer_id
+                    userObject.name = row.name
+                }
+            }))
             Promise.all(promises)
                 .then(async(resolve) => {
                     if (resolve.includes(true)) {
