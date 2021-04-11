@@ -4,7 +4,7 @@ const router = express.Router()
 const authenticateJWT = require("../utilities/authenticateJWT")
 const client = require('../utilities/clientConnect')
 
-router.get('/all', authenticateJWT, async(req, res) => {
+router.get('/all/mine', authenticateJWT, async(req, res) => {
     let query
     let values
     let continueOrNot = false
@@ -47,6 +47,16 @@ router.get('/all', authenticateJWT, async(req, res) => {
             console.log(err)
         }
     }
+})
+
+router.get('/all', (req, res) => {
+    const query = "SELECT * FROM inventory WHERE true"
+    client.query(query).then(result => {
+        res.json(result.rows)
+    }).catch(err => {
+        res.sendStatus(500)
+        console.log(err)
+    })
 })
 
 router.post('/new', authenticateJWT, async(req, res) => {
