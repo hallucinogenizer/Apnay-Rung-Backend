@@ -463,7 +463,8 @@ GET http://localhost:3000/test/read
 Content-Type: application/json
 
 {
-    "image":["https://i.ibb.co/k5K5BcC/image-1-21.jpg"]
+    "image":"https://i.ibb.co/k5K5BcC/image-1-21.jpg",
+    "seller_id":12
 }
 
 
