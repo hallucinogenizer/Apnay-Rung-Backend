@@ -349,7 +349,7 @@ Content-Type: application/json
 
 ###
 //get reviews of an item
-GET https://apnay-rung-api.herokuapp.com/order/review/item/1
+GET https://apnay-rung-api.herokuapp.com/order/review/item/4
 
 
 

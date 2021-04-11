@@ -177,13 +177,16 @@ router.get('/limit/:limit', async(req, res) => {
             client.query(query, values).then(r => {
                 if (r.rowCount > 0) {
                     result.rows[index].seller_name = r.rows[0].name
+
                 } else {
                     result.rows[index].seller_name = "Unknown"
                 }
-                if (index == result.rows.length - 1) {
-                    res.status(200).json(result.rows)
-                }
             })
+            const avg = await findAvgRating(result.rows[index].item_id)
+            result.rows[index].rating = avg
+            if (index == result.rows.length - 1) {
+                res.status(200).json(result.rows)
+            }
         }
     } catch (err) {
         res.sendStatus(500)
