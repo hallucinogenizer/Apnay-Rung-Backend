@@ -38,6 +38,7 @@ router.post('/new', authenticateJWT, (req, res) => {
 
             client.query(query, values)
                 .then(response => {
+
                     res.sendStatus(201)
                 }).catch(err => {
                     res.sendStatus(500)

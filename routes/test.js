@@ -21,7 +21,8 @@ const client = require('../utilities/clientConnect')
 router.get('/read', (req, res) => {
 
     const query = `UPDATE sellers SET profile_picture=$1 WHERE seller_id=$2`
-    const values = [req.body.image, req.body.seller_id]
+        // console.log()
+    const values = [JSON.stringify(req.body.image), req.body.seller_id]
 
     client.query(query, values).then(response => {
         res.end()

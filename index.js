@@ -119,15 +119,6 @@ app.post('/verify', async(req, res) => {
                     })
                 }
 
-
-
-
-
-
-
-
-
-
             } else if (result.rowCount == 1) {
                 userObject = {
                     id: -1,
