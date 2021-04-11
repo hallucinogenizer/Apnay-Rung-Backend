@@ -20,7 +20,7 @@ const client = require('../utilities/clientConnect')
 
 router.get('/read', (req, res) => {
 
-    const query = `UPDATE inventory SET image=$1 WHERE item_id=1`
+    const query = `UPDATE inventory SET image=$1 WHERE item_id=5`
     const values = [req.body.image]
 
     client.query(query, values).then(response => {
