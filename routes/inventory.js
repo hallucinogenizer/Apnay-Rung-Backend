@@ -165,12 +165,22 @@ router.delete('/id/:item_id', authenticateJWT, async(req, res) => {
 })
 
 router.get('/limit/:limit', async(req, res) => {
-    const query = "SELECT * FROM inventory WHERE true LIMIT $1"
-    const values = [req.params.limit]
-
+    let query = "SELECT * FROM inventory WHERE true LIMIT $1"
+    let values = [req.params.limit]
+    let promises = []
     try {
         const result = await client.query(query, values)
-        res.status(200).json(result.rows)
+        for (let index = 0; index < result.rows.length; index++) {
+            query = "SELECT name FROM sellers WHERE seller_id=$1"
+            values = [result.rows[index].seller_id]
+
+            client.query(query, values).then(r => {
+                result.rows[index].seller_name = r.rows[0].name
+                if (index == result.rows.length - 1) {
+                    res.status(200).json(result.rows)
+                }
+            })
+        }
     } catch (err) {
         res.sendStatus(500)
         console.log(err)
