@@ -389,8 +389,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiO
 Content-Type: application/json
 
 {
-    "title":"Ajrak",
-    "description":"Bro level",
+    "title":"Bartan",
+    "description":"A bartan",
     "image":["http://sahapedia-drupal-s3-bucket.s3-ap-southeast-1.amazonaws.com/12_TREY%20HASHE%20VAALI%20AJRAK.JPG"],
     "category":"clothing",
     "price":750,
@@ -459,7 +459,12 @@ GET http://localhost:3000/images/vafabatool.jpg
 
 //testing
 ###
-GET http://localhost:3000/test/
+GET http://localhost:3000/test/read
+Content-Type: application/json
+
+{
+    "image":["https://i.ibb.co/k5K5BcC/image-1-21.jpg"]
+}
 
 
 

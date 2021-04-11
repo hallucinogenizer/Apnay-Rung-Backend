@@ -119,7 +119,7 @@ router.post('/new', authenticateJWT, async(req, res) => {
             })
             .catch(err => {
                 res.sendStatus(500)
-                console.log(err)
+                    // console.log(err)
             })
     }
 })
