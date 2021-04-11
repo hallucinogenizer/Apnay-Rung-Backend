@@ -96,6 +96,7 @@ app.post('/verify', async(req, res) => {
                 values = [req.body.email]
                 result = await client.query(query, values)
                 if (result.rowCount == 0) {
+                    console.log(1)
                     res.status(200).json({ verified: false }).end()
                 } else if (result.rowCount == 1) {
                     userObject = {
@@ -114,6 +115,7 @@ app.post('/verify', async(req, res) => {
                             const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
                             res.status(200).json({ verified: true, typeOfUser: 'admin', accessToken: accessToken }).end()
                         } else {
+                            console.log(2)
                             res.status(200).json({ verified: false }).end()
                         }
                     })
@@ -136,6 +138,7 @@ app.post('/verify', async(req, res) => {
                         const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
                         res.status(200).json({ verified: true, typeOfUser: 'seller', accessToken: accessToken }).end()
                     } else {
+                        console.log(3)
                         res.status(200).json({ verified: false }).end()
                     }
                 })
