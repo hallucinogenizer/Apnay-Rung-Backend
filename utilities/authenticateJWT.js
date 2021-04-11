@@ -8,9 +8,12 @@ function authenticateJWT(req, res, next) {
         return res.status(401).send("Authorization Token not found in request.")
     } else {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userObject) => {
-            if (err) return res.status(403).send("Invalid authorization token.")
-                //403 means authentication was present in header but it was wrong
-            else {
+
+            if (err) {
+                console.log(token)
+                return res.status(403).send("Invalid authorization token.")
+                    //403 means authentication was present in header but it was wrong
+            } else {
                 req.userObject = userObject
                 next()
             }
