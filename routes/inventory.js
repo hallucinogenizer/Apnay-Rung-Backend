@@ -175,7 +175,11 @@ router.get('/limit/:limit', async(req, res) => {
             values = [result.rows[index].seller_id]
 
             client.query(query, values).then(r => {
-                result.rows[index].seller_name = r.rows[0].name
+                if (r.rowCount > 0) {
+                    result.rows[index].seller_name = r.rows[0].name
+                } else {
+                    result.rows[index].seller_name = "Unknown"
+                }
                 if (index == result.rows.length - 1) {
                     res.status(200).json(result.rows)
                 }
