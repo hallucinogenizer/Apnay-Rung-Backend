@@ -1,3 +1,14 @@
+//login API
+###
+POST https://apnay-rung-api.herokuapp.com/verify
+Content-Type: application/json
+
+{
+    "email":"taimoor@gmail.com",
+    "password":"12345678"
+}
+
+
 //VERIFY THAT A PERSON'S ANSWERS TO SECURITY QUESTIONS ARE CORRECT
 ###
 POST https://apnay-rung-api.herokuapp.com/securityquestions/verify
@@ -487,8 +498,8 @@ GET https://apnay-rung-api.herokuapp.com/test/read
 Content-Type: application/json
 
 {
-    "image":["https://i.ibb.co/cbs7VzP/photo-1575277340591-849c346c4542.jpg"],
-    "seller_id":4
+    "image":["https://i.ibb.co/gjwRrr8/man-4294951-1920.jpg"],
+    "seller_id":5
 }
 
 

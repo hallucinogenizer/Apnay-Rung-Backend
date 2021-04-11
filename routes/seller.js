@@ -28,8 +28,9 @@ var upload = multer({ dest: './images/', storage: storage })
 router.patch('/block/:id', authenticateJWT, (req, res) => {
     // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
     if (req.userObject.typeOfUser == "admin") {
-        const query = "UPDATE public.sellers SET blocked = NOT blocked WHERE seller_id=" + req.params.id
-        client.query(query).then(result => {
+        const query = "UPDATE public.sellers SET blocked = NOT blocked WHERE seller_id=$1"
+        const values = [req.params.id]
+        client.query(query, values).then(result => {
             res.sendStatus(200)
         }).catch(err => {
             console.log(err)
@@ -66,7 +67,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
     */
     if (req.userObject.typeOfUser == "admin") {
         try {
-            const result = await client.query(`SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE name LIKE '%${req.body.query}%'`)
+            const result = await client.query(`SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE name LIKE $1`, [`%` + req.body.query + `%`])
             if (result.rowCount < 1) {
                 res.sendStatus(404)
             } else {
