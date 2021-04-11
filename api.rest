@@ -362,7 +362,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6I
 
 ###
 //get all reviews of an item (all users can do this)
-GET https://apnay-rung-api.herokuapp.com/order/review/item/2
+GET https://apnay-rung-api.herokuapp.com/order/review/item/1
 
 
 //get a particular order's information by order_id
