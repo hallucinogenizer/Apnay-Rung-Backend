@@ -34,7 +34,7 @@ POST http://localhost:3000/customer/new
 content-type: application/json
 
 {
-    "name":"Hafeez",
+    "name":"Jalib",
     "email":"momina@gmail.com",
     "password":"12345678",
     "address":"Baghdad",
@@ -157,7 +157,6 @@ GET http://localhost:3000/seller/limit/2
 
 ###
 GET http://localhost:3000/seller/id/12
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
 
 ###
 GET http://localhost:3000/seller/info
@@ -411,7 +410,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiO
 
 ###
 //GET an item by its ID
-GET http://localhost:3000/inventory/id/3
+GET http://localhost:3000/inventory/id/1
 
 
 

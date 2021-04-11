@@ -40,26 +40,21 @@ router.patch('/block/:id', authenticateJWT, (req, res) => {
     }
 })
 
-router.get('/id/:id', authenticateJWT, async(req, res) => {
-    if (req.userObject.typeOfUser == "admin" || req.userObject.typeOfUser == "customer") {
-        const query = "SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE seller_id=$1"
-        const values = [req.params.id]
-        try {
-            const result = await client.query(query, values)
-            if (result.rowCount == 1) {
-                res.status(200).json(result.rows[0])
-            } else if (result.rowCount < 1) {
-                res.sendStatus(404)
-                    //404 = resource not found
-            } else {
-                res.sendStatus(500)
-            }
-        } catch (err) {
+router.get('/id/:id', async(req, res) => {
+    const query = "SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE seller_id=$1"
+    const values = [req.params.id]
+    try {
+        const result = await client.query(query, values)
+        if (result.rowCount == 1) {
+            res.status(200).json(result.rows[0])
+        } else if (result.rowCount < 1) {
+            res.sendStatus(404)
+                //404 = resource not found
+        } else {
             res.sendStatus(500)
         }
-    } else {
-        res.sendStatus(401)
-            //unauthorized
+    } catch (err) {
+        res.sendStatus(500)
     }
 })
 
