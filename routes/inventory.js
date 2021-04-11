@@ -129,8 +129,9 @@ router.get('/id/:item_id', async(req, res) => {
     const values = [req.params.item_id]
 
     client.query(query, values)
-        .then(result => {
+        .then(async(result) => {
             if (result.rowCount > 0) {
+                result.rows[0].rating = await findAvgRating(req.params.item_id)
                 res.status(200).json(result.rows)
             } else {
                 res.sendStatus(204)
