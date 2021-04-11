@@ -172,7 +172,7 @@ Content-Type: application/json
 
 ###
 //get a seller's information by seller_id
-GET https://apnay-rung-api.herokuapp.com/seller/id/5
+GET https://apnay-rung-api.herokuapp.com/seller/id/4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
 
 
