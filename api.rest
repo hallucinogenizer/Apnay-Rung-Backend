@@ -172,11 +172,11 @@ Content-Type: application/json
 
 ###
 //log in a selller and retrieve JWT accessToken
-GET https://apnay-rung-api.herokuapp.com/seller/verify
+POST https://apnay-rung-api.herokuapp.com/seller/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
+    "email":"me@me.com",
     "password":"12345678"
 }
 
@@ -433,9 +433,9 @@ Content-Type: application/json
     "title":"Carpet",
     "description":"This is a traditional handwoven carpet from Baluchistan.",
     "image":["https://i.ibb.co/PzwsLMt/image-2-21.jpg"],
-    "category":"clothing",
-    "price":750,
-    "stock":10
+    "category":"decor",
+    "price":5000,
+    "stock":8
 }
 
 //DELETE an item from inventory
