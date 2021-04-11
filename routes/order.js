@@ -34,13 +34,14 @@ router.post('/new', authenticateJWT, (req, res) => {
     } else {
         if (req.userObject.typeOfUser == "customer") {
             const query = "INSERT INTO orders (timestamp,customer_id,delivery_status,review,totalamount,cancelled,items,name,email,phone,b_address,s_address, payment_method) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,$13)"
-            const values = ['NOW()', req.userObject.id, req.body.delivery_status, "", req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.payment_method]
+            const values = ['NOW()', req.userObject.id, req.body.delivery_status, JSON.stringify([]), req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.payment_method]
 
             client.query(query, values)
                 .then(response => {
                     res.sendStatus(201)
                 }).catch(err => {
                     res.sendStatus(500)
+                    console.log(err)
                 })
         } else {
             console.log(req.userObject.typeOfUser)
