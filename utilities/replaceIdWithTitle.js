@@ -10,12 +10,12 @@ function replaceIdWithTitle(result, res) {
             const title_values = [item_id]
             promises.push(new Promise(function(resolve, reject) {
                 client.query(title_query, title_values, (err, title_result) => {
-                    if (result.rowCount < 1) {
+                    if (title_result.rowCount < 1) {
                         res.sendStatus(500)
-                        reject()
+                            // reject()
                     } else {
-                        resolve()
                         result.rows[index1].items[index2][0] = title_result.rows[0].title
+                        resolve()
                     }
                 })
             }))

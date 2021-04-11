@@ -298,11 +298,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiO
 Content-Type: application/json
 
 {
-    "items":[[1,2,500],[2,3,1000]],
+    "items":[[1,2,500],[4,3,1000]],
     "totalamount":1500,
     "delivery_status":"processing",
-    "name":"Rohan",
-    "email":"rohan@yahoo.com",
+    "name":"Hamza",
+    "email":"hamza@yahoo.com",
     "phone":"+923025474222",
     "billing_address":"Street House Area City Province",
     "shipping_address":"Street House Area City Province",
@@ -343,8 +343,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiO
 Content-Type: application/json
 
 {
-    "order_id":1,
-    "review":[[1,2,"I hate this"]]
+    "order_id":77,
+    "review":[[1,2,"I hate this Ajrak"],[4,5,"I love this Cushion"]]
 }
 
 ###
@@ -498,8 +498,8 @@ GET https://apnay-rung-api.herokuapp.com/test/read
 Content-Type: application/json
 
 {
-    "image":"https://images.squarespace-cdn.com/content/v1/55462b24e4b0bedd59ac6f7e/1567771356975-4BKUOZ07KBDLKYDCF9PT/ke17ZwdGBToddI8pDm48kHZ2Y5YjSAwziLKQpsaN9dN7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UZd3obpFewa7Dzv4HnId3Eiksk2J-n9bkjsWzoxXydBRP7cJNZlDXbgJNE9ef52e8w/Screen+Shot+2019-09-06+at+1.22.41+PM.png",
-    "seller_id":6
+    "image":"https://upload.wikimedia.org/wikipedia/commons/b/b2/Working_women_in_Tajikistan.jpg",
+    "seller_id":8
 }
 
 
