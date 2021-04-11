@@ -11,7 +11,7 @@ function replaceIdWithTitle(result, res) {
             promises.push(new Promise(function(resolve, reject) {
                 client.query(title_query, title_values, (err, title_result) => {
                     if (title_result.rowCount < 1) {
-                        // res.sendStatus(500)
+                        console.log("Not found:", item_id)
                         reject()
                     } else {
                         result.rows[index1].items[index2][0] = title_result.rows[0].title
