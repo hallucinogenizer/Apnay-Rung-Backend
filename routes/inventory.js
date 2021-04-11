@@ -73,12 +73,23 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 })
 
 router.get('/all', (req, res) => {
-    const query = "SELECT * FROM inventory WHERE true"
+    let query = "SELECT * FROM inventory WHERE true"
     let promises = []
     client.query(query).then(async(result) => {
 
         promises.push(new Promise(async(resolve, reject) => {
             for (let index = 0; index < result.rows.length; index++) {
+                query = "SELECT name FROM sellers WHERE seller_id=$1"
+                values = [result.rows[index].seller_id]
+
+                client.query(query, values).then(r => {
+                    if (r.rowCount > 0) {
+                        result.rows[index].seller_name = r.rows[0].name
+                    } else {
+                        result.rows[index].seller_name = "Unknown"
+                    }
+                })
+
                 const avg = await findAvgRating(result.rows[index].item_id)
                 result.rows[index].rating = avg
                 if (index == result.rows.length - 1) {
