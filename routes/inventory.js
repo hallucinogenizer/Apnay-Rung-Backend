@@ -4,6 +4,29 @@ const router = express.Router()
 const authenticateJWT = require("../utilities/authenticateJWT")
 const client = require('../utilities/clientConnect')
 
+function findAvgRating(item_id) {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT review FROM orders WHERE true"
+        client.query(query).then(result => {
+            let ratings = []
+            for (index in result.rows) {
+                for (item in result.rows[index].review) {
+                    ratings.push(result.rows[index].review[item][1])
+                }
+            }
+            Promise.all(ratings).then(allRatings => {
+                let sum = 0
+                for (let i = 0; i < allRatings.length; i++) {
+                    sum += allRatings[i]
+                }
+                const avg = sum / allRatings.length
+                resolve(avg)
+            })
+        })
+    })
+}
+
+
 router.get('/all/mine', authenticateJWT, async(req, res) => {
     let query
     let values
@@ -51,8 +74,24 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 
 router.get('/all', (req, res) => {
     const query = "SELECT * FROM inventory WHERE true"
-    client.query(query).then(result => {
-        res.json(result.rows)
+    let promises = []
+    client.query(query).then(async(result) => {
+
+        promises.push(new Promise(async(resolve, reject) => {
+            for (let index = 0; index < result.rows.length; index++) {
+                const avg = await findAvgRating(result.rows[index].item_id)
+                result.rows[index].rating = avg
+                if (index == result.rows.length - 1) {
+                    resolve(avg)
+                }
+            }
+        }))
+        Promise.all(promises).then(all => {
+            res.json(result.rows)
+        }).catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
     }).catch(err => {
         res.sendStatus(500)
         console.log(err)
