@@ -487,7 +487,8 @@ GET https://apnay-rung-api.herokuapp.com/test/read
 Content-Type: application/json
 
 {
-    "image":["https://i.ibb.co/cbs7VzP/photo-1575277340591-849c346c4542.jpg"]
+    "image":["https://i.ibb.co/cbs7VzP/photo-1575277340591-849c346c4542.jpg"],
+    "seller_id":4
 }
 
 
