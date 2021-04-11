@@ -430,9 +430,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 Content-Type: application/json
 
 {
-    "title":"Ajrak",
-    "description":"Bro level",
-    "image":["http://sahapedia-drupal-s3-bucket.s3-ap-southeast-1.amazonaws.com/12_TREY%20HASHE%20VAALI%20AJRAK.JPG"],
+    "title":"Carpet",
+    "description":"This is a traditional handwoven carpet from Baluchistan.",
+    "image":["https://i.ibb.co/PzwsLMt/image-2-21.jpg"],
     "category":"clothing",
     "price":750,
     "stock":10
@@ -498,8 +498,8 @@ GET https://apnay-rung-api.herokuapp.com/test/read
 Content-Type: application/json
 
 {
-    "image":["https://i.ibb.co/gjwRrr8/man-4294951-1920.jpg"],
-    "seller_id":5
+    "image":["https://images.squarespace-cdn.com/content/v1/55462b24e4b0bedd59ac6f7e/1567771356975-4BKUOZ07KBDLKYDCF9PT/ke17ZwdGBToddI8pDm48kHZ2Y5YjSAwziLKQpsaN9dN7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UZd3obpFewa7Dzv4HnId3Eiksk2J-n9bkjsWzoxXydBRP7cJNZlDXbgJNE9ef52e8w/Screen+Shot+2019-09-06+at+1.22.41+PM.png"],
+    "seller_id":6
 }
 
 
