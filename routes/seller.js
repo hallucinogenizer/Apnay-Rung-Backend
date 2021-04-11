@@ -161,22 +161,24 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     if (req.userObject.typeOfUser == "seller") {
         try {
             let success = false
-            const query = `UPDATE sellers SET name = '${req.body.name}',email='${req.body.email}',location='${req.body.location}',bio='${req.body.bio}' WHERE seller_id=${req.userObject.id}`
+            const query = `UPDATE sellers SET name = $1,email=$2,location=$3,bio=$4 WHERE seller_id=$5`
+            const values = [req.body.name, req.body.email, req.body.location, req.body.bio, req.userObject.id]
 
-            client.query(query)
+            client.query(query, values)
                 .then(resolve => {
                     success = true
 
                     if (req.body.passwordChanged == true) {
                         const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
                         pwd_promise.then(hashed_pwd => {
-                            const query = `UPDATE sellers SET password='${hashed_pwd}' WHERE seller_id=${req.userObject.id}`
-                            client.query(query)
+                            const query = `UPDATE sellers SET password=$1 WHERE seller_id=$2`
+                            const values = [hashed_pwd, req.userObject.id]
+                            client.query(query, values)
                                 .then(resolve => {
                                     if (success == true) {
                                         res.sendStatus(202)
                                     } else {
-                                        res.sendStatus(500)
+                                        res.status(500).send("Unable to update information.")
                                     }
                                 }).catch(err => {
                                     res.sendStatus(500)
