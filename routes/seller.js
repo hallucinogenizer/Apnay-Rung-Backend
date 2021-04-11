@@ -254,4 +254,22 @@ router.get('/limit/:limit', (req, res) => {
     })
 })
 
+router.get('/info', authenticateJWT, async(req, res) => {
+    if (req.userObject.typeOfUser == 'seller') {
+        const query = "SELECT seller_id, name, email, location, bio, weeklyartisan, blocked, profile_picture, sec_questions FROM sellers WHERE seller_id=$1"
+        const values = [req.userObject.id]
+
+        client.query(query, values)
+            .then(result => {
+                if (result.rowCount > 0) {
+                    res.status(200).json(result.rows[0])
+                } else {
+                    res.sendStatus(204)
+                }
+            })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
 module.exports = router

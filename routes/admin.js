@@ -153,4 +153,23 @@ router.get('/verify', async(req, res) => {
     }
 })
 
+
+router.get('/info', authenticateJWT, async(req, res) => {
+    if (req.userObject.typeOfUser == 'admin') {
+        const query = "SELECT * FROM admins WHERE admin_id=$1"
+        const values = [req.userObject.id]
+
+        client.query(query, values)
+            .then(result => {
+                if (result.rowCount > 0) {
+                    res.status(200).json(result.rows[0])
+                } else {
+                    res.sendStatus(204)
+                }
+            })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
 module.exports = router
