@@ -200,4 +200,9 @@ router.get('/sort/alphabetical', (req, res) => {
         })
 })
 
+
+router.post('/stock', authenticateJWT, (req, res) => {
+
+})
+
 module.exports = router

@@ -35,41 +35,54 @@ router.post('/new', authenticateJWT, (req, res) => {
         if (req.userObject.typeOfUser == "customer") {
             let query = "INSERT INTO orders (timestamp,customer_id,delivery_status,review,totalamount,cancelled,items,name,email,phone,b_address,s_address, payment_method) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,$13)"
             let values = ['NOW()', req.userObject.id, req.body.delivery_status, JSON.stringify([]), req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.payment_method]
+            client.query("BEGIN", (err) => {
+                if (err) {
+                    res.sendStatus(500)
+                } else {
+                    client.query(query, values)
+                        .then(response => {
+                            let promises = []
+                            for (let i = 0; i < req.body.items.length; i++) {
+                                query = "UPDATE inventory SET stock = stock-$1 WHERE item_id=$2 AND stock>0"
+                                values = [req.body.items[i][1], req.body.items[i][0]]
+                                client.query(query, values)
+                                    .then(resp => {
+                                        if (resp.rowCount > 0) {
+                                            promises.push(true)
+                                        }
+                                    })
+                                    .catch(err => {
+                                        promises.push(false)
+                                        console.log(err)
+                                    })
+                            }
 
-            client.query(query, values)
-                .then(response => {
-                    let promises = []
-                    for (let i = 0; i < req.body.items.length; i++) {
-                        query = "UPDATE inventory SET stock = stock-$1 WHERE item_id=$2 AND stock>0"
-                        values = [req.body.items[i][1], req.body.items[i][0]]
-                        client.query(query, values)
-                            .then(resp => {
-                                if (resp.rowCount > 0) {
-                                    promises.push(true)
+                            Promise.all(promises).then(result => {
+                                let alliswell = true
+                                for (let i = 0; i < result.length; i++) {
+                                    if (result[i] == false) {
+                                        res.sendStatus(500)
+                                        client.query("ROLLBACK")
+                                        alliswell = false
+                                    }
+                                }
+                                if (alliswell) {
+                                    client.query("COMMIT")
+                                        .then(response => {
+                                            res.sendStatus(201)
+                                        })
+                                        .catch(err => {
+                                            res.sendStatus(500)
+                                            console.log(err)
+                                        })
                                 }
                             })
-                            .catch(err => {
-                                promises.push(false)
-                                console.log(err)
-                            })
-                    }
-
-                    Promise.all(promises).then(result => {
-                        let alliswell = true
-                        for (let i = 0; i < result.length; i++) {
-                            if (result[i] == false) {
-                                res.sendStatus(500)
-                                alliswell = false
-                            }
-                        }
-                        if (alliswell) {
-                            res.sendStatus(201)
-                        }
-                    })
-                }).catch(err => {
-                    res.sendStatus(500)
-                    console.log(err)
-                })
+                        }).catch(err => {
+                            res.sendStatus(500)
+                            console.log(err)
+                        })
+                }
+            })
         } else {
             console.log(req.userObject.typeOfUser)
             res.sendStatus(401)
