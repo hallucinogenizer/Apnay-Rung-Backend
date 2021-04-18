@@ -7,7 +7,7 @@ function replaceIdWithTitle(result, res) {
         items.forEach((item, index2) => {
             const item_id = item[0];
             if (item_id != undefined) {
-                const title_query = "SELECT title FROM inventory WHERE item_id=$1"
+                const title_query = "SELECT title,image FROM inventory WHERE item_id=$1"
                 const title_values = [item_id]
                 promises.push(new Promise(function(resolve, reject) {
                     client.query(title_query, title_values, (err, title_result) => {
@@ -16,6 +16,7 @@ function replaceIdWithTitle(result, res) {
                             reject()
                         } else {
                             result.rows[index1].items[index2][0] = title_result.rows[0].title
+                            result.rows[index1].image = title_result.rows[0].image
                             resolve()
                         }
                     })

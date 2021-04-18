@@ -57,7 +57,6 @@ router.get('/all', authenticateJWT, (req, res) => {
         client.query(query)
             .then(async(result) => {
                 await replaceIdWithTitle(result, res)
-                    // res.status(200).json(result.rows)
             })
             .catch(err => {
                 res.sendStatus(500)
@@ -89,7 +88,6 @@ router.get('/all', authenticateJWT, (req, res) => {
                     //replacing item_ids with item_titles
                     let allorders = []
                     for (order in result.rows) {
-                        console.log("order_id: ", result.rows[order].order_id)
                         if (result.rows[order].items.length > 0 && result.rows[order].items[0][0] != undefined) {
                             let query = "SELECT seller_id FROM inventory WHERE item_id IN ("
                             let item_ids = []
