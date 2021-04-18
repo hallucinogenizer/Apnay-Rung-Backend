@@ -417,8 +417,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 
 //inventory API
 ###
-//return a list of all products (admin and sellers only) (seller only sees his own products)
+//return a list of all products
 GET https://apnay-rung-api.herokuapp.com/inventory/all
+
+
+
+//a seller can get all of his own products
+###
+GET https://apnay-rung-api.herokuapp.com/inventory/all/mine
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
 
 ###
 GET https://apnay-rung-api.herokuapp.com/inventory/all
