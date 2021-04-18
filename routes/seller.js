@@ -270,4 +270,16 @@ router.get('/info', authenticateJWT, async(req, res) => {
     }
 })
 
+router.get('/spotlight', (req, res) => {
+    const query = "SELECT seller_id,name,email,location,bio,profile_picture FROM sellers WHERE weeklyartisan=true AND blocked=false"
+    client.query(query)
+        .then(result => {
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
+})
+
 module.exports = router

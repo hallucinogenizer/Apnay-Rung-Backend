@@ -155,6 +155,11 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/seller/limit/2
 
+
+//get all sellers who are in spotlight (weeklyartisan)
+###
+GET http://localhost:3000/seller/spotlight
+
 ###
 GET http://localhost:3000/seller/id/12
 

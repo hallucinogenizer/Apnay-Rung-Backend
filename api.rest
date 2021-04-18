@@ -4,7 +4,7 @@ POST https://apnay-rung-api.herokuapp.com/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
+    "email":"rohan@yahoo.com",
     "password":"12345678"
 }
 
@@ -204,6 +204,11 @@ Content-Type: application/json
 //retrieve list of all sellers
 GET https://apnay-rung-api.herokuapp.com/seller/all
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+//get all sellers who are in spotlight (weeklyartisan)
+###
+GET https://apnay-rung-api.herokuapp.com/seller/spotlight
 
 
 ###
