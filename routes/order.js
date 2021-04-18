@@ -33,13 +33,39 @@ router.post('/new', authenticateJWT, (req, res) => {
         res.status(400).send(valid_input)
     } else {
         if (req.userObject.typeOfUser == "customer") {
-            const query = "INSERT INTO orders (timestamp,customer_id,delivery_status,review,totalamount,cancelled,items,name,email,phone,b_address,s_address, payment_method) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,$13)"
-            const values = ['NOW()', req.userObject.id, req.body.delivery_status, JSON.stringify([]), req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.payment_method]
+            let query = "INSERT INTO orders (timestamp,customer_id,delivery_status,review,totalamount,cancelled,items,name,email,phone,b_address,s_address, payment_method) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,$13)"
+            let values = ['NOW()', req.userObject.id, req.body.delivery_status, JSON.stringify([]), req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.payment_method]
 
             client.query(query, values)
                 .then(response => {
+                    let promises = []
+                    for (let i = 0; i < req.body.items.length; i++) {
+                        query = "UPDATE inventory SET stock = stock-$1 WHERE item_id=$2 AND stock>0"
+                        values = [req.body.items[i][1], req.body.items[i][0]]
+                        client.query(query, values)
+                            .then(resp => {
+                                if (resp.rowCount > 0) {
+                                    promises.push(true)
+                                }
+                            })
+                            .catch(err => {
+                                promises.push(false)
+                                console.log(err)
+                            })
+                    }
 
-                    res.sendStatus(201)
+                    Promise.all(promises).then(result => {
+                        let alliswell = true
+                        for (let i = 0; i < result.length; i++) {
+                            if (result[i] == false) {
+                                res.sendStatus(500)
+                                alliswell = false
+                            }
+                        }
+                        if (alliswell) {
+                            res.sendStatus(201)
+                        }
+                    })
                 }).catch(err => {
                     res.sendStatus(500)
                     console.log(err)
