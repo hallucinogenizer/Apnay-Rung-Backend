@@ -459,7 +459,7 @@ GET https://apnay-rung-api.herokuapp.com/inventory/id/3
 
 //get catalog by location
 ###
-GET https://apnay-rung-api.herokuapp.com/inventory/location/Punjab
+GET https://apnay-rung-api.herokuapp.com/inventory/location/Sindh
 
 
 

@@ -28,85 +28,29 @@ function findAvgRating(item_id) {
 
 
 router.get('/all/mine', authenticateJWT, async(req, res) => {
-    let query
-    let values
-    let continueOrNot = false
-    if (req.userObject.typeOfUser == 'seller') {
-        query = "SELECT * FROM inventory WHERE seller_id = $1"
-        values = [req.userObject.id]
-        continueOrNot = true
-    } else if (req.userObject.typeOfUser == 'admin') {
-        query = "SELECT * FROM inventory"
-        values = []
-        continueOrNot = true
-    } else if (req.userObject.typeOfUser == 'customer') {
-        query = "SELECT * FROM inventory"
-        values = []
-        continueOrNot = true
-    } else {
-        res.sendStatus(401)
-    }
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id AND inventory.seller_id=$1;"
+    const values = [req.userObject.id]
 
-    if (continueOrNot) {
-        try {
-            const result = await client.query(query, values)
-            for (let rowF = 0; rowF < result.rowCount; rowF++) {
-                const q = "SELECT name FROM sellers WHERE seller_id=$1"
-                const v = [result.rows[rowF].seller_id]
-
-                client.query(q, v).then(r => {
-                    if (r.rowCount > 0) {
-                        result.rows[rowF].seller_name = r.rows[0].name
-                    }
-                    if (rowF == result.rowCount - 1) {
-                        res.status(200).json(result.rows)
-                    }
-                })
-            }
-
-
-        } catch (err) {
-            res.sendStatus(500)
-            console.log(err)
-        }
-    }
-})
-
-router.get('/all', (req, res) => {
-    let query = "SELECT * FROM inventory WHERE true"
-    let promises = []
-    client.query(query).then(async(result) => {
-
-        promises.push(new Promise(async(resolve, reject) => {
-            for (let index = 0; index < result.rows.length; index++) {
-                query = "SELECT name FROM sellers WHERE seller_id=$1"
-                values = [result.rows[index].seller_id]
-
-                client.query(query, values).then(r => {
-                    if (r.rowCount > 0) {
-                        result.rows[index].seller_name = r.rows[0].name
-                    } else {
-                        result.rows[index].seller_name = "Unknown"
-                    }
-                })
-
-                const avg = await findAvgRating(result.rows[index].item_id)
-                result.rows[index].rating = avg
-                if (index == result.rows.length - 1) {
-                    resolve(avg)
-                }
-            }
-        }))
-        Promise.all(promises).then(all => {
-            res.json(result.rows)
-        }).catch(err => {
+    client.query(query, values)
+        .then(result => {
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
             res.sendStatus(500)
             console.log(err)
         })
-    }).catch(err => {
-        res.sendStatus(500)
-        console.log(err)
-    })
+})
+
+router.get('/all', (req, res) => {
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id"
+    client.query(query)
+        .then(result => {
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
 })
 
 router.post('/new', authenticateJWT, async(req, res) => {
@@ -212,7 +156,7 @@ router.get('/location/:province', (req, res) => {
 
     client.query(query, values)
         .then(result => {
-            res.status(200).send(result.rows)
+            res.status(200).json(result.rows)
         })
         .catch(err => {
             res.sendStatus(500)
@@ -220,4 +164,27 @@ router.get('/location/:province', (req, res) => {
         })
 })
 
+router.get('/sort/price/asc', (req, res) => {
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price ASC;"
+    client.query(query)
+        .then(result => {
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
+})
+
+router.get('/sort/price/desc', (req, res) => {
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price DESC;"
+    client.query(query)
+        .then(result => {
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
+})
 module.exports = router

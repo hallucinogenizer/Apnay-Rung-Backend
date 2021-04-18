@@ -368,13 +368,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiO
 
 
 //inventory API
-
-//add filter inventory by location, by price, and by alphabet
 ###
 GET http://localhost:3000/inventory/all
 
+
+//a seller can get all of his own products
 ###
-GET http://localhost:3000/inventory/all
+GET http://localhost:3000/inventory/all/mine
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
 
 
@@ -413,7 +413,9 @@ GET http://localhost:3000/inventory/id/1
 GET http://localhost:3000/inventory/location/Punjab
 
 
-
+//get catalog sorted by increasing price
+###
+GET http://localhost:3000/inventory/sort/price/asc
 
 
 
