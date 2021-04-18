@@ -98,7 +98,7 @@ router.get('/all', authenticateJWT, (req, res) => {
                         }
                     }
                     query += ")"
-
+                    console.log(query)
                     const r = await client.query(query)
                     if (r.rowCount > 0) {
                         if (r.rows[0].seller_id == req.userObject.id) {
