@@ -398,6 +398,19 @@ Content-Type: application/json
 }
 
 
+//increase stock of an item
+###
+PATCH http://localhost:3000/inventory/stock
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
+Content-Type: application/json
+
+{
+    "item_id":5,
+    "stock_increment":10
+}
+
+
+
 //get a certain number of items from inventory
 ###
 GET http://localhost:3000/inventory/limit/2

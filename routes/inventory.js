@@ -201,8 +201,30 @@ router.get('/sort/alphabetical', (req, res) => {
 })
 
 
-router.post('/stock', authenticateJWT, (req, res) => {
+router.patch('/stock', authenticateJWT, (req, res) => {
+    /*
+    to increase stock of item 7 by 10
+        {
+            item_id:7,
+            stock_increment:10
+        }
+        
+    */
+    const query = "UPDATE inventory SET stock=stock+$1 WHERE item_id=$2 AND seller_id=$3"
+    const values = [req.body.stock_increment, req.body.item_id, req.userObject.id]
 
+    client.query(query, values)
+        .then(response => {
+            if (response.rowCount > 0) {
+                res.sendStatus(202)
+            } else {
+                res.status(400).end("Either you are trying to increment the stocks of an item that does not belong to the seller whose token you are using, or you sent a wrong item_id.")
+            }
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
 })
 
 module.exports = router
