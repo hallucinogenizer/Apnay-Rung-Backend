@@ -75,6 +75,7 @@ router.get('/all', authenticateJWT, (req, res) => {
                 await replaceIdWithTitle(result, res)
             })
             .catch(err => {
+                console.log(err)
                 res.sendStatus(500)
             })
     } else if (req.userObject.typeOfUser == "seller") {
@@ -99,10 +100,13 @@ router.get('/all', authenticateJWT, (req, res) => {
                     query += ")"
 
                     const r = await client.query(query)
-                    if (r.rows[0].seller_id == req.userObject.id) {
-                        allorders.push(result.rows[order])
+                    if (r.rowCount > 0) {
+                        if (r.rows[0].seller_id == req.userObject.id) {
+                            allorders.push(result.rows[order])
+                        }
+                    } else {
+                        console.log("Query: ", query, " empty");
                     }
-
                 }
                 Promise.all(allorders).then(allorders => {
                     let finalresult = {}
