@@ -66,7 +66,7 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
         const valid_input = hasAllFields({
             "name": ["string", 100, "notempty"],
             "email": ["string", 100, "notempty"],
-            "password": ["string", -1, "notempty"],
+            "password": ["string", -1, ""],
             "passwordChanged": ["boolean", -1, ""],
             "address": ["string", 300, "notempty"],
             "phone": ["string", 18, ""]

@@ -259,11 +259,6 @@ Content-Type: application/json
 
 
 
-
-
-
-
-
 //ORDERS API
 ###
 POST http://localhost:3000/order/new
