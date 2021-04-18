@@ -16,7 +16,7 @@ function replaceIdWithTitle(result, res) {
                             reject()
                         } else {
                             result.rows[index1].items[index2][0] = title_result.rows[0].title
-                            result.rows[index1].image = title_result.rows[0].image
+                            result.rows[index1].items[index2].push(title_result.rows[0].image[0])
                             resolve()
                         }
                     })
