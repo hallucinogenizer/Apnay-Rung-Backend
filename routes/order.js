@@ -85,37 +85,40 @@ router.get('/all', authenticateJWT, (req, res) => {
         }
         client.query(query)
             .then(async(result) => {
-                //replacing item_ids with item_titles
-                let allorders = []
-                for (order in result.rows) {
-                    let query = "SELECT seller_id FROM inventory WHERE item_id IN ("
-                    let item_ids = []
-                    for (item in result.rows[order].items) {
-                        item_ids.push(result.rows[order].items[item][0])
-                        query += result.rows[order].items[item][0]
-                        if (item != result.rows[order].items.length - 1) {
-                            query += ","
+                if (result.rowCount > 0) {
+                    //replacing item_ids with item_titles
+                    let allorders = []
+                    for (order in result.rows) {
+                        let query = "SELECT seller_id FROM inventory WHERE item_id IN ("
+                        let item_ids = []
+                        for (item in result.rows[order].items) {
+                            item_ids.push(result.rows[order].items[item][0])
+                            query += result.rows[order].items[item][0]
+                            if (item != result.rows[order].items.length - 1) {
+                                query += ","
+                            }
+                        }
+                        query += ")"
+                        console.log(query)
+                        const r = await client.query(query)
+                        if (r.rowCount > 0) {
+                            if (r.rows[0].seller_id == req.userObject.id) {
+                                allorders.push(result.rows[order])
+                            }
+                        } else {
+                            console.log("Query: ", query, " empty");
                         }
                     }
-                    query += ")"
-                    console.log(query)
-                    const r = await client.query(query)
-                    if (r.rowCount > 0) {
-                        if (r.rows[0].seller_id == req.userObject.id) {
-                            allorders.push(result.rows[order])
-                        }
-                    } else {
-                        console.log("Query: ", query, " empty");
-                    }
+                    Promise.all(allorders).then(allorders => {
+                        let finalresult = {}
+                        finalresult.rows = allorders
+                        replaceIdWithTitle(finalresult, res)
+                    })
+
+                    // 
+                } else {
+                    res.sendStatus(204)
                 }
-                Promise.all(allorders).then(allorders => {
-                    let finalresult = {}
-                    finalresult.rows = allorders
-                    replaceIdWithTitle(finalresult, res)
-                })
-
-                // 
-
             })
             .catch(err => {
                 res.sendStatus(500)
