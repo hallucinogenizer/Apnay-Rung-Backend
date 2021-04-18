@@ -418,6 +418,13 @@ GET http://localhost:3000/inventory/location/Punjab
 GET http://localhost:3000/inventory/sort/price/asc
 
 
+//get catalog sorted alphabetically A-Z
+###
+GET http://localhost:3000/inventory/sort/alphabetical
+
+
+
+
 
 //NOTIFICATION API
 ###

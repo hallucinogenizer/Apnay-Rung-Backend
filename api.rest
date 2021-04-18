@@ -421,7 +421,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 GET https://apnay-rung-api.herokuapp.com/inventory/all
 
 
-
 //a seller can get all of his own products
 ###
 GET https://apnay-rung-api.herokuapp.com/inventory/all/mine
@@ -470,6 +469,21 @@ GET https://apnay-rung-api.herokuapp.com/inventory/id/3
 GET https://apnay-rung-api.herokuapp.com/inventory/location/Sindh
 
 
+
+//get catalog sorted by increasing price
+###
+GET https://apnay-rung-api.herokuapp.com/inventory/sort/price/asc
+
+
+//get catalog sorted by decreasing price
+###
+GET https://apnay-rung-api.herokuapp.com/inventory/sort/price/desc
+
+
+
+//get catalog sorted alphabetically A-Z
+###
+GET https://apnay-rung-api.herokuapp.com/inventory/sort/alphabetical
 
 
 

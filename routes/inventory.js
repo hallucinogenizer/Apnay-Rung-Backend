@@ -187,4 +187,17 @@ router.get('/sort/price/desc', (req, res) => {
             console.log(err)
         })
 })
+
+router.get('/sort/alphabetical', (req, res) => {
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.title ASC;"
+    client.query(query)
+        .then(result => {
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
+})
+
 module.exports = router
