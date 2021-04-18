@@ -1,4 +1,6 @@
 logout
-image upload
-use parameterized queries everywhere
-every request must be authorized, no matter what it is
+decrease stock of product upon order
+filter/sort products
+set product as featured
+get featured products (with limit)
+sales report

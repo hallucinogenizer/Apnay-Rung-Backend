@@ -128,34 +128,38 @@ router.get('/id/:order_id', authenticateJWT, async(req, res) => {
         let promises = []
         const result = await client.query(query, values)
             //replacing item_ids with item titles
-        result.rows[0].items.forEach((item, index) => {
-            const title_query = "SELECT title FROM inventory WHERE item_id=$1"
-            const title_values = [item[0]]
+        if (result.rowCount > 0) {
+            result.rows[0].items.forEach((item, index) => {
+                const title_query = "SELECT title FROM inventory WHERE item_id=$1"
+                const title_values = [item[0]]
 
-            promises.push(
-                new Promise(function(resolve, reject) {
-                    client.query(title_query, title_values, (err, result2) => {
-                        if (err) {
-                            res.sendStatus(500)
-                            console.log(err)
-                            reject()
-                        } else {
-                            result.rows[0].items[index][0] = result2.rows[0].title
-                            resolve()
-                        }
+                promises.push(
+                    new Promise(function(resolve, reject) {
+                        client.query(title_query, title_values, (err, result2) => {
+                            if (err) {
+                                res.sendStatus(500)
+                                console.log(err)
+                                reject()
+                            } else {
+                                result.rows[0].items[index][0] = result2.rows[0].title
+                                resolve()
+                            }
+                        })
                     })
-                })
-            )
-        })
+                )
+            })
 
-        Promise.all(promises)
-            .then(response => {
-                console.log(response)
-                res.status(200).json(result.rows)
-            })
-            .catch(err => {
-                res.sendStatus(500)
-            })
+            Promise.all(promises)
+                .then(response => {
+                    console.log(response)
+                    res.status(200).json(result.rows)
+                })
+                .catch(err => {
+                    res.sendStatus(500)
+                })
+        } else {
+            res.sendStatus(204)
+        }
     } catch (err) {
         res.sendStatus(500)
         console.log(err)
