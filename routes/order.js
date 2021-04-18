@@ -90,7 +90,7 @@ router.get('/all', authenticateJWT, (req, res) => {
                     let allorders = []
                     for (order in result.rows) {
                         console.log("order_id: ", result.rows[order].order_id)
-                        if (result.rows[order].items.length > 0) {
+                        if (result.rows[order].items.length > 0 && result.rows[order].items[0][0] != undefined) {
                             let query = "SELECT seller_id FROM inventory WHERE item_id IN ("
                             let item_ids = []
                             for (item in result.rows[order].items) {
