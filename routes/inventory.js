@@ -206,4 +206,18 @@ router.get('/limit/:limit', async(req, res) => {
 
 })
 
+router.get('/location/:province', (req, res) => {
+    const query = "SELECT inventory.item_id, inventory.title, inventory.description, inventory.image, inventory.category, inventory.stock, inventory.price, sellers.seller_id, sellers.name FROM inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id WHERE sellers.location=$1;"
+    const values = [req.params.province]
+
+    client.query(query, values)
+        .then(result => {
+            res.status(200).send(result.rows)
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.log(err)
+        })
+})
+
 module.exports = router

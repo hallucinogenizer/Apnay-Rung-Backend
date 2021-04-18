@@ -408,6 +408,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiO
 GET http://localhost:3000/inventory/id/1
 
 
+//get catalog by location
+###
+GET http://localhost:3000/inventory/location/Punjab
+
+
+
+
+
 
 //NOTIFICATION API
 ###

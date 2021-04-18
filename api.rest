@@ -62,7 +62,7 @@ content-type: application/json
 
 ###
 //request for logging in a customer
-GET https://apnay-rung-api.herokuapp.com/customer/verify
+POST https://apnay-rung-api.herokuapp.com/customer/verify
 Content-Type: application/json
 
 {
@@ -102,7 +102,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6I
 ###
 //update account settings of a customer
 PATCH https://apnay-rung-api.herokuapp.com/customer/update
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE4NzYwNjM0fQ.EvSBa-jqQdmuOY0tr5aeQcfq4M9OUpAKBidf4n_2aPk
 Content-Type: application/json
 
 {
@@ -110,7 +110,7 @@ Content-Type: application/json
     "email": "taimoor@gmail.com",
     "password":"",
     "passwordChanged":false,
-    "address": "Jupiter",
+    "address": "Johar Town, Lahore",
     "phone": "03021234567"
 }
 //all of these fields must be present in the request, even if only one of them is being updated.
@@ -448,12 +448,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 
 //get a certain number of items from inventory
 ###
-GET http://localhost:3000/inventory/limit/2
+GET https://apnay-rung-api.herokuapp.com/inventory/limit/2
 
 
 ###
 //GET an item by its ID
-GET http://localhost:3000/inventory/id/3
+GET https://apnay-rung-api.herokuapp.com/inventory/id/3
+
+
+
+//get catalog by location
+###
+GET https://apnay-rung-api.herokuapp.com/inventory/location/Punjab
+
+
+
+
+
+
+
+
+
+
+
 
 
 
