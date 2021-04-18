@@ -5,11 +5,15 @@ function isBlocked(req, res, next) {
         const query = `SELECT blocked FROM ${req.userObject.typeOfUser+'s'} WHERE ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
         client.query(query)
             .then(result => {
-                if (result.rows[0].blocked == false) {
-                    next()
+                if (result.rowCount > 0) {
+                    if (result.rows[0].blocked == false) {
+                        next()
+                    } else {
+                        res.sendStatus(403)
+                            //403 forbidden
+                    }
                 } else {
-                    res.sendStatus(403)
-                        //403 forbidden
+                    res.sendStatus(500)
                 }
             })
     } else {
