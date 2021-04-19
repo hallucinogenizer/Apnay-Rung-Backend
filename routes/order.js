@@ -92,7 +92,7 @@ router.post('/new', authenticateJWT, (req, res) => {
 
 router.get('/all', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
-        const query = { text: "SELECT * FROM orders WHERE true", values: [] }
+        const query = { text: "SELECT order_id, TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp,customer_id,delivery_status,review,totalamount,cancelled,name,email,phone,b_address,s_address,items,order_status,payment_method FROM orders WHERE true", values: [] }
         client.query(query)
             .then(async(result) => {
                 await replaceIdWithTitle(result, res)
@@ -104,7 +104,7 @@ router.get('/all', authenticateJWT, (req, res) => {
 
     } else if (req.userObject.typeOfUser == "customer") {
         const query = {
-            text: "SELECT * FROM orders WHERE customer_id=$1",
+            text: "SELECT order_id, TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp,customer_id,delivery_status,review,totalamount,cancelled,name,email,phone,b_address,s_address,items,order_status,payment_method FROM orders WHERE customer_id=$1",
             values: [req.userObject.id]
         }
         client.query(query)
@@ -118,7 +118,7 @@ router.get('/all', authenticateJWT, (req, res) => {
             })
     } else if (req.userObject.typeOfUser == "seller") {
         const query = {
-            text: `SELECT * FROM orders WHERE true`,
+            text: `SELECT order_id, TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp,customer_id,delivery_status,review,totalamount,cancelled,name,email,phone,b_address,s_address,items,order_status,payment_method FROM orders WHERE true`,
             values: []
         }
         client.query(query)
@@ -169,7 +169,7 @@ router.get('/all', authenticateJWT, (req, res) => {
 
 //get an order by its order_id
 router.get('/id/:order_id', authenticateJWT, async(req, res) => {
-    const query = "SELECT * FROM orders WHERE order_id=$1"
+    const query = "SELECT order_id, TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp,customer_id,delivery_status,review,totalamount,cancelled,name,email,phone,b_address,s_address,items,order_status,payment_method FROM orders WHERE order_id=$1"
     const values = [req.params.order_id]
     try {
         let promises = []
@@ -220,7 +220,7 @@ router.get('/search', authenticateJWT, (req, res) => {
     }
     */
     if (req.userObject.typeOfUser == "admin") {
-        const query = "SELECT orders.order_id, orders.timestamp, orders.customer_id, orders.delivery_status, orders.review, orders.totalamount, orders.cancelled, orders.name, orders.email, orders.phone, orders.b_address, orders.s_address, orders.items, orders.seller_ids FROM orders INNER JOIN customers ON customers.customer_id=orders.customer_id WHERE customers.name LIKE $1"
+        const query = "SELECT orders.order_id, TO_CHAR(orders.timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp, orders.customer_id, orders.delivery_status, orders.review, orders.totalamount, orders.cancelled, orders.name, orders.email, orders.phone, orders.b_address, orders.s_address, orders.items, orders.seller_ids FROM orders INNER JOIN customers ON customers.customer_id=orders.customer_id WHERE customers.name LIKE $1"
         const values = ['%' + req.body.query + '%']
         client.query(query, values)
             .then(result => {
@@ -333,7 +333,7 @@ router.patch('/cancel/:order_id', authenticateJWT, (req, res) => {
 
 router.get('/review/all', authenticateJWT, isBlocked, async(req, res) => {
     if (req.userObject.typeOfUser == "seller") {
-        let query = `SELECT * FROM orders WHERE true`;
+        let query = `SELECT order_id, TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp,customer_id,delivery_status,review,totalamount,cancelled,name,email,phone,b_address,s_address,items,order_status,payment_method FROM orders WHERE true`;
         try {
             let result = await client.query(query)
 
