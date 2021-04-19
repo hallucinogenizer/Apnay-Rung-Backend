@@ -309,6 +309,28 @@ router.patch('/confirm/:order_id', authenticateJWT, (req, res) => {
     }
 })
 
+router.patch('/cancel/:order_id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == "seller") {
+        const query = "UPDATE orders SET cancelled=True WHERE order_id=$1"
+        const values = [req.params.order_id]
+        client.query(query, values)
+            .then(result => {
+                if (result.rowCount == 1) {
+                    res.sendStatus(200)
+                    console.log(result)
+                } else {
+                    res.sendStatus(400)
+                }
+            })
+            .catch(err => {
+                res.sendStatus(500)
+                console.log(err)
+            })
+    } else {
+        res.sendStatus(500)
+    }
+})
+
 router.get('/review/all', authenticateJWT, isBlocked, async(req, res) => {
     if (req.userObject.typeOfUser == "seller") {
         let query = `SELECT * FROM orders WHERE true`;
