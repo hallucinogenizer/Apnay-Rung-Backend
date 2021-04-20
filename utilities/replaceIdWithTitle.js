@@ -13,7 +13,7 @@ function replaceIdWithTitle(result, res) {
                     client.query(title_query, title_values, (err, title_result) => {
                         if (title_result.rowCount < 1) {
                             console.log("Not found:", item_id)
-                            reject()
+                                // reject()
                         } else {
                             result.rows[index1].items[index2].push(title_result.rows[0].title)
                             result.rows[index1].items[index2].push(title_result.rows[0].image[0])

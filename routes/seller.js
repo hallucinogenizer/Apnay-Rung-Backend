@@ -84,7 +84,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
 
 router.get('/all', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers`
+        const query = `SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers ORDER BY seller_id`
 
         client
             .query(query)

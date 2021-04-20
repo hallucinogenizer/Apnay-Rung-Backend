@@ -26,7 +26,6 @@ function findAvgRating(item_id) {
     })
 }
 
-
 router.get('/all/mine', authenticateJWT, async(req, res) => {
     const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id AND inventory.seller_id=$1;"
     const values = [req.userObject.id]
