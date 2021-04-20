@@ -91,7 +91,7 @@ app.post('/verify', async(req, res) => {
                     console.log(err)
                 })
         } else {
-            query = "SELECT seller_id, name, password FROM sellers WHERE email=$1"
+            query = "SELECT seller_id, name, password FROM sellers WHERE email=$1 AND blocked=false AND approved=true"
             values = [req.body.email]
             result = await client.query(query, values)
             if (result.rowCount == 0) {

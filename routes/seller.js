@@ -288,7 +288,7 @@ router.patch('/profilepicture', authenticateJWT, upload.single('profilepicture')
 router.post('/verify', async(req, res) => {
     // const query = 
     try {
-        const result = await client.query(`SELECT seller_id,name,password FROM sellers WHERE email='${req.body.email}' AND blocked=false`)
+        const result = await client.query(`SELECT seller_id,name,password FROM sellers WHERE email='${req.body.email}' AND blocked=false AND approved=true`)
         let userObject = {
             id: -1,
             name: '',
