@@ -38,7 +38,7 @@ POST https://apnay-rung-api.herokuapp.com/resetpassword
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
+    "email":"taimoor@hotmail.com",
     "password":"12345678"
 }
 
@@ -192,7 +192,7 @@ POST https://apnay-rung-api.herokuapp.com/seller/verify
 Content-Type: application/json
 
 {
-    "email":"shafay@gmail.com",
+    "email":"taimoor@hotmail.com",
     "password":"12345678"
 }
 
