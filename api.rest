@@ -212,6 +212,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6I
 GET https://apnay-rung-api.herokuapp.com/seller/spotlight
 
 
+//toggle spotlight status of seller using seller_id
+###
+PATCH http://localhost:3000/seller/spotlight/14
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
 ###
 //toggle the block status of a seller (set to blocked if not blocked, and set to not blocked if blocked)
 PATCH https://apnay-rung-api.herokuapp.com/seller/block/18
