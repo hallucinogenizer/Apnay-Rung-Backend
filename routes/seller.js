@@ -42,7 +42,7 @@ router.patch('/block/:id', authenticateJWT, (req, res) => {
 })
 
 router.get('/id/:id', async(req, res) => {
-    const query = "SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE seller_id=$1"
+    const query = "SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE seller_id=$1"
     const values = [req.params.id]
     try {
         const result = await client.query(query, values)
@@ -67,7 +67,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
     */
     if (req.userObject.typeOfUser == "admin") {
         try {
-            const result = await client.query(`SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE name LIKE $1`, [`%` + req.body.query + `%`])
+            const result = await client.query(`SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE name LIKE $1`, [`%` + req.body.query + `%`])
             if (result.rowCount < 1) {
                 res.sendStatus(404)
             } else {
@@ -84,7 +84,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
 
 router.get('/all', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT seller_id,name,email,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers`
+        const query = `SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers`
 
         client
             .query(query)
@@ -112,8 +112,8 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
                 console.log(err)
             } else {
                 imgData = '\\x' + imgData;
-                const query = `INSERT INTO sellers (name,email,password,location,cnic_image,sec_questions) VALUES ($1, $2, $3, $4 ,$5, $6)`
-                const values = [req.body.name, req.body.email, hashed_pwd, req.body.location, imgData, JSON.stringify(req.body.sec_questions)]
+                const query = `INSERT INTO sellers (name,email,password,phone,location,cnic_image,sec_questions) VALUES ($1, $2, $3, $4 ,$5, $6, $7)`
+                const values = [req.body.name, req.body.email, hashed_pwd, req.body.phone, req.body.location, imgData, JSON.stringify(req.body.sec_questions)]
                 client.query(query, values)
                     .then(resolve => {
                         console.log("Insertion Successful")
@@ -151,6 +151,7 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     {
         name:'',
         email:'',
+        phone:'',
         password:'',
         passwordChanged:true,
         location:'',
@@ -161,8 +162,8 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     if (req.userObject.typeOfUser == "seller") {
         try {
             let success = false
-            const query = `UPDATE sellers SET name = $1,email=$2,location=$3,bio=$4 WHERE seller_id=$5`
-            const values = [req.body.name, req.body.email, req.body.location, req.body.bio, req.userObject.id]
+            const query = `UPDATE sellers SET name = $1,email=$2,location=$3,phone=$4,bio=$5 WHERE seller_id=$6`
+            const values = [req.body.name, req.body.email, req.body.location, req.body.phone, req.body.bio, req.userObject.id]
 
             client.query(query, values)
                 .then(resolve => {
@@ -241,7 +242,7 @@ router.post('/verify', async(req, res) => {
 })
 
 router.get('/limit/:limit', (req, res) => {
-    const query = "SELECT seller_id, name, email, location, bio, weeklyartisan, blocked, profile_picture FROM sellers WHERE true LIMIT $1"
+    const query = "SELECT seller_id, name, email, phone, location, bio, weeklyartisan, blocked, profile_picture FROM sellers WHERE true LIMIT $1"
     const values = [req.params.limit]
 
     client.query(query, values).then(result => {
@@ -254,7 +255,7 @@ router.get('/limit/:limit', (req, res) => {
 
 router.get('/info', authenticateJWT, async(req, res) => {
     if (req.userObject.typeOfUser == 'seller') {
-        const query = "SELECT seller_id, name, email, location, bio, weeklyartisan, blocked, profile_picture, sec_questions FROM sellers WHERE seller_id=$1"
+        const query = "SELECT seller_id, name, email, phone, location, bio, weeklyartisan, blocked, profile_picture, sec_questions FROM sellers WHERE seller_id=$1"
         const values = [req.userObject.id]
 
         client.query(query, values)
@@ -271,7 +272,7 @@ router.get('/info', authenticateJWT, async(req, res) => {
 })
 
 router.get('/spotlight', (req, res) => {
-    const query = "SELECT seller_id,name,email,location,bio,profile_picture FROM sellers WHERE weeklyartisan=true AND blocked=false"
+    const query = "SELECT seller_id,name,email,phone,location,bio,profile_picture FROM sellers WHERE weeklyartisan=true AND blocked=false"
     client.query(query)
         .then(result => {
             res.status(200).json(result.rows)
