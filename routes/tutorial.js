@@ -11,8 +11,8 @@ router.post('/new', authenticateJWT, (req, res) => {
     }*/
     if (req.userObject.typeOfUser == "admin") {
         if (req.body.hasOwnProperty('title') || req.body.hasOwnProperty('content')) {
-            const query = "INSERT INTO tutorials (title,content) VALUES ($1,$2)"
-            const values = [req.body.title, req.body.content]
+            const query = "INSERT INTO tutorials (title,content,description) VALUES ($1,$2,$3)"
+            const values = [req.body.title, req.body.content, req.body.description]
             client.query(query, values)
                 .then(result => {
                     res.sendStatus(201)

@@ -4,7 +4,7 @@ POST http://localhost:3000/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
+    "email":"rohan@yahoo.com",
     "password":"12345678"
 }
 
@@ -439,6 +439,40 @@ GET http://localhost:3000/inventory/sort/price/asc
 //get catalog sorted alphabetically A-Z
 ###
 GET http://localhost:3000/inventory/sort/alphabetical
+
+
+
+
+//QUERY FORMS API
+
+//get list of all query forms (only admin can do this)
+###
+GET http://localhost:3000/message/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJyb2hhbiIsInR5cGVPZlVzZXIiOiJzZWxsZXIiLCJpYXQiOjE2MTg5MTE0OTV9.mPbg4JqcoIALB4wEe06URvDgNeZsGsXWPDUH8RWsD7M
+
+
+###
+//fix this
+//create a new query form (only a customer can do this)
+POST http://localhost:3000/message/new
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+Content-Type: application/json
+
+{
+    "subject":"Hello Admin",
+    "content":"Hi Admin! I'm a customer"
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

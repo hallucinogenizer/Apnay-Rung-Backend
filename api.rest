@@ -278,20 +278,20 @@ Content-Type: application/json
 //QUERY FORMS API
 
 //get list of all query forms (only admin can do this)
+###
 GET https://apnay-rung-api.herokuapp.com/message/all
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
 
 
 ###
-
 //fix this
 //create a new query form (only a customer can do this)
 POST https://apnay-rung-api.herokuapp.com/message/new
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJNdWhhbW1hZCBSb2hhbiBIdXNzYWluIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2ODQwMzY5fQ.0ORPPISR2pib-wEx2vLVC9-9zQYfbC0A6SI-P6w2l9c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
 Content-Type: application/json
 
 {
-    "subject":"Say Hi",
+    "subject":"Hello Admin",
     "content":"Hi Admin! I'm a customer"
 }
 
