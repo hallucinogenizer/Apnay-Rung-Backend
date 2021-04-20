@@ -13,7 +13,8 @@ function replaceIdWithTitle(result, res) {
                     client.query(title_query, title_values, (err, title_result) => {
                         if (title_result.rowCount < 1) {
                             console.log("Not found:", item_id)
-                                // reject()
+                            result.rows[index1].items[index2].push("Item Deleted")
+                            result.rows[index1].items[index2].push("https://cdn.onlinewebfonts.com/svg/img_229205.png")
                             resolve()
                         } else {
                             result.rows[index1].items[index2].push(title_result.rows[0].title)
