@@ -14,6 +14,7 @@ function replaceIdWithTitle(result, res) {
                         if (title_result.rowCount < 1) {
                             console.log("Not found:", item_id)
                                 // reject()
+                            resolve()
                         } else {
                             result.rows[index1].items[index2].push(title_result.rows[0].title)
                             result.rows[index1].items[index2].push(title_result.rows[0].image[0])
