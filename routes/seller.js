@@ -24,7 +24,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ dest: './images/', storage: storage })
 
-
+//toggle block
 router.patch('/block/:id', authenticateJWT, (req, res) => {
     // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
     if (req.userObject.typeOfUser == "admin") {
@@ -42,7 +42,7 @@ router.patch('/block/:id', authenticateJWT, (req, res) => {
 })
 
 router.get('/id/:id', async(req, res) => {
-    const query = "SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE seller_id=$1"
+    const query = "SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,approved,profile_picture FROM public.sellers WHERE seller_id=$1"
     const values = [req.params.id]
     try {
         const result = await client.query(query, values)
@@ -67,7 +67,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
     */
     if (req.userObject.typeOfUser == "admin") {
         try {
-            const result = await client.query(`SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers WHERE name LIKE $1`, [`%` + req.body.query + `%`])
+            const result = await client.query(`SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,approved,profile_picture FROM public.sellers WHERE name LIKE $1`, [`%` + req.body.query + `%`])
             if (result.rowCount < 1) {
                 res.sendStatus(404)
             } else {
@@ -84,7 +84,7 @@ router.get('/search', authenticateJWT, async(req, res) => {
 
 router.get('/all', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == "admin") {
-        const query = `SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,profile_picture FROM public.sellers ORDER BY seller_id`
+        const query = `SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,approved,profile_picture FROM public.sellers ORDER BY seller_id`
 
         client
             .query(query)
@@ -95,6 +95,56 @@ router.get('/all', authenticateJWT, (req, res) => {
                 console.log(err)
                 res.sendStatus()
             })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
+router.get('/all/unapproved', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == "admin") {
+        const query = `SELECT seller_id,name,email,phone,location,bio,weeklyartisan,blocked,approved,profile_picture FROM public.sellers WHERE approved=false ORDER BY seller_id`
+
+        client
+            .query(query)
+            .then(result => {
+                res.status(200).json(result.rows)
+            })
+            .catch(err => {
+                console.log(err)
+                res.sendStatus()
+            })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
+router.patch('/approve/:id', authenticateJWT, (req, res) => {
+    // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
+    if (req.userObject.typeOfUser == "admin") {
+        const query = "UPDATE sellers SET approved = true WHERE seller_id=$1"
+        const values = [req.params.id]
+        client.query(query, values).then(result => {
+            res.sendStatus(200)
+        }).catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
+router.patch('/disapprove/:id', authenticateJWT, (req, res) => {
+    // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
+    if (req.userObject.typeOfUser == "admin") {
+        const query = "UPDATE sellers SET approved = false WHERE seller_id=$1"
+        const values = [req.params.id]
+        client.query(query, values).then(result => {
+            res.sendStatus(200)
+        }).catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
     } else {
         res.sendStatus(401)
     }
