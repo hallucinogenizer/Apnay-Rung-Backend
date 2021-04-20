@@ -69,7 +69,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiO
 ###
 PATCH http://localhost:3000/customer/block/15
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
-content-type: application/json
 
 ###
 GET http://localhost:3000/customer/id/15
@@ -416,6 +415,21 @@ Content-Type: application/json
 {
     "item_id":5,
     "stock_increment":10
+}
+
+
+//update an item in the inventory
+###
+PATCH http://localhost:3000/inventory/update/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
+Content-Type: application/json
+
+{
+    "title":"Ajrak",
+    "description":"This is an ajrak of great quality.",
+    "category":"clothing",
+    "price":750,
+    "stock":11
 }
 
 

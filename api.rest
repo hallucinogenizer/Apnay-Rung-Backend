@@ -128,7 +128,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiO
 
 
 
+
 //SELLER API
+
+
+###
+//retrieve list of all sellers
+GET https://apnay-rung-api.herokuapp.com/seller/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+
+
+
+
 ###
 //signup a seller
 POST https://apnay-rung-api.herokuapp.com/seller/new
@@ -158,16 +171,16 @@ GET https://apnay-rung-api.herokuapp.com/seller/limit/2
 ###
 //update a seller's account settings
 PATCH https://apnay-rung-api.herokuapp.com/seller/update
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlNoYWZheSBTaHVtYWlsIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODkzMDkyMX0.Ni-awDIxm3rwjPBWOtTlre8XStfm9IkKffA3guCWcb4
 Content-Type: application/json
 
 {
     "name": "Shafay Shumail",
     "email": "shafay@gmail.com",
-    "password":"12345678",
-    "passwordChanged":true,
-    "location": "Lahore",
-    "bio": "Wot?"
+    "password":"",
+    "passwordChanged":false,
+    "location": "Balochistan",
+    "bio": "I am an Artisan in Balochistan."
 }
 //all of these fields must be present in the request, even if only one of them is being updated.
 
@@ -179,7 +192,7 @@ POST https://apnay-rung-api.herokuapp.com/seller/verify
 Content-Type: application/json
 
 {
-    "email":"me@me.com",
+    "email":"shafay@gmail.com",
     "password":"12345678"
 }
 
@@ -200,11 +213,11 @@ Content-Type: application/json
     "query":"m"
 }
 
-
+//get all info of the currently logged in seller
 ###
-//retrieve list of all sellers
-GET https://apnay-rung-api.herokuapp.com/seller/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+GET https://apnay-rung-api.herokuapp.com/seller/info
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+
 
 
 //get all sellers who are in spotlight (weeklyartisan)

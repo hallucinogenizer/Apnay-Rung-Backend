@@ -79,6 +79,36 @@ router.post('/new', authenticateJWT, async(req, res) => {
     }
 })
 
+router.patch('/update/:item_id', authenticateJWT, (req, res) => {
+    /*
+    {
+        'title':____,
+        'description':______,
+        'category':_________,
+        'price':_____,
+        'stock':______
+    }
+    */
+    if (req.userObject.typeOfUser == 'seller') {
+        const query = "UPDATE inventory SET title=$1, description=$2, category=$3, price=$4, stock=$5 WHERE item_id=$6 AND seller_id=$7"
+        const values = [req.body.title, req.body.description, req.body.category, req.body.price, req.body.stock, req.params.item_id, req.userObject.id]
+        client.query(query, values)
+            .then(response => {
+                if (response.rowCount > 0) {
+                    res.sendStatus(202)
+                } else {
+                    res.sendStatus(406)
+                }
+            })
+            .catch(err => {
+                res.sendStatus(500)
+                console.log(err)
+            })
+    } else {
+        res.sendStatus(401)
+    }
+})
+
 router.get('/id/:item_id', async(req, res) => {
     const query = "SELECT * FROM inventory WHERE item_id=$1"
     const values = [req.params.item_id]
@@ -199,7 +229,6 @@ router.get('/sort/alphabetical', (req, res) => {
             console.log(err)
         })
 })
-
 
 router.patch('/stock', authenticateJWT, (req, res) => {
     /*

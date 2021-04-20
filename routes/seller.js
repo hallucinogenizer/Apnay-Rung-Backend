@@ -100,7 +100,6 @@ router.get('/all', authenticateJWT, (req, res) => {
     }
 })
 
-//find a secure way of doing this like parameterized queries
 router.post('/new', upload.single('cnic_image'), async(req, res) => {
     //generating hashed password
     try {
@@ -208,6 +207,34 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     }
 })
 
+router.patch('/profilepicture', authenticateJWT, upload.single('profilepicture'), (req, res) => {
+    const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
+
+    fs.readFile(finalfile, 'hex', function(err, imgData) {
+        if (err) {
+            res.sendStatus(500)
+            console.log(err)
+        } else {
+            imgData = '\\x' + imgData;
+            const query = "UPDATE sellers SET profile_picture=$1 WHERE seller_id=$2"
+            const values = [imgData, req.userObject.id]
+
+            client.query(query, values)
+                .then(response => {
+                    if (response.rowCount > 0) {
+                        res.sendStatus(202)
+                    } else {
+                        res.sendStatus(204)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.sendStatus(500)
+                })
+        }
+    })
+})
+
 router.post('/verify', async(req, res) => {
     // const query = 
     try {
@@ -299,5 +326,7 @@ router.patch('/spotlight/:seller_id', authenticateJWT, (req, res) => {
         res.sendStatus(401)
     }
 })
+
+
 
 module.exports = router
