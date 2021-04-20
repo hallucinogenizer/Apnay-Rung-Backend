@@ -492,6 +492,19 @@ Content-Type: application/json
 }
 
 
+//update an item in the inventory
+###
+PATCH http://localhost:3000/inventory/update/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
+Content-Type: application/json
+
+{
+    "title":"Ajrak",
+    "description":"This is an ajrak of great quality.",
+    "category":"clothing",
+    "price":750,
+    "stock":11
+}
 
 
 //DELETE an item from inventory
