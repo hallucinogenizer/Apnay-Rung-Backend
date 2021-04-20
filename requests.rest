@@ -416,7 +416,6 @@ Content-Type: application/json
 {
     "title":"Bartan",
     "description":"A bartan",
-    "image":["http://sahapedia-drupal-s3-bucket.s3-ap-southeast-1.amazonaws.com/12_TREY%20HASHE%20VAALI%20AJRAK.JPG"],
     "category":"clothing",
     "price":750,
     "stock":10

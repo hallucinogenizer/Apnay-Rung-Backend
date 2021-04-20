@@ -492,7 +492,6 @@ Content-Type: application/json
 {
     "title":"Carpet",
     "description":"This is a traditional handwoven carpet from Baluchistan.",
-    "image":["https://i.ibb.co/PzwsLMt/image-2-21.jpg"],
     "category":"decor",
     "price":5000,
     "stock":8

@@ -3,6 +3,20 @@ const router = express.Router()
 
 const authenticateJWT = require("../utilities/authenticateJWT")
 const client = require('../utilities/clientConnect')
+const fs = require('fs')
+const path = require('path')
+const multer = require('multer')
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './images/')
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)) //Appending .jpg
+    }
+})
+
+var upload = multer({ dest: './images/', storage: storage })
 
 function findAvgRating(item_id) {
     return new Promise((resolve, reject) => {
@@ -32,7 +46,12 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 
     client.query(query, values)
         .then(result => {
-            res.status(200).json(result.rows)
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                if (i == result.rows.length - 1) {
+                    res.status(200).json(result.rows)
+                }
+            }
         })
         .catch(err => {
             res.sendStatus(500)
@@ -41,10 +60,15 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 })
 
 router.get('/all', (req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id"
+    const query = "SELECT item_id,title,description,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id"
     client.query(query)
         .then(result => {
-            res.status(200).json(result.rows)
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                if (i == result.rows.length - 1) {
+                    res.status(200).json(result.rows)
+                }
+            }
         })
         .catch(err => {
             res.sendStatus(500)
@@ -52,30 +76,38 @@ router.get('/all', (req, res) => {
         })
 })
 
-router.post('/new', authenticateJWT, async(req, res) => {
+router.post('/new', upload.single('image'), async(req, res) => {
     /*
         {
             title:____,
             description:____,
-            image:{______}, //array of URLs
+            image:<byte-stream>,
             category:_______,
             price:__________,
             stock:______
         }
     */
-    if (req.userObject.typeOfUser == 'seller') {
-        const query = "INSERT INTO inventory (title, description, image, category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-        const values = [req.body.title, req.body.description, req.body.image, req.body.category, req.body.price, req.body.stock, req.userObject.id]
+    //if (req.userObject.typeOfUser == 'seller') {
+    const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
+    fs.readFile(finalfile, 'hex', function(err, imgData) {
+            if (err) {
+                console.log(err)
+            } else {
+                imgData = '\\x' + imgData;
+                const query = "INSERT INTO inventory (title, description, image,  category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+                const values = [req.body.title, req.body.description, imgData, req.body.category, req.body.price, req.body.stock, 12]
 
-        client.query(query, values)
-            .then(response => {
-                res.sendStatus(200)
-            })
-            .catch(err => {
-                res.sendStatus(500)
-                    // console.log(err)
-            })
-    }
+                client.query(query, values)
+                    .then(response => {
+                        res.sendStatus(200)
+                    })
+                    .catch(err => {
+                        res.sendStatus(500)
+                            // console.log(err)
+                    })
+            }
+        })
+        //}
 })
 
 router.patch('/update/:item_id', authenticateJWT, (req, res) => {
@@ -116,7 +148,12 @@ router.get('/id/:item_id', async(req, res) => {
         .then(async(result) => {
             if (result.rowCount > 0) {
                 result.rows[0].rating = await findAvgRating(req.params.item_id)
-                res.status(200).json(result.rows)
+                for (let i = 0; i < result.rows.length; i++) {
+                    result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                    if (i == result.rows.length - 1) {
+                        res.status(200).json(result.rows)
+                    }
+                }
             } else {
                 res.sendStatus(204)
             }
@@ -169,7 +206,12 @@ router.get('/limit/:limit', async(req, res) => {
             const avg = await findAvgRating(result.rows[index].item_id)
             result.rows[index].rating = avg
             if (index == result.rows.length - 1) {
-                res.status(200).json(result.rows)
+                for (let i = 0; i < result.rows.length; i++) {
+                    result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                    if (i == result.rows.length - 1) {
+                        res.status(200).json(result.rows)
+                    }
+                }
             }
         }
     } catch (err) {
@@ -185,7 +227,12 @@ router.get('/location/:province', (req, res) => {
 
     client.query(query, values)
         .then(result => {
-            res.status(200).json(result.rows)
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                if (i == result.rows.length - 1) {
+                    res.status(200).json(result.rows)
+                }
+            }
         })
         .catch(err => {
             res.sendStatus(500)
@@ -197,7 +244,12 @@ router.get('/sort/price/asc', (req, res) => {
     const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price ASC;"
     client.query(query)
         .then(result => {
-            res.status(200).json(result.rows)
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                if (i == result.rows.length - 1) {
+                    res.status(200).json(result.rows)
+                }
+            }
         })
         .catch(err => {
             res.sendStatus(500)
@@ -209,7 +261,12 @@ router.get('/sort/price/desc', (req, res) => {
     const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price DESC;"
     client.query(query)
         .then(result => {
-            res.status(200).json(result.rows)
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                if (i == result.rows.length - 1) {
+                    res.status(200).json(result.rows)
+                }
+            }
         })
         .catch(err => {
             res.sendStatus(500)
@@ -221,7 +278,12 @@ router.get('/sort/alphabetical', (req, res) => {
     const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.title ASC;"
     client.query(query)
         .then(result => {
-            res.status(200).json(result.rows)
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                if (i == result.rows.length - 1) {
+                    res.status(200).json(result.rows)
+                }
+            }
         })
         .catch(err => {
             res.sendStatus(500)

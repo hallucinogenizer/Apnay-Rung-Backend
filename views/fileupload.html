@@ -9,88 +9,22 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
+        
 
-        <form id='form' action='http://localhost:3000/seller/new' method="post" enctype="multipart/form-data">
-            <input type="text" name="name" id="name" placeholder="name">
-            <input type="email" name="email" id="email" placeholder="email"><br>
-            <input type="password" name="password" placeholder="password">
-            <input type="text" name="location" placeholder="location"><br>
-            <input type="text" name="cnic" placeholder="cnic">
+        <form id='form' action='http://localhost:3000/inventory/new' method="post" enctype="multipart/form-data">
+            <input type="text" name="title" id="title" placeholder="title">
+            <input type="text" name="description" id="description" placeholder="description"><br>
+            <input type="text" name="category" placeholder="category">
+            <input type="number" name="price" placeholder="price"><br>
+            <input type="number" name="stock" placeholder="stock">
             
-            <input type="text" name="sec_question1" placeholder="secret question1">
-            <input type="text" name="sec_question2" placeholder="secret question2"><br>
+            <input type="file" name="image" id='image'/><br>
             <input type="submit">
         </form>
-        <input type="file" name="cnic_image" id='fileinput'/><br>
-
         
         
-        <script>
-            //const input = document.getElementById('fileinput');
-            const form = document.getElementById('form')
-            const fileinput = document.getElementById('fileinput').files[0]
-
-            // Add a listener on your input
-            // It will be triggered when a file will be selected
-            form.addEventListener('submit',(event)=>{
-
-                event.preventDefault()
-
-                var formData = new FormData(form)
-
-
-                formData.append('cnic_image',fileinput,'x.png')
-
-                fetch('http://localhost:3000/seller/new',
-                { // Your POST endpoint
-                    method: 'POST',
-                    body: formData
-                })
-                .then(
-                    response => {
-                        if (response.status==201) {
-                            console.log(response)
-                        }
-                    }
-                ).catch(
-                    error => console.log(error) // Handle the error response object
-                )
-            });
-
-
-
-
-
-
-
-            async function myFunction() {
-
-                const response = await fetch("https://apnay-rung-api.herokuapp.com/customer/info", {
-                    method: "GET",
-                    withCredentials: true,
-                    credentials: "include",
-                    headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE4MTU0MDAwfQ.GJ0m2enUdyz77metOcRZbY9OUMuV4WdS4FDg-GoxXAA`,
-                    "Content-Type": "application/json"
-                    }
-                });
-
-                console.log(response)
-
-                /*fetch('https://apnay-rung-api.herokuapp.com/order/review/item/2',{
-                    method:'GET',
-                    withCredentials:false
-                })
-                .then(async (response) =>{
-                    const res = await response.json()
-                    console.log(res)
-                }).catch(err=>{
-                    console.log(err)
-                })*/
-            }
-
+        <script src='test.js'>
         </script>
 
-        <button type="button" onClick="myFunction()">Login</button>
     </body>
 </html>
