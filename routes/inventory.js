@@ -90,25 +90,25 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
     if (req.userObject.typeOfUser == 'seller') {
         const finalfile = path.join(process.env.ROOT_DIRECTORY, req.file.destination, req.file.filename)
         console.log(finalfile)
-            /*fs.readFile(finalfile, 'hex', function(err, imgData) {
-                if (err) {
-                    console.log("1: ", err)
-                    res.sendStatus(500)
-                } else {
-                    imgData = '\\x' + imgData;
-                    const query = "INSERT INTO inventory (title, description, image,  category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-                    const values = [req.body.title, req.body.description, imgData, req.body.category, req.body.price, req.body.stock, 12]
+        fs.readFile(finalfile, 'hex', function(err, imgData) {
+            if (err) {
+                console.log("1: ", err)
+                res.sendStatus(500)
+            } else {
+                imgData = '\\x' + imgData;
+                const query = "INSERT INTO inventory (title, description, image,  category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+                const values = [req.body.title, req.body.description, imgData, req.body.category, req.body.price, req.body.stock, 12]
 
-                    client.query(query, values)
-                        .then(response => {
-                            res.sendStatus(200)
-                        })
-                        .catch(err => {
-                            res.sendStatus(500)
-                            console.log("2:", err)
-                        })
-                }
-            })*/
+                client.query(query, values)
+                    .then(response => {
+                        res.sendStatus(200)
+                    })
+                    .catch(err => {
+                        res.sendStatus(500)
+                        console.log("2:", err)
+                    })
+            }
+        })
     } else {
         res.sendStatus(401)
     }
