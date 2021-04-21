@@ -89,6 +89,7 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
     */
     if (req.userObject.typeOfUser == 'seller') {
         const finalfile = path.join(process.env.ROOT_DIRECTORY, req.file.destination, req.file.filename)
+        console.log(finalfile)
         fs.readFile(finalfile, 'hex', function(err, imgData) {
             if (err) {
                 console.log(err)
