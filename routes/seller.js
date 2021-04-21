@@ -159,6 +159,7 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
         fs.readFile(finalfile, 'hex', function(err, imgData) {
             if (err) {
                 console.log(err)
+                res.sendStatus(500)
             } else {
                 imgData = '\\x' + imgData;
                 const query = `INSERT INTO sellers (name,email,password,phone,location,cnic_image,sec_questions) VALUES ($1, $2, $3, $4 ,$5, $6, $7)`
@@ -170,11 +171,13 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
                     })
                     .catch(err => {
                         console.log(err)
+                        res.sendStatus(501)
                     })
             }
         })
     } catch (err) {
         console.log(err)
+        res.sendStatus(502)
     }
 })
 
