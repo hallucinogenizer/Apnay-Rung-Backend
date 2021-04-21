@@ -178,7 +178,7 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
     }
 })
 
-router.get('/cnic/:seller_id', authenticateJWT, (req, res) => {
+router.get('/cnic/:seller_id', (req, res) => {
     if (req.userObject.typeOfUser == 'admin' || req.userObject.typeOfUser == 'seller') {
         const query = "SELECT cnic_image AS data FROM sellers WHERE seller_id=$1"
         const values = [req.params.seller_id]
