@@ -92,7 +92,8 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
         console.log(finalfile)
         fs.readFile(finalfile, 'hex', function(err, imgData) {
             if (err) {
-                console.log(err)
+                console.log("1: ", err)
+                res.sendStatus(500)
             } else {
                 imgData = '\\x' + imgData;
                 const query = "INSERT INTO inventory (title, description, image,  category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
@@ -104,7 +105,7 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
                     })
                     .catch(err => {
                         res.sendStatus(500)
-                            // console.log(err)
+                        console.log("2:", err)
                     })
             }
         })
