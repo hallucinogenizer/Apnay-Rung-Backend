@@ -88,7 +88,7 @@ router.post('/new', upload.single('image'), async(req, res) => {
         }
     */
     if (req.userObject.typeOfUser == 'seller') {
-        const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
+        const finalfile = path.join(req.file.filename)
         console.log("finalfile: ", finalfile)
         fs.readFile(finalfile, 'hex', function(err, imgData) {
             if (err) {
