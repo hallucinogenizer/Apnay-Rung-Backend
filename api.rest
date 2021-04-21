@@ -160,7 +160,6 @@ content-type: application/json
 ###
 //get cnic image by seller_id
 GET https://apnay-rung-api.herokuapp.com/seller/cnic/13
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
 
 
 //get a certain number of sellers

@@ -76,7 +76,7 @@ router.get('/all', (req, res) => {
         })
 })
 
-router.post('/new', upload.single('image'), async(req, res) => {
+router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => {
     /*
         {
             title:____,
@@ -88,8 +88,7 @@ router.post('/new', upload.single('image'), async(req, res) => {
         }
     */
     if (req.userObject.typeOfUser == 'seller') {
-        const finalfile = path.join(req.file.filename)
-        console.log("finalfile: ", finalfile)
+        const finalfile = path.join(process.env.ROOT_DIRECTORY, req.file.destination, req.file.filename)
         fs.readFile(finalfile, 'hex', function(err, imgData) {
             if (err) {
                 console.log(err)

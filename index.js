@@ -36,7 +36,6 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.engine('html', require('ejs').renderFile);
 app.use(cors({ origin: true, credentials: true }));
 // app.use(cors({ origin: 'https://codesandbox.io', credentials: true }));
-app.use(express.static('images'));
 app.use('/customer', customer)
 app.use('/admin', admin)
 app.use('/seller', seller)
