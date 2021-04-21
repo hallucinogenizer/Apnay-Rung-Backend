@@ -630,7 +630,7 @@ Content-Type: application/json
 
 //Get an item's image
 ###
-GET https://apnay-rung-api.herokuapp.com/image/item/38
+GET https://apnay-rung-api.herokuapp.com/image/item/41
 
 //admin token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
 

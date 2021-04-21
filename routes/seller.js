@@ -137,10 +137,26 @@ router.patch('/approve/:id', authenticateJWT, (req, res) => {
 router.patch('/disapprove/:id', authenticateJWT, (req, res) => {
     // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
     if (req.userObject.typeOfUser == "admin") {
-        const query = "UPDATE sellers SET approved = false WHERE seller_id=$1"
-        const values = [req.params.id]
+        client.query("BEGIN")
+        let query = "UPDATE sellers SET approved = false WHERE seller_id=$1"
+        let values = [req.params.id]
         client.query(query, values).then(result => {
-            res.sendStatus(200)
+            if (result.rowCount > 0) {
+                query = "DELETE FROM sellers WHERE seller_id=$1"
+                client.query(query, values)
+                    .then(response => {
+                        if (response.rowCount > 0) {
+                            client.query("COMMIT")
+                            res.sendStatus(200)
+                        } else {
+                            client.query("ROLLBACK")
+                            res.sendStatus(204)
+                        }
+                    })
+
+            } else {
+                res.sendStatus(204)
+            }
         }).catch(err => {
             console.log(err)
             res.sendStatus(500)
