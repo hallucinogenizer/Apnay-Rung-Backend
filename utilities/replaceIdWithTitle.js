@@ -7,7 +7,7 @@ function replaceIdWithTitle(result, res) {
         items.forEach((item, index2) => {
             const item_id = item[0];
             if (item_id != undefined) {
-                const title_query = "SELECT title,image FROM inventory WHERE item_id=$1"
+                const title_query = "SELECT item_id,title,image FROM inventory WHERE item_id=$1"
                 const title_values = [item_id]
                 promises.push(new Promise(function(resolve, reject) {
                     client.query(title_query, title_values, (err, title_result) => {
@@ -18,7 +18,7 @@ function replaceIdWithTitle(result, res) {
                             resolve()
                         } else {
                             result.rows[index1].items[index2].push(title_result.rows[0].title)
-                            result.rows[index1].items[index2].push(title_result.rows[0].image[0])
+                            result.rows[index1].items[index2].push("https://apnay-rung-api.herokuapp.com/image/item/" + title_result.rows[0].item_id.toString())
                             resolve()
                         }
                     })
