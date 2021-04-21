@@ -87,9 +87,10 @@ router.post('/new', upload.single('image'), async(req, res) => {
             stock:______
         }
     */
-    //if (req.userObject.typeOfUser == 'seller') {
-    const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
-    fs.readFile(finalfile, 'hex', function(err, imgData) {
+    if (req.userObject.typeOfUser == 'seller') {
+        const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
+        console.log("finalfile: ", finalfile)
+        fs.readFile(finalfile, 'hex', function(err, imgData) {
             if (err) {
                 console.log(err)
             } else {
@@ -107,7 +108,9 @@ router.post('/new', upload.single('image'), async(req, res) => {
                     })
             }
         })
-        //}
+    } else {
+        res.sendStatus(401)
+    }
 })
 
 router.patch('/update/:item_id', authenticateJWT, (req, res) => {

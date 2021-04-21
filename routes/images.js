@@ -7,9 +7,13 @@ router.get('/item/:item_id', (req, res) => {
     const values = [req.params.item_id]
     client.query(query, values)
         .then(result => {
-            res.contentType('jpeg')
-            res.status(200)
-            res.end(result.rows[0].data)
+            if (result.rowCount > 0) {
+                res.contentType('jpeg')
+                res.status(200)
+                res.end(result.rows[0].data)
+            } else {
+                res.sendStatus(204)
+            }
         })
         .catch(err => {
             console.log(err)
