@@ -179,20 +179,18 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
 })
 
 router.get('/cnic/:seller_id', (req, res) => {
-    if (req.userObject.typeOfUser == 'admin' || req.userObject.typeOfUser == 'seller') {
-        const query = "SELECT cnic_image AS data FROM sellers WHERE seller_id=$1"
-        const values = [req.params.seller_id]
-        client.query(query, values)
-            .then(result => {
-                res.contentType('jpeg')
-                res.status(200)
-                res.end(result.rows[0].data)
-            })
-            .catch(err => {
-                console.log(err)
-                res.sendStatus(500)
-            })
-    }
+    const query = "SELECT cnic_image AS data FROM sellers WHERE seller_id=$1"
+    const values = [req.params.seller_id]
+    client.query(query, values)
+        .then(result => {
+            res.contentType('jpeg')
+            res.status(200)
+            res.end(result.rows[0].data)
+        })
+        .catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
 })
 
 router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
