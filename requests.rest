@@ -545,9 +545,9 @@ DELETE http://localhost:3000/notification/all
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
 
 
-//IMAGE API
+//Get an item's image
 ###
-GET http://localhost:3000/images/vafabatool.jpg
+GET http://localhost:3000/image/item/2
 
 
 
