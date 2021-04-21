@@ -144,7 +144,7 @@ router.patch('/update/:item_id', authenticateJWT, (req, res) => {
     }
 })
 
-router.patch('/update/profile_picture/:item_id', authenticateJWT, upload.single('image'), (req, res) => {
+router.post('/update/image/:item_id', authenticateJWT, upload.single('image'), (req, res) => {
     const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
     fs.readFile(finalfile, 'hex', function(err, imgData) {
         if (err) {

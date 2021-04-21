@@ -274,7 +274,7 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     }
 })
 
-router.patch('/update/profile_picture', authenticateJWT, upload.single('profile_picture'), (req, res) => {
+router.post('/update/profile_picture', authenticateJWT, upload.single('profile_picture'), (req, res) => {
     const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
     fs.readFile(finalfile, 'hex', function(err, imgData) {
         if (err) {
@@ -284,34 +284,6 @@ router.patch('/update/profile_picture', authenticateJWT, upload.single('profile_
             const url = "https://apnay-rung-api.herokuapp.com/image/seller/" + req.userObject.id.toString()
             const query = "UPDATE sellers SET profile_picture_data=$1 AND profile_picture=$2 WHERE seller_id=$3"
             const values = [imgData, url, req.userObject.id]
-
-            client.query(query, values)
-                .then(response => {
-                    if (response.rowCount > 0) {
-                        res.sendStatus(202)
-                    } else {
-                        res.sendStatus(204)
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                    res.sendStatus(500)
-                })
-        }
-    })
-})
-
-router.patch('/profilepicture', authenticateJWT, upload.single('profilepicture'), (req, res) => {
-    const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
-
-    fs.readFile(finalfile, 'hex', function(err, imgData) {
-        if (err) {
-            res.sendStatus(500)
-            console.log(err)
-        } else {
-            imgData = '\\x' + imgData;
-            const query = "UPDATE sellers SET profile_picture=$1 WHERE seller_id=$2"
-            const values = [imgData, req.userObject.id]
 
             client.query(query, values)
                 .then(response => {
