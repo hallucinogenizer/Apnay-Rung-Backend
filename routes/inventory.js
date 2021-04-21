@@ -222,17 +222,22 @@ router.get('/limit/:limit', async(req, res) => {
 })
 
 router.get('/location/:province', (req, res) => {
-    const query = "SELECT inventory.item_id, inventory.title, inventory.description, inventory.image, inventory.category, inventory.stock, inventory.price, sellers.seller_id, sellers.name FROM inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id WHERE sellers.location=$1;"
+    const query = "SELECT inventory.item_id, inventory.title, inventory.description, inventory.image, inventory.category, inventory.stock, inventory.price, sellers.seller_id, sellers.name AS seller_name FROM inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id WHERE sellers.location=$1;"
     const values = [req.params.province]
 
     client.query(query, values)
         .then(result => {
-            for (let i = 0; i < result.rows.length; i++) {
-                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
-                if (i == result.rows.length - 1) {
-                    res.status(200).json(result.rows)
+            if (result.rowCount > 0) {
+                for (let i = 0; i < result.rows.length; i++) {
+                    result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                    if (i == result.rows.length - 1) {
+                        res.status(200).json(result.rows)
+                    }
                 }
+            } else {
+                res.status(200).json(result.rows)
             }
+
         })
         .catch(err => {
             res.sendStatus(500)
@@ -241,7 +246,7 @@ router.get('/location/:province', (req, res) => {
 })
 
 router.get('/sort/price/asc', (req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price ASC;"
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price ASC;"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
@@ -258,7 +263,7 @@ router.get('/sort/price/asc', (req, res) => {
 })
 
 router.get('/sort/price/desc', (req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price DESC;"
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price DESC;"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
@@ -275,7 +280,7 @@ router.get('/sort/price/desc', (req, res) => {
 })
 
 router.get('/sort/alphabetical', (req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.title ASC;"
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.title ASC;"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
