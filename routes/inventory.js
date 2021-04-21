@@ -144,6 +144,34 @@ router.patch('/update/:item_id', authenticateJWT, (req, res) => {
     }
 })
 
+router.patch('/update/profile_picture/:item_id', authenticateJWT, upload.single('image'), (req, res) => {
+    const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
+    fs.readFile(finalfile, 'hex', function(err, imgData) {
+        if (err) {
+            console.log(err)
+            res.sendStatus(500)
+        } else {
+            imgData = '\\x' + imgData;
+            const url = process.env.URL + "/image/item/" + req.params.item_id.toString()
+            const query = "UPDATE inventory SET image=$1 WHERE item_id=$2"
+            const values = [imgData, req.params.item_id]
+
+            client.query(query, values)
+                .then(response => {
+                    if (response.rowCount > 0) {
+                        res.sendStatus(202)
+                    } else {
+                        res.sendStatus(204)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.sendStatus(500)
+                })
+        }
+    })
+})
+
 router.get('/id/:item_id', async(req, res) => {
     const query = "SELECT * FROM inventory WHERE item_id=$1"
     const values = [req.params.item_id]

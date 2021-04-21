@@ -21,7 +21,4 @@ router.get('/item/:item_id', (req, res) => {
         })
 })
 
-
-
-
 module.exports = router
