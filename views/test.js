@@ -26,7 +26,7 @@ document.querySelector("#form2").addEventListener("submit", (e) => {
         withCredentials: true,
         credentials: "include",
         headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0`
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJWYWZhIEJhdG9vbCIsInR5cGVPZlVzZXIiOiJzZWxsZXIiLCJpYXQiOjE2MTkxMjA5MDJ9.GaloR9PH0mSBJBwAIXoqZFRSY96HlEsQCqhnO23TzZE`
         },
         body: new FormData(document.querySelector("#form2"))
     }).then(response => {

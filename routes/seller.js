@@ -275,15 +275,14 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
 })
 
 router.post('/update/profile_picture', authenticateJWT, upload.single('profile_picture'), (req, res) => {
-    console.log(req.file.filename)
     const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
     fs.readFile(finalfile, 'hex', function(err, imgData) {
         if (err) {
             console.log(err)
         } else {
             imgData = '\\x' + imgData;
-            const url = "https://apnay-rung-api.herokuapp.com/image/seller/" + req.userObject.id.toString()
-            const query = "UPDATE sellers SET profile_picture_data=$1 AND profile_picture=$2 WHERE seller_id=$3"
+            const url = process.env.URL + "/image/seller/" + req.userObject.id.toString()
+            const query = "UPDATE sellers SET profile_picture_data=$1, profile_picture=$2 WHERE seller_id=$3"
             const values = [imgData, url, req.userObject.id]
 
             client.query(query, values)

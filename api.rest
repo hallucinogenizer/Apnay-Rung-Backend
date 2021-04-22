@@ -191,8 +191,8 @@ POST https://apnay-rung-api.herokuapp.com/seller/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
-    "password":"12345678"
+    "email":"vafa@vafa.com",
+    "password":"vafa123"
 }
 
 
