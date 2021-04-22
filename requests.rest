@@ -407,7 +407,7 @@ Content-Type: application/json
 
 {
     "title":"Test Tutorial 2",
-    "content":"eBMiX79QegY",
+    "content":"",
     "description":"This tutoriall teaches you things."
 }
 

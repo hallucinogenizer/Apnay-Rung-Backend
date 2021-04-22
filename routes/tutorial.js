@@ -3,7 +3,7 @@ var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const isBlocked = require('../utilities/isBlocked')
-
+const { hasAllFields, constraints } = require('../utilities/hasAllFields')
 router.post('/new', authenticateJWT, (req, res) => {
     /*{
         title:'___',
@@ -85,20 +85,29 @@ router.delete('/id/:id', authenticateJWT, (req, res) => {
 
 router.patch('/id/:id', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == 'admin') {
-        const query = "UPDATE tutorials SET title=$1, content=$2, description=$3 WHERE tutorial_id=$4"
-        const values = [req.body.title, req.body.content, req.body.description, req.params.id]
-        client.query(query, values)
-            .then(response => {
-                if (response.rowCount > 0) {
-                    res.sendStatus(200)
-                } else {
-                    res.sendStatus(204)
-                }
-            })
-            .catch(err => {
-                res.sendStatus(500)
-                console.log(err)
-            })
+        const valid_input = hasAllFields({
+            "title": ["string", -1, "notempty"],
+            "content": ["string", -1, "notempty"],
+            "description": ["string", 200, ""]
+        }, req.body)
+        if (valid_input !== true) {
+            res.status(400).send(valid_input)
+        } else {
+            const query = "UPDATE tutorials SET title=$1, content=$2, description=$3 WHERE tutorial_id=$4"
+            const values = [req.body.title, req.body.content, req.body.description, req.params.id]
+            client.query(query, values)
+                .then(response => {
+                    if (response.rowCount > 0) {
+                        res.sendStatus(200)
+                    } else {
+                        res.sendStatus(204)
+                    }
+                })
+                .catch(err => {
+                    res.sendStatus(500)
+                    console.log(err)
+                })
+        }
     } else {
         res.sendStatus(403)
     }
