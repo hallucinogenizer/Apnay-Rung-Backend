@@ -20,6 +20,7 @@ const notification = require('./routes/notification')
 const ejs = require('ejs')
     //utilities
 const authenticateJWT = require('./utilities/authenticateJWT')
+const { hasAllFields, constraints } = require('../utilities/hasAllFields')
 
 //expressJS
 const express = require('express');
@@ -56,102 +57,110 @@ app.get('/fileupload', (req, res) => {
 })
 
 app.post('/verify', async(req, res) => {
-    let query = `SELECT customer_id,name,password FROM customers WHERE email=$1`
-    let values = [req.body.email]
-    try {
-        let result = await client.query(query, values)
-        let userObject = {
-            id: -1,
-            name: '',
-            typeOfUser: 'customer'
-        }
+    const valid_input = hasAllFields({
+        "email": constraints.email,
+        "password": constraints.password
+    }, req.body)
+    if (valid_input !== true) {
+        res.status(400).send(valid_input)
+    } else {
+        let query = `SELECT customer_id,name,password FROM customers WHERE email=$1`
+        let values = [req.body.email]
+        try {
+            let result = await client.query(query, values)
+            let userObject = {
+                id: -1,
+                name: '',
+                typeOfUser: 'customer'
+            }
 
-        if (result.rowCount > 0) {
-            let promises = []
+            if (result.rowCount > 0) {
+                let promises = []
 
-            promises.push(new Promise((resolve, reject) => {
-                for (let row of result.rows) {
-                    resolve(bcrypt.compare(req.body.password, row.password))
-                    userObject.id = row.customer_id
-                    userObject.name = row.name
-                }
-            }))
-            Promise.all(promises)
-                .then(async(resolve) => {
-                    if (resolve.includes(true)) {
-                        const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
-                        res.status(200).json({ verified: true, typeOfUser: 'customer', accessToken: accessToken }).end()
-                    } else {
-                        console.log(4)
-                        res.status(200).json({ verified: false }).end()
+                promises.push(new Promise((resolve, reject) => {
+                    for (let row of result.rows) {
+                        resolve(bcrypt.compare(req.body.password, row.password))
+                        userObject.id = row.customer_id
+                        userObject.name = row.name
                     }
-                })
-                .catch(err => {
-                    res.sendStatus(500)
-                    console.log(err)
-                })
-        } else {
-            query = "SELECT seller_id, name, password FROM sellers WHERE email=$1 AND blocked=false AND approved=true"
-            values = [req.body.email]
-            result = await client.query(query, values)
-            if (result.rowCount == 0) {
-
-                query = "SELECT admin_id, name, password FROM admins WHERE email=$1"
+                }))
+                Promise.all(promises)
+                    .then(async(resolve) => {
+                        if (resolve.includes(true)) {
+                            const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
+                            res.status(200).json({ verified: true, typeOfUser: 'customer', accessToken: accessToken }).end()
+                        } else {
+                            console.log(4)
+                            res.status(200).json({ verified: false }).end()
+                        }
+                    })
+                    .catch(err => {
+                        res.sendStatus(500)
+                        console.log(err)
+                    })
+            } else {
+                query = "SELECT seller_id, name, password FROM sellers WHERE email=$1 AND blocked=false AND approved=true"
                 values = [req.body.email]
                 result = await client.query(query, values)
                 if (result.rowCount == 0) {
-                    console.log(1)
-                    res.status(200).json({ verified: false }).end()
+
+                    query = "SELECT admin_id, name, password FROM admins WHERE email=$1"
+                    values = [req.body.email]
+                    result = await client.query(query, values)
+                    if (result.rowCount == 0) {
+                        console.log(1)
+                        res.status(200).json({ verified: false }).end()
+                    } else if (result.rowCount == 1) {
+                        userObject = {
+                            id: -1,
+                            name: '',
+                            typeOfUser: 'admin'
+                        }
+                        let promises = []
+                        for (let row of result.rows) {
+                            promises.push(bcrypt.compare(req.body.password, row.password))
+                            userObject.id = row.admin_id
+                            userObject.name = row.name
+                        }
+                        Promise.all(promises).then(resolve => {
+                            if (resolve.includes(true)) {
+                                const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
+                                res.status(200).json({ verified: true, typeOfUser: 'admin', accessToken: accessToken }).end()
+                            } else {
+                                console.log(2)
+                                res.status(200).json({ verified: false }).end()
+                            }
+                        })
+                    }
+
                 } else if (result.rowCount == 1) {
                     userObject = {
                         id: -1,
                         name: '',
-                        typeOfUser: 'admin'
+                        typeOfUser: 'seller'
                     }
                     let promises = []
                     for (let row of result.rows) {
                         promises.push(bcrypt.compare(req.body.password, row.password))
-                        userObject.id = row.admin_id
+                        userObject.id = row.seller_id
                         userObject.name = row.name
                     }
                     Promise.all(promises).then(resolve => {
                         if (resolve.includes(true)) {
                             const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
-                            res.status(200).json({ verified: true, typeOfUser: 'admin', accessToken: accessToken }).end()
+                            res.status(200).json({ verified: true, typeOfUser: 'seller', accessToken: accessToken }).end()
                         } else {
-                            console.log(2)
+                            console.log(3)
                             res.status(200).json({ verified: false }).end()
                         }
                     })
                 }
 
-            } else if (result.rowCount == 1) {
-                userObject = {
-                    id: -1,
-                    name: '',
-                    typeOfUser: 'seller'
-                }
-                let promises = []
-                for (let row of result.rows) {
-                    promises.push(bcrypt.compare(req.body.password, row.password))
-                    userObject.id = row.seller_id
-                    userObject.name = row.name
-                }
-                Promise.all(promises).then(resolve => {
-                    if (resolve.includes(true)) {
-                        const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
-                        res.status(200).json({ verified: true, typeOfUser: 'seller', accessToken: accessToken }).end()
-                    } else {
-                        console.log(3)
-                        res.status(200).json({ verified: false }).end()
-                    }
-                })
             }
 
+        } catch (err) {
+            console.log(err)
         }
-
-    } catch (err) {
-        console.log(err)
     }
 })
 
