@@ -43,6 +43,27 @@ router.post('/new', authenticateJWT, (req, res) => {
     }
 })
 
+router.delete('/:message_id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == 'admin') {
+        const query = "DELETE FROM messages WHERE message_id=$1"
+        const values = [req.params.message_id]
+        client.query(query, values)
+            .then(response => {
+                if (response.rowCount > 0) {
+                    res.sendStatus(200)
+                } else {
+                    res.sendStatus(204)
+                }
+            })
+            .catch(err => {
+                res.sendStatus(500)
+                console.log(err)
+            })
+    } else {
+        res.sendStatus(403)
+    }
+})
+
 module.exports = router
     //new message create
 
