@@ -627,14 +627,13 @@ GET https://apnay-rung-api.herokuapp.com/inventory/sort/alphabetical
 ###
 //create a new notification
 POST https://apnay-rung-api.herokuapp.com/notification/new
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
 Content-Type: application/json
 
 {
-        "title":"Second Notification",
+        "title":"A new seller has registered",
         "type":"message",
-        "details":null,
-        "admin_id":17
+        "details":"Lorem ipsum",
+        "admin_id":1
 }
 //you can only send either a customer_id or a seller_id or an admin_id. One and only one of these. That user will receive the notification.
 

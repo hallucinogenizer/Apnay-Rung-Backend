@@ -44,7 +44,7 @@ router.post('/new', (req, res) => {
 })
 
 router.get('/all', authenticateJWT, isBlocked, async(req, res) => {
-    let query = `SELECT * FROM notifications WHERE ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
+    let query = `SELECT notification_id,title,type,details,TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp FROM notifications WHERE ${req.userObject.typeOfUser+'_id'}=${req.userObject.id}`
     try {
         const result = await client.query(query)
         res.status(200).json(result.rows)
