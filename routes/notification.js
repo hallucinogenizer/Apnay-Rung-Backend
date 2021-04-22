@@ -28,7 +28,7 @@ router.post('/new', (req, res) => {
         values.push(req.body.seller_id)
     } else if (req.body.hasOwnProperty('admin_id') && !req.body.hasOwnProperty('seller_id') && !req.body.hasOwnProperty('customer_id')) {
         filler = "admin_id)"
-        values.push(req.body.seller_id)
+        values.push(req.body.admin_id)
     }
 
     query += filler += " VALUES ($1,$2,$3,$4)"
