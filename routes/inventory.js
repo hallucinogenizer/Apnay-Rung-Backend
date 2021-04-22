@@ -6,6 +6,7 @@ const client = require('../utilities/clientConnect')
 const fs = require('fs')
 const path = require('path')
 const multer = require('multer')
+const { hasAllFields, constraints } = require('../utilities/hasAllFields')
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -80,37 +81,48 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
         {
             title:____,
             description:____,
-            image:<byte-stream>,
             category:_______,
             price:__________,
             stock:______
         }
     */
     if (req.userObject.typeOfUser == 'seller') {
-        const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
+        const valid_input = hasAllFields({
+            "title": ["string", 100, "notempty"],
+            "description": ["string", -1, "notempty"],
+            "category": ["string", 50, "notempty"],
+            "price": ["number", -1, ""],
+            "stock": ["number", -1, ""]
+        }, req.body)
+        if (valid_input !== true) {
+            res.status(400).send(valid_input)
+        } else {
+            const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
 
-        fs.readFile(finalfile, 'hex', function(err, imgData) {
-            if (err) {
-                console.log(err)
-                res.sendStatus(500)
-            } else {
-                imgData = '\\x' + imgData;
-                const query = "INSERT INTO inventory (title, description, image,  category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-                const values = [req.body.title, req.body.description, imgData, req.body.category, req.body.price, req.body.stock, 12]
+            fs.readFile(finalfile, 'hex', function(err, imgData) {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    imgData = '\\x' + imgData;
+                    const query = "INSERT INTO inventory (title, description, image,  category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+                    const values = [req.body.title, req.body.description, imgData, req.body.category, req.body.price, req.body.stock, 12]
 
-                client.query(query, values)
-                    .then(response => {
-                        res.sendStatus(200)
-                    })
-                    .catch(err => {
-                        res.sendStatus(500)
-                        console.log("2:", err)
-                    })
-            }
-        })
+                    client.query(query, values)
+                        .then(response => {
+                            res.sendStatus(200)
+                        })
+                        .catch(err => {
+                            res.sendStatus(500)
+                            console.log("2:", err)
+                        })
+                }
+            })
+        }
     } else {
         res.sendStatus(401)
     }
+
 })
 
 router.patch('/update/:item_id', authenticateJWT, (req, res) => {
