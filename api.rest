@@ -4,7 +4,7 @@ POST https://apnay-rung-api.herokuapp.com/verify
 Content-Type: application/json
 
 {
-    "email":"jaques.alpha@gmail.com",
+    "email":"shafay@gmail.com",
     "password":"12345678"
 }
 
@@ -38,7 +38,7 @@ POST https://apnay-rung-api.herokuapp.com/resetpassword
 Content-Type: application/json
 
 {
-    "email":"jaques.alpha@gmail.com",
+    "email":"shafay@gmail.com",
     "password":"12345678"
 }
 
@@ -191,8 +191,8 @@ POST https://apnay-rung-api.herokuapp.com/seller/verify
 Content-Type: application/json
 
 {
-    "email":"vafa@vafa.com",
-    "password":"vafa123"
+    "email":"shafay@gmail.com",
+    "password":"12345678"
 }
 
 
@@ -680,7 +680,12 @@ Content-Type: application/json
 
 //Get an item's image
 ###
-GET https://apnay-rung-api.herokuapp.com/image/item/41
+GET https://apnay-rung-api.herokuapp.com/image/item/1
+
+
+###
+GET https://apnay-rung-api.herokuapp.com/image/seller/15
+
 
 //admin token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
 

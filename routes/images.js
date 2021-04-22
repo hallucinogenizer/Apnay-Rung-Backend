@@ -22,7 +22,7 @@ router.get('/item/:item_id', (req, res) => {
 })
 
 router.get('/seller/:seller_id', (req, res) => {
-    const query = "SELECT profile_picture AS data FROM sellers WHERE seller_id=$1"
+    const query = "SELECT profile_picture_data AS data FROM sellers WHERE seller_id=$1"
     const values = [req.params.seller_id]
     client.query(query, values)
         .then(result => {
