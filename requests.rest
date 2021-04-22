@@ -433,8 +433,7 @@ Content-Type: application/json
     "title":"Bartan",
     "description":"A bartan",
     "category":"clothing",
-    "price":750,
-    "stock":10
+    "price":750
 }
 
 
