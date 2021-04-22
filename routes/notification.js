@@ -4,7 +4,7 @@ const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const isBlocked = require('../utilities/isBlocked')
 
-router.post('/new', authenticateJWT, isBlocked, (req, res) => {
+router.post('/new', (req, res) => {
     /*
     {
         title:___,

@@ -322,7 +322,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6I
 
 //delete a query form
 ###
-DELETE http://localhost:3000/message/5
+DELETE https://apnay-rung-api.herokuapp.com/message/5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
 
 
@@ -634,7 +634,7 @@ Content-Type: application/json
         "title":"Second Notification",
         "type":"message",
         "details":null,
-        "customer_id":17
+        "admin_id":17
 }
 //you can only send either a customer_id or a seller_id or an admin_id. One and only one of these. That user will receive the notification.
 

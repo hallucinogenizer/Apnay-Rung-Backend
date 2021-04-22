@@ -10,7 +10,6 @@ function isBlocked(req, res, next) {
                         next()
                     } else {
                         res.sendStatus(403)
-                            //403 forbidden
                     }
                 } else {
                     res.sendStatus(500)
