@@ -378,7 +378,8 @@ Content-Type: application/json
 
 {
     "title":"Test Tutorial 1",
-    "content":"<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/eBMiX79QegY\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+    "content":"eBMiX79QegY",
+    "description":"This tutorial teaches you things."
 }
 
 ###
@@ -388,7 +389,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiO
 
 //get a tutorial by its tutorial_id
 ###
-GET http://localhost:3000/tutorial/id/1
+GET http://localhost:3000/tutorial/id/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
 
 
@@ -398,7 +399,17 @@ DELETE http://localhost:3000/tutorial/id/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
 
 
+//UPDATE a tutorial
+###
+PATCH http://localhost:3000/tutorial/id/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+Content-Type: application/json
 
+{
+    "title":"Test Tutorial 2",
+    "content":"eBMiX79QegY",
+    "description":"This tutoriall teaches you things."
+}
 
 
 
