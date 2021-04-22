@@ -20,7 +20,7 @@ const notification = require('./routes/notification')
 const ejs = require('ejs')
     //utilities
 const authenticateJWT = require('./utilities/authenticateJWT')
-const { hasAllFields, constraints } = require('../utilities/hasAllFields')
+const { hasAllFields, constraints } = require('./utilities/hasAllFields')
 
 //expressJS
 const express = require('express');
