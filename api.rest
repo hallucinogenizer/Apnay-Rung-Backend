@@ -4,7 +4,7 @@ POST https://apnay-rung-api.herokuapp.com/verify
 Content-Type: application/json
 
 {
-    "email":"rohan@yahoo.com",
+    "email":"jaques.alpha@gmail.com",
     "password":"12345678"
 }
 
@@ -38,7 +38,7 @@ POST https://apnay-rung-api.herokuapp.com/resetpassword
 Content-Type: application/json
 
 {
-    "email":"taimoor@hotmail.com",
+    "email":"jaques.alpha@gmail.com",
     "password":"12345678"
 }
 
@@ -66,7 +66,7 @@ POST https://apnay-rung-api.herokuapp.com/customer/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@gmail.com",
+    "email":"jaques.alpha@gmail.com",
     "password":"12345678"
 }
 
@@ -338,15 +338,15 @@ Content-Type: application/json
 ###
 //place a new order
 POST https://apnay-rung-api.herokuapp.com/order/new
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIm5hbWUiOiJUYWltb29yIFRhcmlxIiwidHlwZU9mVXNlciI6ImN1c3RvbWVyIiwiaWF0IjoxNjE2OTYxNzMwfQ.Dn0FATITkhrR7e5tkp_XAmdPfp-FKJGzdskczt9k2fw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1LCJuYW1lIjoiWnViYWlyIEtoYWxpZCIsInR5cGVPZlVzZXIiOiJjdXN0b21lciIsImlhdCI6MTYxOTA5NjQxMn0.bwPFjWaTqYJ7FHz6gJHJeURkYUei6i7akSGDZuPLSN8
 Content-Type: application/json
 
 {
-    "items":[[1,2,500],[4,3,1000]],
-    "totalamount":1500,
+    "items":[[4,10,7500]],
+    "totalamount":7500,
     "delivery_status":"processing",
-    "name":"Hamza",
-    "email":"hamza@yahoo.com",
+    "name":"Nawaz Sharif",
+    "email":"nawaz@gmail.com",
     "phone":"+923025474222",
     "billing_address":"Street House Area City Province",
     "shipping_address":"Street House Area City Province",
