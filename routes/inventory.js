@@ -60,15 +60,14 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 })
 
 router.get('/all', (req, res) => {
-    const query = "SELECT item_id,title,description,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id"
+    const query = "SELECT item_id,title,description,category,featured,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
-                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
-                if (i == result.rows.length - 1) {
-                    res.status(200).json(result.rows)
-                }
+                result.rows[i].image = process.env.URL + "/image/item/" + result.rows[i].item_id.toString()
+
             }
+            res.status(200).json(result.rows)
         })
         .catch(err => {
             res.sendStatus(500)
@@ -140,7 +139,7 @@ router.patch('/update/:item_id', authenticateJWT, (req, res) => {
                 console.log(err)
             })
     } else {
-        res.sendStatus(401)
+        res.sendStatus(403)
     }
 })
 
@@ -181,7 +180,7 @@ router.get('/id/:item_id', async(req, res) => {
             if (result.rowCount > 0) {
                 result.rows[0].rating = await findAvgRating(req.params.item_id)
                 for (let i = 0; i < result.rows.length; i++) {
-                    result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                    result.rows[i].image = process.env.URL + "image/item/" + result.rows[i].item_id.toString()
                     if (i == result.rows.length - 1) {
                         res.status(200).json(result.rows)
                     }
@@ -351,6 +350,84 @@ router.patch('/stock', authenticateJWT, (req, res) => {
         .catch(err => {
             res.sendStatus(500)
             console.log(err)
+        })
+})
+
+router.patch('/featured/set/:item_id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == 'admin') {
+        const query = "UPDATE inventory SET featured=true WHERE item_id=$1"
+        const values = [req.params.item_id]
+        client.query(query, values)
+            .then(response => {
+                if (response.rowCount > 0) {
+                    res.sendStatus(202)
+                } else {
+                    res.sendStatus(204)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                res.sendStatus(500)
+            })
+    } else {
+        res.sendStatus(403)
+    }
+})
+
+router.patch('/featured/remove/:item_id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == 'admin') {
+        const query = "UPDATE inventory SET featured=false WHERE item_id=$1"
+        const values = [req.params.item_id]
+        client.query(query, values)
+            .then(response => {
+                if (response.rowCount > 0) {
+                    res.sendStatus(202)
+                } else {
+                    res.sendStatus(204)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                res.sendStatus(500)
+            })
+    } else {
+        res.sendStatus(403)
+    }
+})
+
+router.patch('/featured/toggle/:item_id', authenticateJWT, (req, res) => {
+    if (req.userObject.typeOfUser == 'admin') {
+        const query = "UPDATE inventory SET featured = NOT featured WHERE item_id=$1"
+        const values = [req.params.item_id]
+        client.query(query, values)
+            .then(response => {
+                if (response.rowCount > 0) {
+                    res.sendStatus(202)
+                } else {
+                    res.sendStatus(204)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                res.sendStatus(500)
+            })
+    } else {
+        res.sendStatus(403)
+    }
+})
+
+router.get('/featured', (req, res) => {
+    const query = "SELECT item_id,title,description,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id AND inventory.featured=true"
+    client.query(query)
+        .then(result => {
+            for (let i = 0; i < result.rows.length; i++) {
+                result.rows[i].image = process.env.URL + "/image/item/" + result.rows[i].item_id.toString()
+            }
+            res.status(200).json(result.rows)
+        })
+        .catch(err => {
+            console.log(err)
+            res.sendStatus(500)
         })
 })
 

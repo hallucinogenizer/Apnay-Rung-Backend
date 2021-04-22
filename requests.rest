@@ -449,6 +449,27 @@ Content-Type: application/json
 }
 
 
+//set a product as featured (admin token needed)
+###
+PATCH http://localhost:3000/inventory/featured/set/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+
+//remove a product from featured products
+###
+PATCH http://localhost:3000/inventory/featured/remove/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+
+//toggle a product's featured status between true and false
+###
+PATCH http://localhost:3000/inventory/featured/toggle/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+
 
 //get a certain number of items from inventory
 ###
@@ -478,6 +499,13 @@ GET http://localhost:3000/inventory/sort/price/asc
 //get catalog sorted alphabetically A-Z
 ###
 GET http://localhost:3000/inventory/sort/alphabetical
+
+
+//get all featured products
+###
+GET http://localhost:3000/inventory/featured
+
+
 
 
 

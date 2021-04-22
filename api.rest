@@ -191,7 +191,7 @@ POST https://apnay-rung-api.herokuapp.com/seller/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@hotmail.com",
+    "email":"taimoor@gmail.com",
     "password":"12345678"
 }
 
@@ -510,8 +510,9 @@ Content-Type: application/json
 
 //update an item in the inventory
 ###
-PATCH http://localhost:3000/inventory/update/5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJ0YWltb29yIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxODA1NjQzNn0.a-ZvwfeqfE8xmRtAYgEJr28NBeEqzeh7pz-QfPs1mA0
+PATCH https://apnay-rung-api.herokuapp.com/inventory/update/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlRhaW1vb3IgVGFyaXEiLCJ0eXBlT2ZVc2VyIjoic2VsbGVyIiwiaWF0IjoxNjE5MDk0NjkyfQ.bITMyMAS8r_b2WMuD6UeAfjO6U09pkwwJXBnA6RK4sg
+
 Content-Type: application/json
 
 {
