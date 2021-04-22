@@ -275,6 +275,7 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
 })
 
 router.post('/update/profile_picture', authenticateJWT, upload.single('profile_picture'), (req, res) => {
+    console.log(req.file.filename)
     const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
     fs.readFile(finalfile, 'hex', function(err, imgData) {
         if (err) {

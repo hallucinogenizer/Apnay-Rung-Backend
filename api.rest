@@ -630,7 +630,7 @@ POST https://apnay-rung-api.herokuapp.com/notification/new
 Content-Type: application/json
 
 {
-        "title":"A new seller has registered",
+        "title":"Test Notification.",
         "type":"message",
         "details":"Lorem ipsum",
         "admin_id":1
