@@ -524,6 +524,37 @@ Content-Type: application/json
 }
 
 
+
+//get all featured products
+###
+GET https://apnay-rung-api.herokuapp.com/inventory/featured
+
+
+
+//set a product as featured (admin token needed)
+###
+PATCH https://apnay-rung-api.herokuapp.com/inventory/featured/set/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+
+//remove a product from featured products
+###
+PATCH https://apnay-rung-api.herokuapp.com/inventory/featured/remove/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+
+//toggle a product's featured status between true and false
+###
+PATCH https://apnay-rung-api.herokuapp.com/inventory/featured/toggle/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik11aGFtbWFkIFJvaGFuIEh1c3NhaW4iLCJ0eXBlT2ZVc2VyIjoiYWRtaW4iLCJpYXQiOjE2MTY4NDE4MTZ9.HJvh_8caLMReaDmJFCEklgtP9u86usbNIZ4FxOrIawk
+
+
+
+
+
+
 //DELETE an item from inventory
 ###
 DELETE https://apnay-rung-api.herokuapp.com/inventory/id/3
