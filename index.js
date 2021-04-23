@@ -162,24 +162,18 @@ app.post('/securityquestions/verify', async(req, res) => {
         result = await client.query(query, values)
     }
     const sec_questions = JSON.parse(result.rows[0].sec_questions)
-    let success = true
-
-    for (let q in sec_questions) {
-        console.log("q:", q)
-        console.log("req.body:", req.body)
-        if (req.body.hasOwnProperty(q)) {
-            console.log("req.body[q]:", req.body[q])
-            console.log("sec_questions[q]:", sec_questions[q])
-            if (req.body[q] != sec_questions[q]) {
-                success = false
+    let i = 1;
+    for (q in sec_questions) {
+        if (i == req.body.question_no) {
+            if (sec_questions[q] == req.body.answer) {
+                res.status(200).json({ verified: true })
+            } else {
+                res.status(200).json({ verified: false })
             }
+            break
+        } else {
+            i++
         }
-    }
-    console.log("hello")
-    if (success) {
-        res.status(200).json({ verified: true })
-    } else {
-        res.status(200).json({ verified: false })
     }
 })
 
