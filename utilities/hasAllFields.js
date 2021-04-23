@@ -8,7 +8,7 @@ function hasAllFields(fields, req_body) {
     }
     for (let field in fields) {
         console.log(req_body)
-        if (!req_body.hasOwnProperty(field)) {
+        if (!Object.hasOwnProperty.bind(queryData)(field)) {
             allGood = false
             errors.missingFields.push(field)
         } else if (typeof req_body[field] != fields[field][0]) {
