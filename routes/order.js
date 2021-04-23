@@ -118,7 +118,7 @@ router.get('/all', authenticateJWT, (req, res) => {
             })
     } else if (req.userObject.typeOfUser == "seller") {
         const query = {
-            text: `SELECT order_id, TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp,customer_id,delivery_status,review,totalamount,cancelled,name,email,phone,b_address,s_address,items,order_status,payment_method FROM orders WHERE true`,
+            text: `SELECT order_id, TO_CHAR(timestamp,'MON-DD-YYYY HH12:MIPM') AS timestamp,customer_id,delivery_status,review,totalamount,cancelled,name,email,phone,b_address,s_address,items,order_status,payment_method FROM orders WHERE cancelled=false`,
             values: []
         }
         client.query(query)
