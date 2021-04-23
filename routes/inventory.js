@@ -26,7 +26,9 @@ function findAvgRating(item_id) {
             let ratings = []
             for (index in result.rows) {
                 for (item in result.rows[index].review) {
-                    ratings.push(result.rows[index].review[item][1])
+                    if (result.rows[index].review[item][0] == item_id) {
+                        ratings.push(result.rows[index].review[item][1])
+                    }
                 }
             }
             Promise.all(ratings).then(allRatings => {
