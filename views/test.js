@@ -6,7 +6,7 @@ document.querySelector("#form").addEventListener("submit", (e) => {
         withCredentials: true,
         credentials: "include",
         headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJyb2hhbiIsInR5cGVPZlVzZXIiOiJzZWxsZXIiLCJpYXQiOjE2MTgwNTY1NTl9.tLCUDNdB0thVcK58QLx6itWMSW6FNYssLahnWueLrF0`
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksIm5hbWUiOiJNb21pbmEgQW1lciIsInR5cGVPZlVzZXIiOiJzZWxsZXIiLCJpYXQiOjE2MTkxNzkyODd9.m8g80VZ7Ub6RJzOKZWq6vigNzyGe7CARrL03hBNvfb8`
         },
         body: new FormData(document.querySelector("#form"))
     }).then(response => {

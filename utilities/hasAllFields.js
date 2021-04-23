@@ -7,6 +7,7 @@ function hasAllFields(fields, req_body) {
         emptyFields: []
     }
     for (let field in fields) {
+        console.log(req_body)
         if (!req_body.hasOwnProperty(field)) {
             allGood = false
             errors.missingFields.push(field)
