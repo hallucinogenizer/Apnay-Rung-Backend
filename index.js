@@ -166,6 +166,7 @@ app.post('/securityquestions/verify', async(req, res) => {
 
     for (let q in sec_questions) {
         console.log("q:", q)
+        console.log("req.body:", req.body)
         if (req.body.hasOwnProperty(q)) {
             console.log("req.body[q]:", req.body[q])
             console.log("sec_questions[q]:", sec_questions[q])
