@@ -95,7 +95,7 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
             "stock": ["number", -1, ""]
         }, req.body)
         if (valid_input !== true) {
-            res.status(400).send(valid_input)
+            res.status(400).json(valid_input)
         } else {
             const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
 
