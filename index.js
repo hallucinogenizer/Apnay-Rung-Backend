@@ -215,6 +215,7 @@ app.post('/securityquestions', async(req, res) => {
 })
 
 app.post('/resetpassword', async(req, res) => {
+    console.log(req.body.password)
     let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
     let query = "UPDATE customers SET password=$1 WHERE email=$2"
     let values = [hashed_pwd, req.body.email]
