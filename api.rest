@@ -347,7 +347,7 @@ Content-Type: application/json
     "items":[[4,10,7500]],
     "totalamount":7500,
     "delivery_status":"processing",
-    "name":"Nawaz Sharif",
+    "name":"Khan Sahab",
     "email":"nawaz@gmail.com",
     "phone":"+923025474222",
     "billing_address":"Street House Area City Province",
