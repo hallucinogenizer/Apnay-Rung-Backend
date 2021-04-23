@@ -48,6 +48,8 @@ router.post('/new', async(req, res) => {
                 res.sendStatus(500)
                 console.log(err)
             }
+        } else {
+            res.sendStatus(400)
         }
 
 
