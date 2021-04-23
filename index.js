@@ -205,7 +205,7 @@ app.post('/securityquestions', async(req, res) => {
     const sec_questions = result.rows[0].sec_questions
     let questions = []
     for (q in sec_questions) {
-        questions.push(q)
+        questions.push(sec_questions[q])
     }
     res.status(200).json(questions)
 })
