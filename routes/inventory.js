@@ -90,9 +90,7 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
         const valid_input = hasAllFields({
             "title": ["string", 100, "notempty"],
             "description": ["string", -1, "notempty"],
-            "category": ["string", 50, "notempty"],
-            "price": ["number", -1, ""],
-            "stock": ["number", -1, ""]
+            "category": ["string", 50, "notempty"]
         }, req.body)
         if (valid_input !== true) {
             res.status(400).json(valid_input)
