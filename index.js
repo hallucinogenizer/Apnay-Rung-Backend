@@ -202,7 +202,11 @@ app.post('/securityquestions', async(req, res) => {
         query = "SELECT sec_questions FROM sellers WHERE email=$1"
         result = await client.query(query, values)
     }
+
     const sec_questions = result.rows[0].sec_questions
+
+    console.log(sec_questions)
+
     let questions = []
     for (q in sec_questions) {
         questions.push(sec_questions[q])
