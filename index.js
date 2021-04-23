@@ -175,7 +175,7 @@ app.post('/securityquestions/verify', async(req, res) => {
         query = "SELECT sec_questions FROM sellers WHERE email=$1"
         result = await client.query(query, values)
     }
-    const sec_questions = result.rows[0].sec_questions
+    const sec_questions = JSON.parse(result.rows[0].sec_questions)
     let i = 1;
     for (q in sec_questions) {
         if (i == req.body.question_no) {
