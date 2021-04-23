@@ -168,32 +168,35 @@ router.patch('/disapprove/:id', authenticateJWT, (req, res) => {
 
 router.post('/new', upload.single('cnic_image'), async(req, res) => {
     //generating hashed password
-    try {
-        let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
-        const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
+    let emailUnique = await checkUniqueEmail(req.body.email)
+    if (emailUnique == true) {
+        try {
+            let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
+            const finalfile = path.join(process.cwd(), req.file.destination, req.file.filename)
 
-        fs.readFile(finalfile, 'hex', function(err, imgData) {
-            if (err) {
-                console.log(err)
-                res.sendStatus(500)
-            } else {
-                imgData = '\\x' + imgData;
-                const query = `INSERT INTO sellers (name,email,password,phone,location,cnic_image,sec_questions) VALUES ($1, $2, $3, $4 ,$5, $6, $7)`
-                const values = [req.body.name, req.body.email, hashed_pwd, req.body.phone, req.body.location, imgData, JSON.stringify(req.body.sec_questions)]
-                client.query(query, values)
-                    .then(resolve => {
-                        console.log("Insertion Successful")
-                        res.status(201).end()
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        res.sendStatus(501)
-                    })
-            }
-        })
-    } catch (err) {
-        console.log(err)
-        res.sendStatus(502)
+            fs.readFile(finalfile, 'hex', function(err, imgData) {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    imgData = '\\x' + imgData;
+                    const query = `INSERT INTO sellers (name,email,password,phone,location,cnic_image,sec_questions) VALUES ($1, $2, $3, $4 ,$5, $6, $7)`
+                    const values = [req.body.name, req.body.email, hashed_pwd, req.body.phone, req.body.location, imgData, JSON.stringify(req.body.sec_questions)]
+                    client.query(query, values)
+                        .then(resolve => {
+                            console.log("Insertion Successful")
+                            res.status(201).end()
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.sendStatus(501)
+                        })
+                }
+            })
+        } catch (err) {
+            console.log(err)
+            res.sendStatus(502)
+        }
     }
 })
 
