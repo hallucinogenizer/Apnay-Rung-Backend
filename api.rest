@@ -39,7 +39,7 @@ Content-Type: application/json
 
 {
     "email":"maham@live.com",
-    "password":"hello123"
+    "password":"imrankhan"
 }
 
 

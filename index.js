@@ -75,7 +75,6 @@ app.post('/verify', async(req, res) => {
             }
 
             if (result.rowCount > 0) {
-
                 let verif = await bcrypt.compare(req.body.password, result.rows[0].password)
                 if (verif == true) {
                     let row = result.rows[0]
@@ -105,21 +104,19 @@ app.post('/verify', async(req, res) => {
                             name: '',
                             typeOfUser: 'admin'
                         }
-                        let promises = []
-                        for (let row of result.rows) {
-                            promises.push(bcrypt.compare(req.body.password, row.password))
+
+                        let verif = await bcrypt.compare(req.body.password, result.rows[0].password)
+                        if (verif == true) {
+                            let row = result.rows[0]
                             userObject.id = row.admin_id
                             userObject.name = row.name
+
+                            const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
+                            res.status(200).json({ verified: true, typeOfUser: 'admin', accessToken: accessToken }).end()
+                        } else {
+                            console.log(2)
+                            res.status(200).json({ verified: false }).end()
                         }
-                        Promise.all(promises).then(resolve => {
-                            if (resolve.includes(true)) {
-                                const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
-                                res.status(200).json({ verified: true, typeOfUser: 'admin', accessToken: accessToken }).end()
-                            } else {
-                                console.log(2)
-                                res.status(200).json({ verified: false }).end()
-                            }
-                        })
                     }
 
                 } else if (result.rowCount == 1) {
