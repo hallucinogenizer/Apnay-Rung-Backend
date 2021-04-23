@@ -12,7 +12,7 @@ function hasAllFields(fields, req_body) {
             errors.missingFields.push(field)
         } else if (typeof req_body[field] != fields[field][0]) {
             allGood = false
-            console.log(typeof req_body[field])
+            console.log(req_body[field], ":", typeof req_body[field])
             errors.wrongFields.push(field)
         } else if (fields[field][1] != -1 && req_body[field].length > fields[field][1]) {
             allGood = false

@@ -13,7 +13,7 @@ document.querySelector("#form").addEventListener("submit", (e) => {
         alert("Hi")
         console.log(response.json())
     }).catch(err => {
-        console.log(err)
+        console.log(err.json())
     })
 })
 
