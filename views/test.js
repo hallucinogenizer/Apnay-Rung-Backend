@@ -11,7 +11,7 @@ document.querySelector("#form").addEventListener("submit", (e) => {
         body: new FormData(document.querySelector("#form"))
     }).then(response => {
         alert("Hi")
-        console.log(response.json())
+        console.log(response)
     }).catch(err => {
         console.log(err.json())
     })

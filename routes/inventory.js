@@ -66,7 +66,6 @@ router.get('/all', (req, res) => {
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
                 result.rows[i].image = process.env.URL + "/image/item/" + result.rows[i].item_id.toString()
-
             }
             res.status(200).json(result.rows)
         })
@@ -104,7 +103,7 @@ router.post('/new', upload.single('image'), authenticateJWT, async(req, res) => 
                 } else {
                     imgData = '\\x' + imgData;
                     const query = "INSERT INTO inventory (title, description, image,  category, price, stock, seller_id) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-                    const values = [req.body.title, req.body.description, imgData, req.body.category, req.body.price, req.body.stock, 12]
+                    const values = [req.body.title, req.body.description, imgData, req.body.category, req.body.price, req.body.stock, req.userObject.id]
 
                     client.query(query, values)
                         .then(response => {
