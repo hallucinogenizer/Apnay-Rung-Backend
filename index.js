@@ -203,12 +203,11 @@ app.post('/securityquestions', async(req, res) => {
         result = await client.query(query, values)
     }
 
-    const sec_questions = result.rows[0].sec_questions
-
+    let sec_questions = result.rows[0].sec_questions
+    sec_questions = JSON.parse(sec_questions)
     console.log(sec_questions)
-
     let questions = []
-    for (q in sec_questions) {
+    for (let q in sec_questions) {
         questions.push(sec_questions[q])
     }
     res.status(200).json(questions)
