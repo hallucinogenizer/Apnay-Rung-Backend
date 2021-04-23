@@ -163,14 +163,16 @@ app.post('/securityquestions/verify', async(req, res) => {
     }
     const sec_questions = JSON.parse(result.rows[0].sec_questions)
     let success = true
-    console.log(sec_questions)
+
     for (let q in sec_questions) {
         if (req.body.hasOwnProperty(q)) {
             if (req.body[q] != sec_questions[q]) {
                 success = false
+                console.log("hi")
             }
         }
     }
+    console.log("hello")
     if (success) {
         res.status(200).json({ verified: true })
     } else {

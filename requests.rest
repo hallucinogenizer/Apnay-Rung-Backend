@@ -17,6 +17,10 @@ Content-Type: application/json
     "email":"taimoor@gmail.com"
 }
 
+
+
+
+
 ###
 //reset password after security questions verified
 POST http://localhost:3000/resetpassword
