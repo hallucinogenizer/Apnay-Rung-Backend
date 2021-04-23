@@ -63,9 +63,11 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 router.get('/all', (req, res) => {
     const query = "SELECT item_id,title,description,category,featured,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id"
     client.query(query)
-        .then(result => {
+        .then(async(result) => {
             for (let i = 0; i < result.rows.length; i++) {
                 result.rows[i].image = process.env.URL + "/image/item/" + result.rows[i].item_id.toString()
+                const avg = await findAvgRating(result.rows[i].item_id)
+                result.rows[i].rating = avg
             }
             res.status(200).json(result.rows)
         })
