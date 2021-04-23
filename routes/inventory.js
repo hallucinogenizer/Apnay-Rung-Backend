@@ -7,6 +7,8 @@ const fs = require('fs')
 const path = require('path')
 const multer = require('multer')
 const { hasAllFields, constraints } = require('../utilities/hasAllFields')
+const findAvgRating = require('../utilities/findAvgRating')
+
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -19,29 +21,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ dest: './images/', storage: storage })
 
-async function findAvgRating(item_id) {
-    const query = "SELECT review FROM orders WHERE true"
-    let result = await client.query(query)
-    return new Promise((resolve, reject) => {
-        if (result.rowCount > 0) {
-            let sum = 0
-            let n = 0
-            for (let i = 0; i < result.rows.length; i++) {
-                for (let j = 0; j < result.rows[i].review.length; j++) {
-                    if (result.rows[i].review[j][0] == item_id) {
-                        n++
-                        sum += result.rows[i].review[j][1]
-                    }
-                }
-            }
-            let rating = n == 0 ? 0 : sum / n
-            resolve(rating)
-        } else {
-            resolve(0)
-        }
-    })
 
-}
 
 router.get('/all/mine', authenticateJWT, async(req, res) => {
     const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id AND inventory.seller_id=$1;"
@@ -51,6 +31,8 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
                 result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                const avg = await findAvgRating(result.rows[i].item_id)
+                result.rows[i].rating = avg
                 if (i == result.rows.length - 1) {
                     res.status(200).json(result.rows)
                 }
@@ -69,7 +51,6 @@ router.get('/all', (req, res) => {
             for (let i = 0; i < result.rows.length; i++) {
                 result.rows[i].image = process.env.URL + "/image/item/" + result.rows[i].item_id.toString()
                 const avg = await findAvgRating(result.rows[i].item_id)
-                console.log(avg)
                 result.rows[i].rating = avg
             }
             res.status(200).json(result.rows)
