@@ -4,8 +4,8 @@ POST https://apnay-rung-api.herokuapp.com/verify
 Content-Type: application/json
 
 {
-    "email":"shafay@gmail.com",
-    "password":"12345678"
+    "email":"maham@live.com",
+    "password":"hello123"
 }
 
 
@@ -38,8 +38,8 @@ POST https://apnay-rung-api.herokuapp.com/resetpassword
 Content-Type: application/json
 
 {
-    "email":"shafay@gmail.com",
-    "password":"12345678"
+    "email":"maham@live.com",
+    "password":"hello123"
 }
 
 
