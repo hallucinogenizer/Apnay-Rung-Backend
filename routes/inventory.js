@@ -28,7 +28,7 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
     const values = [req.userObject.id]
 
     client.query(query, values)
-        .then(result => {
+        .then(async(result) => {
             for (let i = 0; i < result.rows.length; i++) {
                 result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
                 const avg = await findAvgRating(result.rows[i].item_id)
