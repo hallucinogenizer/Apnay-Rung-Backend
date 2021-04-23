@@ -3,6 +3,7 @@ var router = express.Router()
 const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const { hasAllFields, constraints } = require('../utilities/hasAllFields')
+const checkUniqueEmail = require('../utilities/checkUniqueEmail')
 const isBlocked = require('../utilities/isBlocked')
 const jwt = require('jsonwebtoken')
     //for bcrypt
