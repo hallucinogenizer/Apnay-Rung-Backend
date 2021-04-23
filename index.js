@@ -225,10 +225,12 @@ app.post('/resetpassword', async(req, res) => {
                 if (response.rowCount == 0) {
                     res.sendStatus(204)
                 } else {
+                    console.log("seller set")
                     res.sendStatus(202)
                 }
             })
         } else {
+            console.log("customer set")
             res.sendStatus(202)
         }
     })
