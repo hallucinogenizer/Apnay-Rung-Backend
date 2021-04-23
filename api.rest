@@ -211,7 +211,7 @@ Content-Type: application/json
 //get all info of the currently logged in seller
 ###
 GET https://apnay-rung-api.herokuapp.com/seller/info
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6IlZhZmEgQmF0b29sIiwidHlwZU9mVXNlciI6InNlbGxlciIsImlhdCI6MTYxNjg0NDE3N30.xYaUcX7dmdqY5co2tMbVA_9jh0M1fVBB-AX0Aam5G7Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksIm5hbWUiOiJNb21pbmEgQW1lciIsInR5cGVPZlVzZXIiOiJzZWxsZXIiLCJpYXQiOjE2MTkxNzkyODd9.m8g80VZ7Ub6RJzOKZWq6vigNzyGe7CARrL03hBNvfb8
 
 
 
