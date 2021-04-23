@@ -22,30 +22,35 @@ router.post('/new', async(req, res) => {
         console.log(valid_input)
         res.status(400).json(valid_input)
     } else {
-        //generating hashed password
-        try {
-            let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
+        let emailUnique = await checkUniqueEmail(req.body.email)
+        if (emailUnique == true) {
+            try {
+                //generating hashed password
+                let hashed_pwd = await bcrypt.hash(req.body.password, saltRounds)
 
-            const query = `INSERT INTO customers (name,email,password,address,phone, sec_questions) VALUES ($1, $2, $3, $4, $5, $6)`
-            const values = [req.body.name, req.body.email, hashed_pwd, req.body.address, req.body.phone, JSON.stringify(req.body.sec_questions)]
-            client.query(query, values)
-                .then(resolve => {
-                    console.log("Insertion Successful")
-                    res.status(201).end()
-                })
-                .catch(err => {
-                    if (err.constraint == "unique_customer_email") {
-                        res.status(400).end("Email already taken")
-                    } else {
-                        res.sendStatus(500)
-                        console.log(err)
-                    }
+                const query = `INSERT INTO customers (name,email,password,address,phone, sec_questions) VALUES ($1, $2, $3, $4, $5, $6)`
+                const values = [req.body.name, req.body.email, hashed_pwd, req.body.address, req.body.phone, JSON.stringify(req.body.sec_questions)]
+                client.query(query, values)
+                    .then(resolve => {
+                        console.log("Insertion Successful")
+                        res.status(201).end()
+                    })
+                    .catch(err => {
+                        if (err.constraint == "unique_customer_email") {
+                            res.status(400).end("Email already taken")
+                        } else {
+                            res.sendStatus(500)
+                            console.log(err)
+                        }
 
-                })
-        } catch (err) {
-            res.sendStatus(500)
-            console.log(err)
+                    })
+            } catch (err) {
+                res.sendStatus(500)
+                console.log(err)
+            }
         }
+
+
     }
 })
 
