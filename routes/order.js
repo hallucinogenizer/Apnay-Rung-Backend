@@ -33,6 +33,7 @@ router.post('/new', authenticateJWT, (req, res) => {
         res.status(400).send(valid_input)
     } else {
         if (req.userObject.typeOfUser == "customer") {
+            console.log(req.body.billing_address)
             let query = "INSERT INTO orders (timestamp,customer_id,delivery_status,review,totalamount,cancelled,items,name,email,phone,b_address,s_address, payment_method) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,$13)"
             let values = ['NOW()', req.userObject.id, req.body.delivery_status, JSON.stringify([]), req.body.totalamount, false, req.body.items, req.body.name, req.body.email, req.body.phone, req.body.b_address, req.body.s_address, req.body.payment_method]
             client.query("BEGIN", (err) => {
