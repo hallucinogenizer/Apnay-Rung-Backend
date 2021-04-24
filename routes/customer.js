@@ -77,7 +77,6 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
             "email": ["string", 100, "notempty"],
             "password": ["string", -1, ""],
             "passwordChanged": ["boolean", -1, ""],
-            "address": ["string", 300, "notempty"],
             "phone": ["string", 18, ""]
         }, req.body)
         if (valid_input !== true) {
