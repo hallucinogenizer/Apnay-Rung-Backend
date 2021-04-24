@@ -4,6 +4,9 @@ const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const isBlocked = require('../utilities/isBlocked')
 const checkUniqueEmail = require('../utilities/checkUniqueEmail')
+const checkUniqueEmail2 = require('../utilities/checkUniqueEmail2')
+
+const { hasAllFields, constraints } = require('../utilities/hasAllFields')
 
 const jwt = require('jsonwebtoken')
     //for bcrypt
@@ -220,7 +223,7 @@ router.get('/cnic/:seller_id', (req, res) => {
         })
 })
 
-router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
+router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
     /*
     {
         name:'',
@@ -234,48 +237,71 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     */
 
     if (req.userObject.typeOfUser == "seller") {
-        try {
-            let success = false
-            const query = `UPDATE sellers SET name = $1,email=$2,location=$3,phone=$4,bio=$5 WHERE seller_id=$6`
-            const values = [req.body.name, req.body.email, req.body.location, req.body.phone, req.body.bio, req.userObject.id]
+        const valid_input = hasAllFields({
+            "name": ["string", 100, "notempty"],
+            "email": ["string", 100, "notempty"],
+            "passwordChanged": ["boolean", -1, ""],
+            "location": ["string", 100, "notempty"],
+            "phone": ["string", 18, ""],
+            "bio": ["string", -1, ""]
+        }, req.body)
+        if (valid_input !== true) {
+            console.log(valid_input)
+            res.status(400).json(valid_input)
+        } else {
+            let emailUnique = await checkUniqueEmail2(req.body.email, req.userObject.typeOfUser, req.userObject.id)
+            if (emailUnique == true) {
+                try {
+                    let success = false
+                    const query = `UPDATE sellers SET name = $1,email=$2,location=$3,phone=$4,bio=$5 WHERE seller_id=$6`
+                    const values = [req.body.name, req.body.email, req.body.location, req.body.phone, req.body.bio, req.userObject.id]
 
-            client.query(query, values)
-                .then(resolve => {
-                    success = true
+                    client.query(query, values)
+                        .then(resolve => {
+                            success = true
 
-                    if (req.body.passwordChanged == true) {
-                        const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
-                        pwd_promise.then(hashed_pwd => {
-                            const query = `UPDATE sellers SET password=$1 WHERE seller_id=$2`
-                            const values = [hashed_pwd, req.userObject.id]
-                            client.query(query, values)
-                                .then(resolve => {
-                                    if (success == true) {
-                                        res.sendStatus(202)
-                                    } else {
-                                        res.status(500).send("Unable to update information.")
-                                    }
+                            if (req.body.passwordChanged == true) {
+                                const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
+                                pwd_promise.then(hashed_pwd => {
+                                    const query = `UPDATE sellers SET password=$1 WHERE seller_id=$2`
+                                    const values = [hashed_pwd, req.userObject.id]
+                                    client.query(query, values)
+                                        .then(resolve => {
+                                            if (success == true) {
+                                                res.sendStatus(202)
+                                            } else {
+                                                res.status(500).send("Unable to update information.")
+                                            }
+                                        }).catch(err => {
+                                            res.sendStatus(500)
+                                        })
                                 }).catch(err => {
                                     res.sendStatus(500)
                                 })
-                        }).catch(err => {
+                            } else {
+                                if (success == true) {
+                                    res.sendStatus(202)
+                                } else {
+                                    res.sendStatus(500)
+                                }
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err)
                             res.sendStatus(500)
                         })
-                    } else {
-                        if (success == true) {
-                            res.sendStatus(202)
-                        } else {
-                            res.sendStatus(500)
-                        }
-                    }
-                })
-                .catch(err => {
+                } catch (err) {
                     console.log(err)
                     res.sendStatus(500)
+                }
+            } else {
+                res.status(400).json({
+                    missingFields: [],
+                    wrongFields: ['email'],
+                    longFields: [],
+                    emptyFields: []
                 })
-        } catch (err) {
-            console.log(err)
-            res.sendStatus(500)
+            }
         }
     } else {
         res.sendStatus(401)

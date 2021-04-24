@@ -1,6 +1,6 @@
 const client = require('./clientConnect')
 
-
+//this excludes the currently logged in user from the unique email constraint check
 const checkUniqueEmail2 = async(email, usertype, user_id) => {
 
     let query = "SELECT customer_id FROM customers WHERE email=$1"
