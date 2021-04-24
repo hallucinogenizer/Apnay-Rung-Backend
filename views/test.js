@@ -36,3 +36,20 @@ document.querySelector("#form2").addEventListener("submit", (e) => {
         console.log(err)
     })
 })
+
+
+document.querySelector("#form3").addEventListener("submit", (e) => {
+    e.stopImmediatePropagation()
+    e.preventDefault()
+    fetch(document.querySelector("#form2").action, {
+        method: "POST",
+        withCredentials: true,
+        credentials: "include",
+        body: new FormData(document.querySelector("#form3"))
+    }).then(response => {
+        console.log(response)
+        alert(response.status)
+    }).catch(err => {
+        console.log(err)
+    })
+})

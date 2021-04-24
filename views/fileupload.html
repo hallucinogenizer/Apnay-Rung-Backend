@@ -26,8 +26,20 @@
         
 
         <h2>Inventory Product Image Update</h2>
-        <form id='form2' action='https://apnay-rung-api.herokuapp.com/seller/update/profile_picture' method="post" enctype="multipart/form-data">
+        <form id='form3' action='https://apnay-rung-api.herokuapp.com/seller/update/profile_picture' method="post" enctype="multipart/form-data">
             <input type="file" name="profile_picture">
+            <input type="submit">
+        </form>
+
+        <h2>Sign Up User</h2>
+        <form id='form2' action='https://apnay-rung-api.herokuapp.com/seller/new' method="post" enctype="multipart/form-data">
+            <input type="text" name="name" placeholder="name">
+            <input type="text" name="email" placeholder="email">
+            <input type="password" name="password" placeholder="password">
+            <input type="text" name="phone" placeholder="phone">
+            <input type="text" name="location" placeholder="location">
+            <input type="text" name="sec_questions" placeholder="sec_questions">
+            <input type="file" name="cnic_image">
             <input type="submit">
         </form>
 
