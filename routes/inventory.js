@@ -24,7 +24,7 @@ var upload = multer({ dest: './images/', storage: storage })
 
 
 router.get('/all/mine', authenticateJWT, async(req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id AND inventory.seller_id=$1;"
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE inventory.seller_id=$1 AND sellers.blocked=false;"
     const values = [req.userObject.id]
 
     client.query(query, values)
@@ -49,15 +49,19 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 })
 
 router.get('/all', (req, res) => {
-    const query = "SELECT item_id,title,description,category,featured,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id"
+    const query = "SELECT item_id,title,description,category,featured,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE sellers.blocked=false"
     client.query(query)
         .then(async(result) => {
-            for (let i = 0; i < result.rows.length; i++) {
-                result.rows[i].image = process.env.URL + "/image/item/" + result.rows[i].item_id.toString()
-                const avg = await findAvgRating(result.rows[i].item_id)
-                result.rows[i].rating = avg
+            if (result.rowCount > 0) {
+                for (let i = 0; i < result.rows.length; i++) {
+                    result.rows[i].image = process.env.URL + "/image/item/" + result.rows[i].item_id.toString()
+                    const avg = await findAvgRating(result.rows[i].item_id)
+                    result.rows[i].rating = avg
+                }
+                res.status(200).json(result.rows)
+            } else {
+                res.status(200).json(result.rows)
             }
-            res.status(200).json(result.rows)
         })
         .catch(err => {
             res.sendStatus(500)
