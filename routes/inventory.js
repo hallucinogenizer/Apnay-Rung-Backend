@@ -246,7 +246,7 @@ router.get('/limit/:limit', async(req, res) => {
 })
 
 router.get('/location/:province', (req, res) => {
-    const query = "SELECT inventory.item_id, inventory.title, inventory.description, inventory.image, inventory.category, inventory.stock, inventory.price, sellers.seller_id, sellers.name AS seller_name FROM inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id WHERE sellers.location=$1;"
+    const query = "SELECT inventory.item_id, inventory.title, inventory.description, inventory.image, inventory.category, inventory.stock, inventory.price, sellers.seller_id, sellers.name AS seller_name FROM inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id WHERE sellers.location=$1 AND sellers.blocked=false;"
     const values = [req.params.province]
 
     client.query(query, values)
@@ -270,7 +270,7 @@ router.get('/location/:province', (req, res) => {
 })
 
 router.get('/sort/price/asc', (req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price ASC;"
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE sellers.blocked=false ORDER BY inventory.price ASC;"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
@@ -287,7 +287,7 @@ router.get('/sort/price/asc', (req, res) => {
 })
 
 router.get('/sort/price/desc', (req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.price DESC;"
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE sellers.blocked=false ORDER BY inventory.price DESC;"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
@@ -304,7 +304,7 @@ router.get('/sort/price/desc', (req, res) => {
 })
 
 router.get('/sort/alphabetical', (req, res) => {
-    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id ORDER BY inventory.title ASC;"
+    const query = "SELECT item_id,title,description,image,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE sellers.blocked=false ORDER BY inventory.title ASC;"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
@@ -410,7 +410,7 @@ router.patch('/featured/toggle/:item_id', authenticateJWT, (req, res) => {
 })
 
 router.get('/featured', (req, res) => {
-    const query = "SELECT item_id,title,description,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM inventory,sellers WHERE inventory.seller_id=sellers.seller_id AND inventory.featured=true"
+    const query = "SELECT item_id,title,description,category,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE inventory.featured=true AND sellers.blocked=false"
     client.query(query)
         .then(result => {
             for (let i = 0; i < result.rows.length; i++) {
