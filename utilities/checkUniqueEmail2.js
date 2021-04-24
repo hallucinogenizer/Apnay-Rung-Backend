@@ -3,29 +3,28 @@ const client = require('./clientConnect')
 //this excludes the currently logged in user from the unique email constraint check
 const checkUniqueEmail2 = async(email, usertype, user_id) => {
 
-    let query = "SELECT customer_id FROM customers WHERE email=$1"
-    let values = [email]
+    let query, values;
     if (usertype == 'customer') {
-        query += " AND customer_id != $2"
-        values.push(user_id)
+        query = "SELECT customer_id FROM customers WHERE email=$1 AND customer_id!=$2"
+        values = [email, user_id]
     }
     let result = await client.query(query, values)
     if (result.rowCount > 0) {
         return false
     } else {
-        query = "SELECT seller_id FROM sellers WHERE email=$1"
+
         if (usertype == 'seller') {
-            query += " AND seller_id != $2"
-            values.push(user_id)
+            query = "SELECT seller_id FROM sellers WHERE email=$1 AND seller_id != $2"
+            values = [email, user_id]
         }
         result = await client.query(query, values)
         if (result.rowCount > 0) {
             return false
         } else {
-            query = "SELECT admin_id FROM admins WHERE email=$1"
+
             if (usertype == 'admin') {
-                query += " AND admin_id != $2"
-                values.push(user_id)
+                query = "SELECT admin_id FROM admins WHERE email=$1 AND admin_id != $2"
+                values = [email, user_id]
             }
             result = await client.query(query, values)
             if (result.rowCount > 0) {
