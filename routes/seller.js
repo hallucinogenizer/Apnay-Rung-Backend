@@ -313,6 +313,7 @@ router.post('/update/profile_picture', authenticateJWT, upload.single('profile_p
     fs.readFile(finalfile, 'hex', function(err, imgData) {
         if (err) {
             console.log(err)
+            res.sendStatus(500)
         } else {
             imgData = '\\x' + imgData;
             const url = process.env.URL + "/image/seller/" + req.userObject.id.toString()
