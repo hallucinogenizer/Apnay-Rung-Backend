@@ -220,23 +220,13 @@ router.delete('/id/:item_id', authenticateJWT, async(req, res) => {
 })
 
 router.get('/limit/:limit', async(req, res) => {
-    let query = "SELECT * FROM inventory WHERE true LIMIT $1"
+    let query = "SELECT item_id,title,description,category,featured,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE sellers.blocked=false LIMIT $1"
     let values = [req.params.limit]
     let promises = []
     try {
         const result = await client.query(query, values)
         for (let index = 0; index < result.rows.length; index++) {
-            query = "SELECT name FROM sellers WHERE seller_id=$1"
-            values = [result.rows[index].seller_id]
 
-            client.query(query, values).then(r => {
-                if (r.rowCount > 0) {
-                    result.rows[index].seller_name = r.rows[0].name
-
-                } else {
-                    result.rows[index].seller_name = "Unknown"
-                }
-            })
             const avg = await findAvgRating(result.rows[index].item_id)
             result.rows[index].rating = avg
             if (index == result.rows.length - 1) {
