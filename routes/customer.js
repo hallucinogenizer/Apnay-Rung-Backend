@@ -81,6 +81,7 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
             "phone": ["string", 18, ""]
         }, req.body)
         if (valid_input !== true) {
+            console.log(valid_input)
             res.status(400).json(valid_input)
         } else {
             try {
