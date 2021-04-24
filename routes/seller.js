@@ -249,7 +249,9 @@ router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
             console.log(valid_input)
             res.status(400).json(valid_input)
         } else {
+            console.log("elo")
             let emailUnique = await checkUniqueEmail2(req.body.email, req.userObject.typeOfUser, req.userObject.id)
+            console.log("olo")
             if (emailUnique == true) {
                 try {
                     let success = false
