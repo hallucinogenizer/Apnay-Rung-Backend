@@ -58,7 +58,7 @@ router.post('/new', async(req, res) => {
     }
 })
 
-router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
+router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
     /*
     {
         name:'',
