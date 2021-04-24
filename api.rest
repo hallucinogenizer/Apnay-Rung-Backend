@@ -4,7 +4,7 @@ POST https://apnay-rung-api.herokuapp.com/verify
 Content-Type: application/json
 
 {
-    "email":"momina@gmail.com",
+    "email":"maham@gmail.com",
     "password":"12345678"
 }
 
@@ -38,7 +38,7 @@ POST https://apnay-rung-api.herokuapp.com/resetpassword
 Content-Type: application/json
 
 {
-    "email":"momina@gmail.com",
+    "email":"maham@gmail.com",
     "password":"12345678"
 }
 
@@ -187,7 +187,7 @@ POST https://apnay-rung-api.herokuapp.com/seller/verify
 Content-Type: application/json
 
 {
-    "email":"shafay@gmail.com",
+    "email":"maham@gmail.com",
     "password":"12345678"
 }
 
@@ -589,7 +589,7 @@ GET https://apnay-rung-api.herokuapp.com/inventory/id/3
 
 //get catalog by location
 ###
-GET https://apnay-rung-api.herokuapp.com/inventory/location/Sindh
+GET https://apnay-rung-api.herokuapp.com/inventory/location/Gilgit-Baltistan
 
 
 

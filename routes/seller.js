@@ -343,7 +343,7 @@ router.post('/verify', async(req, res) => {
 })
 
 router.get('/limit/:limit', (req, res) => {
-    const query = "SELECT seller_id, name, email, phone, location, bio, weeklyartisan, blocked, profile_picture FROM sellers WHERE true LIMIT $1"
+    const query = "SELECT seller_id, name, email, phone, location, bio, weeklyartisan, blocked, profile_picture FROM sellers WHERE approved=true LIMIT $1"
     const values = [req.params.limit]
 
     client.query(query, values).then(result => {
