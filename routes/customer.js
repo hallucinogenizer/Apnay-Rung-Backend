@@ -51,6 +51,7 @@ router.post('/new', async(req, res) => {
             }
         } else {
             res.sendStatus(400)
+            console.log("Email not unique")
         }
 
 
