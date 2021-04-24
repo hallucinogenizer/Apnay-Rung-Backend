@@ -4,6 +4,7 @@ const client = require('../utilities/clientConnect')
 const authenticateJWT = require("../utilities/authenticateJWT")
 const { hasAllFields, constraints } = require('../utilities/hasAllFields')
 const checkUniqueEmail = require('../utilities/checkUniqueEmail')
+const checkUniqueEmail2 = require('../utilities/checkUniqueEmail2')
 const isBlocked = require('../utilities/isBlocked')
 const jwt = require('jsonwebtoken')
     //for bcrypt
@@ -58,28 +59,6 @@ router.post('/new', async(req, res) => {
     }
 })
 
-const checkUniqueEmail2 = async(email, customer_id) => {
-    let query = "SELECT customer_id FROM customers WHERE email=$1 AND customer_id != $2"
-    let values = [email, customer_id]
-    let result = await client.query(query, values)
-    if (result.rowCount > 0) {
-        return false
-    } else {
-        query = "SELECT seller_id FROM sellers WHERE email=$1"
-        result = await client.query(query, values)
-        if (result.rowCount > 0) {
-            return false
-        } else {
-            query = "SELECT admin_id FROM admins WHERE email=$1"
-            result = await client.query(query, values)
-            if (result.rowCount > 0) {
-                return false
-            } else {
-                return true
-            }
-        }
-    }
-}
 
 router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
     /*
@@ -106,7 +85,7 @@ router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
             console.log(valid_input)
             res.status(400).json(valid_input)
         } else {
-            let emailUnique = await checkUniqueEmail2(req.body.email, req.userObject.id)
+            let emailUnique = await checkUniqueEmail2(req.body.email, req.userObject.typeOfUser, req.userObject.id)
             if (emailUnique == true) {
                 try {
                     let success = false
