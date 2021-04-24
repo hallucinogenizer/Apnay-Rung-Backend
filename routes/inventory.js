@@ -29,13 +29,17 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 
     client.query(query, values)
         .then(async(result) => {
-            for (let i = 0; i < result.rows.length; i++) {
-                result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
-                const avg = await findAvgRating(result.rows[i].item_id)
-                result.rows[i].rating = avg
-                if (i == result.rows.length - 1) {
-                    res.status(200).json(result.rows)
+            if (result.rowCount > 0) {
+                for (let i = 0; i < result.rows.length; i++) {
+                    result.rows[i].image = "https://apnay-rung-api.herokuapp.com/image/item/" + result.rows[i].item_id.toString()
+                    const avg = await findAvgRating(result.rows[i].item_id)
+                    result.rows[i].rating = avg
+                    if (i == result.rows.length - 1) {
+                        res.status(200).json(result.rows)
+                    }
                 }
+            } else {
+                res.status(200).json(result.rows)
             }
         })
         .catch(err => {
