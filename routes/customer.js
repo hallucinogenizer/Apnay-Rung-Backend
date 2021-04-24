@@ -208,7 +208,7 @@ router.get('/all', authenticateJWT, (req, res) => {
 })
 
 router.post('/verify', authenticateJWT, async(req, res) => {
-    const query = `SELECT customer_id,name,password FROM customers WHERE customer_id=$1 AND blocked=false AND approved=true;`
+    const query = `SELECT customer_id,name,password FROM customers WHERE customer_id=$1 AND blocked=false;`
     const values = [req.userObject.id]
     try {
         const result = await client.query(query, values)
