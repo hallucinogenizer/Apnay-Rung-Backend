@@ -83,46 +83,49 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
             console.log(valid_input)
             res.status(400).json(valid_input)
         } else {
-            try {
-                let success = false
-                const query = `UPDATE customers SET name = '${req.body.name}',email='${req.body.email}',phone = '${req.body.phone}',address='${req.body.address}' WHERE customer_id=${req.userObject.id}`
+            let emailUnique = await checkUniqueEmail(req.body.email)
+            if (emailUnique == true) {
+                try {
+                    let success = false
+                    const query = `UPDATE customers SET name = '${req.body.name}',email='${req.body.email}',phone = '${req.body.phone}',address='${req.body.address}' WHERE customer_id=${req.userObject.id}`
 
-                client.query(query)
-                    .then(resolve => {
-                        success = true
+                    client.query(query)
+                        .then(resolve => {
+                            success = true
 
-                        if (req.body.passwordChanged == true) {
-                            const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
-                            pwd_promise.then(hashed_pwd => {
-                                const query = `UPDATE customers SET password='${hashed_pwd}' WHERE customer_id=${req.userObject.id}`
-                                client.query(query)
-                                    .then(resolve => {
-                                        if (success == true) {
-                                            res.sendStatus(202)
-                                        } else {
+                            if (req.body.passwordChanged == true) {
+                                const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
+                                pwd_promise.then(hashed_pwd => {
+                                    const query = `UPDATE customers SET password='${hashed_pwd}' WHERE customer_id=${req.userObject.id}`
+                                    client.query(query)
+                                        .then(resolve => {
+                                            if (success == true) {
+                                                res.sendStatus(202)
+                                            } else {
+                                                res.sendStatus(500)
+                                            }
+                                        }).catch(err => {
                                             res.sendStatus(500)
-                                        }
-                                    }).catch(err => {
-                                        res.sendStatus(500)
-                                    })
-                            }).catch(err => {
-                                res.sendStatus(500)
-                            })
-                        } else {
-                            if (success == true) {
-                                res.sendStatus(202)
+                                        })
+                                }).catch(err => {
+                                    res.sendStatus(500)
+                                })
                             } else {
-                                res.sendStatus(500)
+                                if (success == true) {
+                                    res.sendStatus(202)
+                                } else {
+                                    res.sendStatus(500)
+                                }
                             }
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        res.sendStatus(500)
-                    })
-            } catch (err) {
-                console.log(err)
-                res.sendStatus(500)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.sendStatus(500)
+                        })
+                } catch (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                }
             }
         }
     } else {
