@@ -64,7 +64,7 @@ app.post('/verify', async(req, res) => {
     if (valid_input !== true) {
         res.status(400).send(valid_input)
     } else {
-        let query = `SELECT customer_id,name,password FROM customers WHERE email=$1`
+        let query = `SELECT customer_id,name,password FROM customers WHERE email=$1 AND blocked=false`
         let values = [req.body.email]
         try {
             let result = await client.query(query, values)

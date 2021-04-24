@@ -4,8 +4,8 @@ POST https://apnay-rung-api.herokuapp.com/verify
 Content-Type: application/json
 
 {
-    "email":"taimoor@lums.edu.pk",
-    "password":"12345678"
+    "email":"qurat@gmail.com",
+    "password":"password"
 }
 
 
