@@ -164,7 +164,7 @@ router.get('/verify', async(req, res) => {
 
 router.get('/info', authenticateJWT, async(req, res) => {
     if (req.userObject.typeOfUser == 'admin') {
-        const query = "SELECT * FROM admins WHERE admin_id=$1"
+        const query = "SELECT admin_id,name,email FROM admins WHERE admin_id=$1"
         const values = [req.userObject.id]
 
         client.query(query, values)
