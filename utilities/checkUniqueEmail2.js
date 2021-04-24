@@ -17,6 +17,7 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
                 values = [email, user_id]
                 result = await client.query(query, values)
                 if (result.rowCount > 0) {
+                    console.log(result.rows[0])
                     return false
                 } else {
                     if (usertype == 'admin') {
