@@ -12,8 +12,11 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
         if (result.rowCount > 0) {
             console.log("1")
             return false
+        } else {
+            return true
         }
     } else if (usertype == 'seller') {
+        console.log("email:", email)
         query = "SELECT seller_id FROM sellers WHERE email=$1 AND seller_id!=$2"
         values = [email, user_id]
         result = await client.query(query, values)
@@ -21,6 +24,8 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
             console.log("3")
             console.log(result.rows[0])
             return false
+        } else {
+            return true
         }
     } else if (usertype == 'admin') {
         query = "SELECT admin_id FROM admins WHERE email=$1 AND admin_id!=$2"
