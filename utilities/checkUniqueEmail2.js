@@ -14,7 +14,7 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
         return false
     } else {
         query = "SELECT seller_id FROM sellers WHERE email=$1"
-        if (usertype == 'customer') {
+        if (usertype == 'seller') {
             query += " AND seller_id != $2"
             values.push(user_id)
         }
@@ -23,7 +23,7 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
             return false
         } else {
             query = "SELECT admin_id FROM admins WHERE email=$1"
-            if (usertype == 'customer') {
+            if (usertype == 'admin') {
                 query += " AND admin_id != $2"
                 values.push(user_id)
             }
