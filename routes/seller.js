@@ -295,6 +295,7 @@ router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
                     res.sendStatus(500)
                 }
             } else {
+                console.log("HEY")
                 res.status(400).json({
                     missingFields: [],
                     wrongFields: ['email'],
