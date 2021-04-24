@@ -131,7 +131,6 @@ router.patch('/update', authenticateJWT, isBlocked, (req, res) => {
     }
 })
 
-
 router.patch('/block/:id', authenticateJWT, (req, res) => {
 
     // this code toggles the blocked status. Sets it to blocked if unblocked, and unblocked if blocked
@@ -208,9 +207,9 @@ router.get('/all', authenticateJWT, (req, res) => {
     }
 })
 
-router.post('/verify', async(req, res) => {
-    const query = `SELECT customer_id,name,password FROM customers WHERE email=$1 AND blocked=false AND approved=true;`
-    const values = [req.body.email]
+router.post('/verify', authenticateJWT, async(req, res) => {
+    const query = `SELECT customer_id,name,password FROM customers WHERE customer_id=$1 AND blocked=false AND approved=true;`
+    const values = [req.userObject.id]
     try {
         const result = await client.query(query, values)
         let userObject = {
