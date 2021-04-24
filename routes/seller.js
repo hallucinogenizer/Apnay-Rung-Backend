@@ -414,12 +414,22 @@ router.get('/spotlight', (req, res) => {
 
 router.patch('/spotlight/:seller_id', authenticateJWT, (req, res) => {
     if (req.userObject.typeOfUser == 'admin') {
-        const query = "UPDATE sellers SET weeklyartisan= NOT weeklyartisan WHERE seller_id=$1"
-        const values = [req.params.seller_id]
+        let query = "UPDATE sellers SET weeklyartisan= NOT weeklyartisan WHERE seller_id=$1"
+        let values = [req.params.seller_id]
         client.query(query, values)
             .then(response => {
                 if (response.rowCount > 0) {
-                    res.sendStatus(202)
+                    query = "INSERT INTO notifications SET (title,type,seller_id) VALUES ($1,$2,$3)"
+                    values = ["Congratulations! You have been made Artisan in the Spotlight.", "message", req.params.seller_id]
+                    client.query(query, values)
+                        .then(resp => {
+                            if (resp.rowCount > 0) {
+                                res.sendStatus(202)
+                            } else {
+                                res.sendStatus(202)
+                            }
+                        })
+
                 } else {
                     res.sendStatus(204)
                 }
