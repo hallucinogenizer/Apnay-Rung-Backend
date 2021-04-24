@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const authenticateJWT = require("../utilities/authenticateJWT")
 const { hasAllFields, constraints } = require('../utilities/hasAllFields')
+const checkUniqueEmail2 = require('../utilities/checkUniqueEmail2')
 const jwt = require('jsonwebtoken')
 const client = require('../utilities/clientConnect')
     //for bcrypt
@@ -41,7 +42,7 @@ router.post('/new', async(req, res) => {
     }
 })
 
-router.patch('/update', authenticateJWT, (req, res) => {
+router.patch('/update', authenticateJWT, async(req, res) => {
     /*
     {
         name:'',
@@ -55,53 +56,61 @@ router.patch('/update', authenticateJWT, (req, res) => {
         const valid_input = hasAllFields({
             "name": constraints.name,
             "email": constraints.email,
-            "password": constraints.password,
-            "passwordChanged": constraints.boolean,
-            "profile_picture": constraints.image
+            "passwordChanged": constraints.boolean
         }, req.body)
         if (valid_input !== true) {
-            res.status(400).send(valid_input)
+            res.status(400).json(valid_input)
         } else {
-            try {
-                let success = false
-                const query = `UPDATE admins SET name = '${req.body.name}',email='${req.body.email}',profile_picture = '${req.body.profile_picture}' WHERE admin_id=${req.userObject.id}`
+            let emailUnique = await checkUniqueEmail2(req.body.email, req.userObject.typeOfUser, req.userObject.id)
+            if (emailUnique == true) {
+                try {
+                    let success = false
+                    const query = `UPDATE admins SET name = '${req.body.name}',email='${req.body.email}',profile_picture = '${req.body.profile_picture}' WHERE admin_id=${req.userObject.id}`
 
-                client.query(query)
-                    .then(resolve => {
-                        success = true
+                    client.query(query)
+                        .then(resolve => {
+                            success = true
 
-                        if (req.body.passwordChanged == true) {
-                            const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
-                            pwd_promise.then(hashed_pwd => {
-                                const query = `UPDATE admins SET password='${hashed_pwd}' WHERE admin_id=${req.userObject.id}`
-                                client.query(query)
-                                    .then(resolve => {
-                                        if (success == true) {
-                                            res.sendStatus(202)
-                                        } else {
+                            if (req.body.passwordChanged == true) {
+                                const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
+                                pwd_promise.then(hashed_pwd => {
+                                    const query = `UPDATE admins SET password='${hashed_pwd}' WHERE admin_id=${req.userObject.id}`
+                                    client.query(query)
+                                        .then(resolve => {
+                                            if (success == true) {
+                                                res.sendStatus(202)
+                                            } else {
+                                                res.sendStatus(500)
+                                            }
+                                        }).catch(err => {
                                             res.sendStatus(500)
-                                        }
-                                    }).catch(err => {
-                                        res.sendStatus(500)
-                                    })
-                            }).catch(err => {
-                                res.sendStatus(500)
-                            })
-                        } else {
-                            if (success == true) {
-                                res.sendStatus(202)
+                                        })
+                                }).catch(err => {
+                                    res.sendStatus(500)
+                                })
                             } else {
-                                res.sendStatus(500)
+                                if (success == true) {
+                                    res.sendStatus(202)
+                                } else {
+                                    res.sendStatus(500)
+                                }
                             }
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        res.sendStatus(500)
-                    })
-            } catch (err) {
-                console.log(err)
-                res.sendStatus(500)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.sendStatus(500)
+                        })
+                } catch (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                }
+            } else {
+                res.status(400).json({
+                    missingFields: [],
+                    wrongFields: ['email'],
+                    longFields: [],
+                    emptyFields: []
+                })
             }
         }
     } else {
