@@ -147,14 +147,18 @@ app.post('/verify', async(req, res) => {
                                     userObject.name = row.name
                                 }
                                 Promise.all(promises).then(resolve => {
-                                    if (resolve.includes(true)) {
-                                        const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
-                                        res.status(200).json({ verified: true, typeOfUser: 'seller', accessToken: accessToken }).end()
-                                    } else {
-                                        console.log(3)
-                                        res.status(200).json({ verified: false, blocked: false }).end()
-                                    }
-                                })
+                                        if (resolve.includes(true)) {
+                                            const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
+                                            res.status(200).json({ verified: true, typeOfUser: 'seller', accessToken: accessToken }).end()
+                                        } else {
+                                            console.log(3)
+                                            res.status(200).json({ verified: false, blocked: false }).end()
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log(err)
+                                        res.sendStatus(500)
+                                    })
                             } else if (tempResponse.rows[0].blocked == true && tempResponse.rows[0].approved == true) {
                                 res.status(200).json({ verified: false, blocked: true, approved: false }).end()
                             } else if (tempResponse.rows[0].approved == true) {
@@ -233,21 +237,25 @@ app.post('/resetpassword', async(req, res) => {
     let values = [hashed_pwd, req.body.email]
 
     client.query(query, values).then(response => {
-        if (response.rowCount == 0) {
-            query = "UPDATE sellers SET password=$1 WHERE email=$2"
-            client.query(query, values).then(response => {
-                if (response.rowCount == 0) {
-                    res.sendStatus(204)
-                } else {
-                    console.log("seller set")
-                    res.sendStatus(202)
-                }
-            })
-        } else {
-            console.log("customer set")
-            res.sendStatus(202)
-        }
-    })
+            if (response.rowCount == 0) {
+                query = "UPDATE sellers SET password=$1 WHERE email=$2"
+                client.query(query, values).then(response => {
+                    if (response.rowCount == 0) {
+                        res.sendStatus(204)
+                    } else {
+                        console.log("seller set")
+                        res.sendStatus(202)
+                    }
+                })
+            } else {
+                console.log("customer set")
+                res.sendStatus(202)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.sendStatus(500)
+        })
 })
 
 app.listen(process.env.PORT || port, () => {
