@@ -447,7 +447,7 @@ router.patch('/spotlight/:seller_id', authenticateJWT, (req, res) => {
                                         })
                                 } else {
                                     query = "INSERT INTO notifications (title,type,seller_id) VALUES ($1,$2,$3)"
-                                    values = ["Congratulations! You have been removed from Artisan in the Spotlight.", "message", req.params.seller_id]
+                                    values = ["You have been removed from Artisan in the Spotlight :(", "message", req.params.seller_id]
                                     client.query(query, values)
                                         .then(resp => {
                                             if (resp.rowCount > 0) {
