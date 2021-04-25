@@ -64,7 +64,7 @@ app.post('/verify', async(req, res) => {
     if (valid_input !== true) {
         res.status(400).send(valid_input)
     } else {
-        let query = `SELECT customer_id,name,password FROM customers WHERE email=$1 AND blocked=false`
+        let query = `SELECT customer_id,name,password FROM customers WHERE email=$1`
         let values = [req.body.email]
         try {
             let result = await client.query(query, values)
@@ -75,29 +75,40 @@ app.post('/verify', async(req, res) => {
             }
 
             if (result.rowCount > 0) {
-                let verif = await bcrypt.compare(req.body.password, result.rows[0].password)
-                if (verif == true) {
-                    let row = result.rows[0]
-                    userObject.id = row.customer_id
-                    userObject.name = row.name
-                    const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
-                    res.status(200).json({ verified: true, typeOfUser: 'customer', accessToken: accessToken }).end()
-                } else {
-                    console.log(4)
-                    res.status(200).json({ verified: false }).end()
-                }
+                query = "SELECT blocked FROM customers WHERE email=$1"
+                client.query(query, values)
+                    .then(tempResult => {
+                        if (tempResult.rows[0].blocked == false) {
+                            let verif = await bcrypt.compare(req.body.password, result.rows[0].password)
+                            if (verif == true) {
+                                let row = result.rows[0]
+                                userObject.id = row.customer_id
+                                userObject.name = row.name
+                                const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
+                                res.status(200).json({ verified: true, typeOfUser: 'customer', accessToken: accessToken }).end()
+                            } else {
+                                console.log(4)
+                                res.status(200).json({ verified: false, blocked: false }).end()
+                            }
+                        } else {
+                            res.status(200).json({ verified: false, blocked: true }).end()
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        res.sendStatus(500)
+                    })
             } else {
-                query = "SELECT seller_id, name, password FROM sellers WHERE email=$1 AND blocked=false AND approved=true"
+                query = "SELECT seller_id, name, password FROM sellers WHERE email=$1 AND approved=true"
                 values = [req.body.email]
                 result = await client.query(query, values)
                 if (result.rowCount == 0) {
-
                     query = "SELECT admin_id, name, password FROM admins WHERE email=$1"
                     values = [req.body.email]
                     result = await client.query(query, values)
                     if (result.rowCount == 0) {
                         console.log(1)
-                        res.status(200).json({ verified: false }).end()
+                        res.status(200).json({ verified: false, blocked: false }).end()
                     } else if (result.rowCount == 1) {
                         userObject = {
                             id: -1,
@@ -120,26 +131,38 @@ app.post('/verify', async(req, res) => {
                     }
 
                 } else if (result.rowCount == 1) {
-                    userObject = {
-                        id: -1,
-                        name: '',
-                        typeOfUser: 'seller'
-                    }
-                    let promises = []
-                    for (let row of result.rows) {
-                        promises.push(bcrypt.compare(req.body.password, row.password))
-                        userObject.id = row.seller_id
-                        userObject.name = row.name
-                    }
-                    Promise.all(promises).then(resolve => {
-                        if (resolve.includes(true)) {
-                            const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
-                            res.status(200).json({ verified: true, typeOfUser: 'seller', accessToken: accessToken }).end()
-                        } else {
-                            console.log(3)
-                            res.status(200).json({ verified: false }).end()
-                        }
-                    })
+                    query = "SELECT blocked FROM sellers WHERE email=$1"
+                    client.query(query, values)
+                        .then(tempResponse => {
+                            if (tempResponse.rows[0].blocked == false) {
+                                userObject = {
+                                    id: -1,
+                                    name: '',
+                                    typeOfUser: 'seller'
+                                }
+                                let promises = []
+                                for (let row of result.rows) {
+                                    promises.push(bcrypt.compare(req.body.password, row.password))
+                                    userObject.id = row.seller_id
+                                    userObject.name = row.name
+                                }
+                                Promise.all(promises).then(resolve => {
+                                    if (resolve.includes(true)) {
+                                        const accessToken = jwt.sign(userObject, process.env.ACCESS_TOKEN_SECRET)
+                                        res.status(200).json({ verified: true, typeOfUser: 'seller', accessToken: accessToken }).end()
+                                    } else {
+                                        console.log(3)
+                                        res.status(200).json({ verified: false, blocked: false }).end()
+                                    }
+                                })
+                            } else {
+                                res.status(200).json({ verified: false, blocked: true }).end()
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.sendStatus(500)
+                        })
                 }
 
             }
