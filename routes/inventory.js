@@ -49,7 +49,7 @@ router.get('/all/mine', authenticateJWT, async(req, res) => {
 })
 
 router.get('/all', (req, res) => {
-    const query = "SELECT item_id,title,description,category,featured,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE sellers.blocked=false"
+    const query = "SELECT item_id,title,description,category,featured,inventory.seller_id,sellers.name AS seller_name,price,stock FROM (inventory INNER JOIN sellers ON inventory.seller_id=sellers.seller_id) WHERE sellers.blocked=false ORDER BY title"
     client.query(query)
         .then(async(result) => {
             if (result.rowCount > 0) {
