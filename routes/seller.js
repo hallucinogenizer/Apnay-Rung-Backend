@@ -406,6 +406,10 @@ router.get('/info', authenticateJWT, async(req, res) => {
                     res.sendStatus(204)
                 }
             })
+            .catch(err => {
+                console.log(err)
+                res.sendStatus(500)
+            })
     } else {
         res.sendStatus(401)
     }
@@ -466,6 +470,10 @@ router.patch('/spotlight/:seller_id', authenticateJWT, (req, res) => {
                 } else {
                     res.sendStatus(204)
                 }
+            })
+            .catch(err => {
+                console.log(err)
+                res.sendStatus(500)
             })
     } else {
         res.sendStatus(401)
