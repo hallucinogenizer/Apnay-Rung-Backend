@@ -152,28 +152,32 @@ router.get('/all', authenticateJWT, (req, res) => {
                     }
                     Promise.all(allorders).then(async(allorders) => {
 
-                        //removing all such items from the order that do not belong to this seller
-                        let final_items = []
-                        for (let i = 0; i < allorders.length; i++) {
-                            let x = []
-                            for (let j = 0; j < allorders[i].items.length; j++) {
-                                let item_id = allorders[i].items[j][0]
-                                let query = "SELECT seller_id FROM inventory WHERE item_id=$1"
-                                let values = [item_id]
-                                let res = await client.query(query, values)
-                                if (res.rowCount > 0) {
-                                    if (res.rows[0].seller_id == req.userObject.id) {
-                                        x.push(allorders[i].items[j])
+                            //removing all such items from the order that do not belong to this seller
+                            let final_items = []
+                            for (let i = 0; i < allorders.length; i++) {
+                                let x = []
+                                for (let j = 0; j < allorders[i].items.length; j++) {
+                                    let item_id = allorders[i].items[j][0]
+                                    let query = "SELECT seller_id FROM inventory WHERE item_id=$1"
+                                    let values = [item_id]
+                                    let res = await client.query(query, values)
+                                    if (res.rowCount > 0) {
+                                        if (res.rows[0].seller_id == req.userObject.id) {
+                                            x.push(allorders[i].items[j])
+                                        }
                                     }
                                 }
+                                allorders[i].items = x
                             }
-                            allorders[i].items = x
-                        }
 
-                        let finalresult = {}
-                        finalresult.rows = allorders
-                        replaceIdWithTitle(finalresult, res)
-                    })
+                            let finalresult = {}
+                            finalresult.rows = allorders
+                            replaceIdWithTitle(finalresult, res)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.sendStatus(500)
+                        })
 
                     // 
                 } else {
@@ -380,10 +384,14 @@ router.get('/review/all', authenticateJWT, isBlocked, async(req, res) => {
 
             }
             Promise.all(allorders).then(allorders => {
-                let finalresult = {}
-                finalresult.rows = allorders
-                res.status(200).json(finalresult.rows)
-            })
+                    let finalresult = {}
+                    finalresult.rows = allorders
+                    res.status(200).json(finalresult.rows)
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.sendStatus(500)
+                })
 
         } catch (err) {
             res.sendStatus(500)
