@@ -95,7 +95,7 @@ router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
                     client.query(query)
                         .then(resolve => {
                             success = true
-
+                            console.log("req.body.passwordChanged", req.body.passwordChanged)
                             if (req.body.passwordChanged == true) {
                                 console.log("password:", req.body.password)
                                 const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
