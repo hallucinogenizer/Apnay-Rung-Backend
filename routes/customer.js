@@ -88,7 +88,7 @@ router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
             let emailUnique = await checkUniqueEmail2(req.body.email, req.userObject.typeOfUser, req.userObject.id)
             if (emailUnique == true) {
                 try {
-                    console.log("password:", req.body.password)
+
                     let success = false
                     const query = `UPDATE customers SET name = '${req.body.name}',email='${req.body.email}',phone = '${req.body.phone}',address='${req.body.address}' WHERE customer_id=${req.userObject.id}`
 
@@ -97,6 +97,7 @@ router.patch('/update', authenticateJWT, isBlocked, async(req, res) => {
                             success = true
 
                             if (req.body.passwordChanged == true) {
+                                console.log("password:", req.body.password)
                                 const pwd_promise = bcrypt.hash(req.body.password, saltRounds)
                                 pwd_promise.then(hashed_pwd => {
                                     const query = `UPDATE customers SET password='${hashed_pwd}' WHERE customer_id=${req.userObject.id}`
