@@ -147,18 +147,29 @@ router.patch('/disapprove/:id', authenticateJWT, (req, res) => {
         let values = [req.params.id]
         client.query(query, values).then(result => {
             if (result.rowCount > 0) {
-                query = "DELETE FROM sellers WHERE seller_id=$1"
+                query = "DELETE FROM notifications WHERE seller_id=$1"
                 client.query(query, values)
                     .then(response => {
-                        if (response.rowCount > 0) {
-                            client.query("COMMIT")
-                            res.sendStatus(200)
-                        } else {
-                            client.query("ROLLBACK")
-                            res.sendStatus(204)
-                        }
+                        query = "DELETE FROM sellers WHERE seller_id=$1"
+                        client.query(query, values)
+                            .then(response => {
+                                if (response.rowCount > 0) {
+                                    client.query("COMMIT")
+                                    res.sendStatus(200)
+                                } else {
+                                    client.query("ROLLBACK")
+                                    res.sendStatus(204)
+                                }
+                            })
+                            .catch(err => {
+                                res.sendStatus(500)
+                                console.log(err)
+                            })
                     })
-
+                    .catch(err => {
+                        console.log(err)
+                        res.sendStatus(500)
+                    })
             } else {
                 res.sendStatus(204)
             }
