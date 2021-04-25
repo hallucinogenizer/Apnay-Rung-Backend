@@ -267,6 +267,10 @@ router.get('/info', authenticateJWT, async(req, res) => {
                     res.sendStatus(204)
                 }
             })
+            .catch(err => {
+                console.log(err)
+                res.sendStatus(500)
+            })
     } else {
         res.sendStatus(401)
     }
