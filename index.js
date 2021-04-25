@@ -99,7 +99,7 @@ app.post('/verify', async(req, res) => {
                         res.sendStatus(500)
                     })
             } else {
-                query = "SELECT seller_id, name, password FROM sellers WHERE email=$1 AND approved=true"
+                query = "SELECT seller_id, name, password FROM sellers WHERE email=$1"
                 values = [req.body.email]
                 result = await client.query(query, values)
                 if (result.rowCount == 0) {
@@ -131,10 +131,10 @@ app.post('/verify', async(req, res) => {
                     }
 
                 } else if (result.rowCount == 1) {
-                    query = "SELECT blocked FROM sellers WHERE email=$1"
+                    query = "SELECT blocked,approved FROM sellers WHERE email=$1"
                     client.query(query, values)
                         .then(async(tempResponse) => {
-                            if (tempResponse.rows[0].blocked == false) {
+                            if (tempResponse.rows[0].blocked == false && tempResponse.rows[0].approved == true) {
                                 userObject = {
                                     id: -1,
                                     name: '',
@@ -155,8 +155,12 @@ app.post('/verify', async(req, res) => {
                                         res.status(200).json({ verified: false, blocked: false }).end()
                                     }
                                 })
-                            } else {
-                                res.status(200).json({ verified: false, blocked: true }).end()
+                            } else if (tempResponse.rows[0].blocked == true && tempResponse.rows[0].approved == true) {
+                                res.status(200).json({ verified: false, blocked: true, approved: false }).end()
+                            } else if (tempResponse.rows[0].approved == true) {
+                                res.status(200).json({ verified: false, blocked: false, approved: false }).end()
+                            } else if (tempResponse.rows[0].blocked == true) {
+                                res.status(200).json({ verified: false, blocked: true, approved: true }).end()
                             }
                         })
                         .catch(err => {
