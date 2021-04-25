@@ -77,7 +77,7 @@ app.post('/verify', async(req, res) => {
             if (result.rowCount > 0) {
                 query = "SELECT blocked FROM customers WHERE email=$1"
                 client.query(query, values)
-                    .then(tempResult => {
+                    .then(async(tempResult) => {
                         if (tempResult.rows[0].blocked == false) {
                             let verif = await bcrypt.compare(req.body.password, result.rows[0].password)
                             if (verif == true) {
@@ -133,7 +133,7 @@ app.post('/verify', async(req, res) => {
                 } else if (result.rowCount == 1) {
                     query = "SELECT blocked FROM sellers WHERE email=$1"
                     client.query(query, values)
-                        .then(tempResponse => {
+                        .then(async(tempResponse) => {
                             if (tempResponse.rows[0].blocked == false) {
                                 userObject = {
                                     id: -1,
