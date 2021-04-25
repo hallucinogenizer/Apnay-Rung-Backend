@@ -12,7 +12,21 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
         if (result.rowCount > 0) {
             return false
         } else {
-            return true
+            query = "SELECT seller_id FROM sellers WHERE email=$1"
+            values = [email]
+            result = await client.query(query, values)
+            if (result.rowCount > 0) {
+                return false
+            } else {
+                query = "SELECT admin_id FROM admins WHERE email=$1"
+                values = [email]
+                result = await client.query(query, values)
+                if (result.rowCount > 0) {
+                    return false
+                } else {
+                    return true
+                }
+            }
         }
     } else if (usertype == 'seller') {
         query = "SELECT seller_id FROM sellers WHERE email=$1 AND seller_id!=$2"
@@ -21,7 +35,22 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
         if (result.rowCount > 0) {
             return false
         } else {
-            return true
+            query = "SELECT customer_id FROM customers WHERE email=$1"
+            values = [email]
+
+            let result = await client.query(query, values)
+            if (result.rowCount > 0) {
+                return false
+            } else {
+                query = "SELECT admin_id FROM admins WHERE email=$1"
+                values = [email]
+                result = await client.query(query, values)
+                if (result.rowCount > 0) {
+                    return false
+                } else {
+                    return true
+                }
+            }
         }
     } else if (usertype == 'admin') {
         query = "SELECT admin_id FROM admins WHERE email=$1 AND admin_id!=$2"
@@ -30,7 +59,22 @@ const checkUniqueEmail2 = async(email, usertype, user_id) => {
         if (result.rowCount > 0) {
             return false
         } else {
-            return true
+            query = "SELECT customer_id FROM customers WHERE email=$1"
+            values = [email]
+
+            let result = await client.query(query, values)
+            if (result.rowCount > 0) {
+                return false
+            } else {
+                query = "SELECT seller_id FROM sellers WHERE email=$1"
+                values = [email]
+                result = await client.query(query, values)
+                if (result.rowCount > 0) {
+                    return false
+                } else {
+                    return true
+                }
+            }
         }
     }
 }
