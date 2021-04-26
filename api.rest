@@ -4,8 +4,8 @@ POST https://apnay-rung-api.herokuapp.com/verify
 Content-Type: application/json
 
 {
-    "email":"22100147@lums.edu.pk",
-    "password":"password"
+    "email":"qurat@gmail.com",
+    "password":"12345678"
 }
 
 
@@ -397,7 +397,7 @@ Content-Type: application/json
 
 ###
 //get reviews of an item
-GET https://apnay-rung-api.herokuapp.com/order/review/item/54
+GET https://apnay-rung-api.herokuapp.com/order/review/item/51
 
 
 
@@ -417,6 +417,8 @@ GET https://apnay-rung-api.herokuapp.com/order/review/item/1
 ###
 GET https://apnay-rung-api.herokuapp.com/order/id/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmFtZSI6IlRhaW1vb3IgVGFyaXEiLCJ0eXBlT2ZVc2VyIjoic2VsbGVyIiwiaWF0IjoxNjE2OTUwMTgwfQ.5sLboKcaMf5D96MJUSxsv4lynZ9k-J0lQ5w_C40I_Bo
+
+
 
 
 
@@ -580,7 +582,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6I
 
 //get a certain number of items from inventory
 ###
-GET https://apnay-rung-api.herokuapp.com/inventory/limit/2
+GET https://apnay-rung-api.herokuapp.com/inventory/limit/20
 
 
 ###
@@ -613,7 +615,7 @@ GET https://apnay-rung-api.herokuapp.com/inventory/sort/alphabetical
 
 //get rating of an item by item_id
 ###
-GET https://apnay-rung-api.herokuapp.com/inventory/rating/63
+GET https://apnay-rung-api.herokuapp.com/inventory/rating/50
 
 
 
