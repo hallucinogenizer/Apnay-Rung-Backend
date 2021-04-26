@@ -424,4 +424,8 @@ router.get('/featured', (req, res) => {
         })
 })
 
+router.get('/rating/:item_id', (req, res) => {
+    res.send(findAvgRating(req.params.item_id))
+})
+
 module.exports = router

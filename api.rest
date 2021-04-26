@@ -38,7 +38,7 @@ POST https://apnay-rung-api.herokuapp.com/resetpassword
 Content-Type: application/json
 
 {
-    "email":"maham@gmail.com",
+    "email":"taimoor@yahoo.com",
     "password":"12345678"
 }
 

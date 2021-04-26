@@ -15,7 +15,7 @@ async function findAvgRating(item_id) {
                     }
                 }
             }
-            let rating = n == 0 ? 0 : sum / n
+            let rating = n == 0 ? 0 : (sum / n).toFixed(1)
             resolve(rating)
         } else {
             resolve(0)
