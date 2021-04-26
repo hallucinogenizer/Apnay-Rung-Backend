@@ -165,6 +165,8 @@ app.post('/verify', async(req, res) => {
                                 res.status(200).json({ verified: false, blocked: false, approved: false }).end()
                             } else if (tempResponse.rows[0].blocked == true) {
                                 res.status(200).json({ verified: false, blocked: true, approved: true }).end()
+                            } else {
+                                res.sendStatus(500)
                             }
                         })
                         .catch(err => {
