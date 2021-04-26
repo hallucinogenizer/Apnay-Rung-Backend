@@ -10,7 +10,6 @@ async function findAvgRating(item_id) {
             for (let i = 0; i < result.rows.length; i++) {
                 for (let j = 0; j < result.rows[i].review.length; j++) {
                     if (result.rows[i].review[j][0] == item_id) {
-                        console.log(result.rows[i].review[j][1])
                         n = n + 1
                         sum += result.rows[i].review[j][1]
                     }

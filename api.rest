@@ -611,8 +611,9 @@ GET https://apnay-rung-api.herokuapp.com/inventory/sort/price/desc
 GET https://apnay-rung-api.herokuapp.com/inventory/sort/alphabetical
 
 
+//get rating of an item by item_id
 ###
-GET https://apnay-rung-api.herokuapp.com/inventory/rating/56
+GET https://apnay-rung-api.herokuapp.com/inventory/rating/63
 
 
 
