@@ -160,12 +160,13 @@ app.post('/verify', async(req, res) => {
                                         res.sendStatus(500)
                                     })
                             } else if (tempResponse.rows[0].blocked == true && tempResponse.rows[0].approved == true) {
-                                res.status(200).json({ verified: false, blocked: true, approved: false }).end()
-                            } else if (tempResponse.rows[0].approved == true) {
-                                res.status(200).json({ verified: false, blocked: false, approved: false }).end()
-                            } else if (tempResponse.rows[0].blocked == true) {
                                 res.status(200).json({ verified: false, blocked: true, approved: true }).end()
+                            } else if (tempResponse.rows[0].approved == false) {
+                                res.status(200).json({ verified: false, approved: false }).end()
+                            } else if (tempResponse.rows[0].blocked == true) {
+                                res.status(200).json({ verified: false, blocked: true }).end()
                             } else {
+                                console.log("No condition matched")
                                 res.sendStatus(500)
                             }
                         })
