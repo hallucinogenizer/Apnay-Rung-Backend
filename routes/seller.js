@@ -214,7 +214,7 @@ router.post('/new', upload.single('cnic_image'), async(req, res) => {
             res.sendStatus(502)
         }
     } else {
-        res.sendStatus(400)
+        res.status(400).json({ reason: "email_not_unique" })
         console.log("Email not unique")
     }
 })
