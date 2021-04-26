@@ -424,8 +424,9 @@ router.get('/featured', (req, res) => {
         })
 })
 
-router.get('/rating/:item_id', (req, res) => {
-    res.send(findAvgRating(req.params.item_id))
+router.get('/rating/:item_id', async(req, res) => {
+    let rating = await findAvgRating(req.params.item_id)
+    res.end(rating)
 })
 
 module.exports = router
